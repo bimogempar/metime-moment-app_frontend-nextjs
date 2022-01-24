@@ -2,6 +2,8 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useState } from 'react'
 import styles from '../styles/Home.module.css'
+import nookies, { setCookie } from 'nookies'
+import Router from 'next/router'
 
 export default function Home() {
     const [field, setField] = useState({})
@@ -12,7 +14,7 @@ export default function Home() {
         const name = target.name;
         const value = target.value;
 
-        console.log({ name, value })
+        // console.log({ name, value })
 
         setField({
             ...field,
@@ -22,9 +24,7 @@ export default function Home() {
 
     async function doLogin(e) {
         e.preventDefault()
-
-        const BACKEND_LARAVEL = 'http://127.0.0.1:8000'
-        const req = await fetch(`${BACKEND_LARAVEL}/api/login`, {
+        const req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -32,8 +32,9 @@ export default function Home() {
             body: JSON.stringify(field)
         })
         const res = await req.json()
-        if (res) {
-            console.log(res.access_token)
+        if (res.access_token) {
+            nookies.set(null, 'token', res.access_token)
+            Router.replace('/')
         }
     }
 
@@ -45,10 +46,10 @@ export default function Home() {
                     <form onSubmit={doLogin}>
                         <div className="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
                             <div className="px-5 py-7">
-                                <label className="font-semibold text-sm text-gray-600 pb-1 block">E-mail</label>
-                                <input type="text" className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" name="email" onChange={setValue} />
+                                <label className="font-semibold text-sm text-gray-600 pb-1 block">Username</label>
+                                <input type="text" className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" name="username" onChange={setValue} />
                                 <label className="font-semibold text-sm text-gray-600 pb-1 block">Password</label>
-                                <input type="text" className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" name="password" onChange={setValue} />
+                                <input autoComplete="on" type="password" className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" name="password" onChange={setValue} />
                                 <button type="submit" className="transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
                                     <span className="inline-block mr-2">Login</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4 inline-block">
