@@ -17,7 +17,7 @@ export default function Greeting(greet) {
     return (
         <>
             {/* greeting main*/}
-            <div className="grid grid-cols-4 gap-5">
+            <div className="grid grid-cols-4 gap-5 mb-5">
                 {/* greeting */}
                 <div className="bg-white rounded-xl col-span-4 md:col-span-3 lg:col-span-3 xl:col-span-2 flex justify-between">
                     <div className="p-5">

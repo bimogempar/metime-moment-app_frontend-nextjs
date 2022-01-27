@@ -45,8 +45,8 @@ const data = {
 
 export default function Statistics() {
     return (
-        <>
-            <h1 className="my-5 text-2xl font-extralight">Statistic</h1>
+        <div className="mb-5">
+            <h1 className="mb-5 text-2xl font-extralight">Statistic</h1>
             <div className="grid grid-cols-4">
                 {/* Statistic */}
                 <div className="bg-white col-span-4 lg:col-span-3 rounded-xl p-5">
@@ -57,6 +57,6 @@ export default function Statistics() {
                     />
                 </div>
             </div>
-        </>
+        </div>
     )
 }

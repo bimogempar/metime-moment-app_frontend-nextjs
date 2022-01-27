@@ -7,7 +7,7 @@ import NavLink from "./NavLink";
 export default function Sidebar(props) {
     const userContext = useContext(UserContext)
     return (
-        <div className="bg-white rounded-xl col-span-3 lg:block hidden p-5 h-min sticky top-10">
+        <div className="bg-white rounded-xl col-span-3 lg:block hidden p-5 h-min">
             <div className="flex justify-center">
                 <img src="/img/logo-metime.png" width="75" />
             </div>

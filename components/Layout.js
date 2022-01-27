@@ -38,7 +38,9 @@ export default function Layout(props) {
                     <link rel="icon" href="/img/logo-metime.png"></link>
                 </Head>
                 <div className="grid grid-cols-12 gap-10 p-10 lg:p-20 lg:pt-10">
-                    <Sidebar />
+                    <div className="col-span-3 rounded-xl h-min sticky top-10">
+                        <Sidebar />
+                    </div>
                     <div className="rounded-xl col-span-12 lg:col-span-9">
                         {props.children}
                     </div>

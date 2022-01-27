@@ -3,8 +3,8 @@ import { FcInspection, } from "react-icons/fc"
 
 export default function TopEmployee() {
     return (
-        <>
-            <h1 className="my-5 text-2xl font-extralight">Top Employee</h1>
+        <div className="mb-5">
+            <h1 className="mb-5 text-2xl font-extralight">Top Employee</h1>
             <div className="grid grid-cols-12 gap-5">
                 {/* Top Employee */}
                 <div className="bg-white xl:col-span-4 lg:col-span-6 col-span-6 rounded-xl p-3 flex gap-5 items-center">
@@ -34,6 +34,6 @@ export default function TopEmployee() {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
