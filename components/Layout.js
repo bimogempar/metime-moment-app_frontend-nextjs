@@ -42,7 +42,9 @@ export default function Layout(props) {
                         <Sidebar />
                     </div>
                     <div className="rounded-xl col-span-12 lg:col-span-9">
-                        {props.children}
+                        <div className="grid grid-cols-1">
+                            {props.children}
+                        </div>
                     </div>
                 </div>
             </div>
