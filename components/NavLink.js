@@ -57,7 +57,7 @@ export default function NavLink() {
                                 </a>
                             </Link>
                         </li>
-                        {userContext.userData.role == 2 &&
+                        {userContext.user.role == 2 &&
                             <li className="mt-2">
                                 <Link href="/register-user">
                                     <a className={router.pathname == "/register-user" ? active : inactive}>
