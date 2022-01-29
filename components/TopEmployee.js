@@ -12,8 +12,8 @@ export default function TopEmployee() {
                     <div className="w-full">
                         <h1 className="text-sm md:text-sm font-extralight">Ade Novan Guliano</h1>
                         <div className="flex justify-between items-center">
-                            <p className="text-gray-400 text-sm">Most Project</p>
-                            <div className="bg-green-100 md:flex items-center p-2 rounded-xl">
+                            <p className="text-gray-400 text-xs md:text-sm">Most Project</p>
+                            <div className="bg-green-200 text-green-800 font-medium md:flex items-center p-2 rounded-xl">
                                 <p className="text-xs">25</p>
                                 <FcInspection size={15} />
                             </div>
@@ -25,8 +25,8 @@ export default function TopEmployee() {
                     <div className="w-full">
                         <h1 className="text-sm md:text-sm font-extralight">Ade Novan Guliano</h1>
                         <div className="flex justify-between items-center">
-                            <p className="text-gray-400 text-sm">Most Project</p>
-                            <div className="bg-green-100 md:flex items-center p-2 rounded-xl">
+                            <p className="text-gray-400 text-xs md:text-sm">Most Project</p>
+                            <div className="bg-green-200 text-green-800 font-medium md:flex items-center p-2 rounded-xl">
                                 <p className="text-xs">25</p>
                                 <FcInspection size={15} />
                             </div>

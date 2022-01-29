@@ -20,6 +20,8 @@ export default function Home() {
             ...field,
             [name]: value
         })
+
+        console.log(field)
     }
 
     async function doLogin(e) {

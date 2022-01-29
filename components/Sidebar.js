@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { UserContext } from "../pages/context/userContext";
 import NavLink from "./NavLink";
 
-export default function Sidebar(props) {
+export default function Sidebar() {
     const userContext = useContext(UserContext)
     return (
         <div className="bg-white rounded-xl col-span-3 lg:block hidden p-5 h-min">
@@ -12,7 +12,7 @@ export default function Sidebar(props) {
                 <img src="/img/logo-metime.png" width="75" />
             </div>
             <div className="flex justify-center mt-2">
-                <img src="/img/ade.png" className="rounded-full" width="125" />
+                <img src={userContext.user.img} className="rounded-full" width="125" />
             </div>
             <div className="text-center">
                 <h1 className="text-xl mt-4 font-light break-word">{userContext.user.name}</h1>
