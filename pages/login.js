@@ -4,6 +4,8 @@ import Head from 'next/head'
 import { useState } from 'react'
 import nookies from 'nookies'
 import Router from 'next/router'
+import axios from 'axios'
+import { data } from 'autoprefixer'
 
 export default function Home() {
     const [field, setField] = useState({})
@@ -21,23 +23,37 @@ export default function Home() {
             [name]: value
         })
 
-        console.log(field)
     }
+
+    // async function doLogin(e) {
+    //     e.preventDefault()
+    //     const req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/login`, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify(field)
+    //     })
+    //     const res = await req.json()
+    //     console.log(res)
+    //     if (res.access_token) {
+    //         nookies.set(null, 'token', res.access_token)
+    //         Router.replace('/')
+    //     }
+    // }
 
     async function doLogin(e) {
         e.preventDefault()
-        const req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(field)
-        })
-        const res = await req.json()
-        if (res.access_token) {
-            nookies.set(null, 'token', res.access_token)
-            Router.replace('/')
-        }
+        axios.post(`${process.env.NEXT_PUBLIC_URL}/api/login`, field)
+            .then(res => {
+                console.log(res);
+                const token = res.data.access_token
+                console.log(token)
+                if (token) {
+                    nookies.set(null, 'token', token)
+                    Router.replace('/')
+                }
+            })
     }
 
     return (

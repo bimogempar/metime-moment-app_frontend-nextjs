@@ -12,7 +12,7 @@ export default function Sidebar() {
                 <img src="/img/logo-metime.png" width="75" />
             </div>
             <div className="flex justify-center mt-2">
-                <img src={userContext.user.img} className="rounded-full" width="125" />
+                <img src="/img/ade.png" className="rounded-full" width="125" />
             </div>
             <div className="text-center">
                 <h1 className="text-xl mt-4 font-light break-word">{userContext.user.name}</h1>

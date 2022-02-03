@@ -74,9 +74,11 @@ export default function Project(props) {
                         </div>
                         <div className="flex justify-end items-center">
                             <div className="-space-x-3">
-                                <img className="relative z-10 inline object-cover w-8 h-8 border-2 border-white rounded-full" src="/img/ade.png" alt="Profile image" />
-                                <img className="relative z-20 inline object-cover w-8 h-8 border-2 border-white rounded-full" src="/img/ade.png" alt="Profile image" />
-                                <img className="relative z-30 inline object-cover w-8 h-8 border-2 border-white rounded-full" src="/img/ade.png" alt="Profile image" />
+                                {project.users.map((user) => {
+                                    return (
+                                        <img key={user.id} className="relative z-10 inline object-cover w-8 h-8 border-2 border-white rounded-full" src="img/ade.png" alt="Profile image" />
+                                    )
+                                })}
                             </div>
                         </div>
                     </div>
