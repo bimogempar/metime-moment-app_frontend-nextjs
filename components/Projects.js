@@ -36,7 +36,7 @@ export default function Project(props) {
     }, [])
 
     return (
-        <div className="mb-5">
+        <div className="mb-5" >
             <h1 className="mb-5 text-2xl font-extralight">{props.head}</h1>
             <div className="grid grid-cols-12 gap-5">
 

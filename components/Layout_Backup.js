@@ -32,13 +32,13 @@ export default function Layout(props) {
 
     return (
         <UserContext.Provider value={userContext}>
-            <div className="grid grid-cols-1 place-items-start md:block">
+            <div className="grid grid-cols-1 place-items-start">
                 <Head>
                     <title>{props.title} | Metime Moment</title>
                     <link rel="icon" href="/img/logo-metime.png"></link>
                 </Head>
-                <div className="grid grid-cols-12 gap-10 pt-5 px-10 lg:p-20 lg:pt-10">
-                    <div className="rounded-xl col-span-3 h-min sticky top-10">
+                <div className="grid grid-cols-12 gap-10 p-10 lg:p-20 lg:pt-10">
+                    <div className="col-span-3 rounded-xl h-min sticky top-10">
                         <Sidebar />
                     </div>
                     <div className="rounded-xl col-span-12 lg:col-span-9">

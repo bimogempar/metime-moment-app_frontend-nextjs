@@ -21,8 +21,8 @@ export default function NavLink() {
         Router.push('/login')
     }
 
-    const inactive = "flex items-center gap-4 p-2 w-full text-center lg:w-auto rounded-full text-sm tracking-wider hover:bg-sky-800 hover:text-white"
-    const active = "flex items-center gap-4 p-2 w-full text-center lg:w-auto rounded-full text-sm tracking-wider hover:bg-sky-800 hover:text-white bg-sky-800 text-white"
+    const inactive = "flex items-center gap-4 p-2 w-full text-center lg:w-auto rounded-full text-sm tracking-wider hover:bg-blue-600 hover:text-white"
+    const active = "flex items-center gap-4 p-2 w-full text-center lg:w-auto rounded-full text-sm tracking-wider hover:bg-blue-600 hover:text-white bg-blue-500 text-white"
 
     return (
         <div>
@@ -59,9 +59,9 @@ export default function NavLink() {
                         </li>
                         {userContext.user.role == 2 &&
                             <li className="mt-2">
-                                <Link href="/register-user">
-                                    <a className={router.pathname == "/register-user" ? active : inactive}>
-                                        <FcAddImage /> Register User
+                                <Link href="/employee">
+                                    <a className={router.pathname == "/employee" ? active : inactive}>
+                                        <FcAddImage /> HR
                                     </a>
                                 </Link>
                             </li>

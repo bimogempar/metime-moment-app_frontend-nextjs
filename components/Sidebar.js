@@ -1,18 +1,19 @@
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable @next/next/no-img-element */
 import { useContext } from "react";
 import { UserContext } from "../pages/context/userContext";
 import NavLink from "./NavLink";
+import LogoMetimeMoment from "../public/img/logo-metime.png";
+import ProfilUser from "../public/img/ade.png";
+import Image from "next/image";
 
 export default function Sidebar() {
     const userContext = useContext(UserContext)
     return (
         <div className="bg-white rounded-xl col-span-3 lg:block hidden p-5 h-min">
             <div className="flex justify-center">
-                <img src="/img/logo-metime.png" width="75" />
+                <Image src={LogoMetimeMoment} alt="Logo Metime Moment" />
             </div>
             <div className="flex justify-center mt-2">
-                <img src="/img/ade.png" className="rounded-full" width="125" />
+                <Image src={ProfilUser} alt="Logo Metime Moment" />
             </div>
             <div className="text-center">
                 <h1 className="text-xl mt-4 font-light break-word">{userContext.user.name}</h1>

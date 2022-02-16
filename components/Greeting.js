@@ -1,6 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 import { useContext } from "react";
 import { UserContext } from "../pages/context/userContext";
+import Image from "next/image";
+import imgGreeting from "../public/img/headline.png";
 
 export default function Greeting(greet) {
     const userContext = useContext(UserContext)
@@ -27,11 +28,11 @@ export default function Greeting(greet) {
                 {/* greeting */}
                 <div className="bg-white rounded-xl col-span-4 md:col-span-3 lg:col-span-3 xl:col-span-2 flex justify-between">
                     <div className="p-5">
-                        <h1 className="text-2xl font-extralight mb-5">Good {greet}, {userContext.user.username}!</h1>
+                        <h1 className="text-2xl font-extralight mb-5">Good {greet}, {userContext.user.username}</h1>
                         <p className="text-md text-gray-500 font-extralight">Udah sampe mana ya bosku garapannya?</p>
                         <p className="text-md text-gray-500 font-extralight">Yuk bisa yuk! 🔥🔥🔥🔥</p>
                     </div>
-                    <img src="/img/headline.png" alt=""></img>
+                    <Image src={imgGreeting} alt="Img Headline" />
                 </div>
                 {/* calendar */}
                 <div className="col-span-1">
