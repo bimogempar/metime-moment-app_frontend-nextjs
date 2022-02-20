@@ -4,7 +4,6 @@ import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { AiFillSchedule } from 'react-icons/ai'
 import { MdFileDownloadDone } from 'react-icons/md'
 import { BiLoader, BiCommentDetail, BiPhoneCall } from 'react-icons/bi'
-import { RiAttachment2 } from 'react-icons/ri'
 import { useEffect } from 'react'
 import nookies from 'nookies';
 import axios from 'axios';
@@ -13,31 +12,34 @@ import { useState } from 'react'
 export default function Project(props) {
     const [projects, setProjects] = useState([])
 
-    const fetchProjects = async () => {
-        const cookies = nookies.get()
-        const token = cookies.token
-
-        axios.get(`${process.env.NEXT_PUBLIC_URL}/api/projects`, {
-            headers: {
-                Authorization: 'Bearer ' + token,
-            }
-        })
-            .then(function (response) {
-                const projects = response.data
-                setProjects(projects)
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
-    }
-
     useEffect(() => {
+        const fetchProjects = async () => {
+            const cookies = nookies.get()
+            const token = cookies.token
+
+            axios.get(`${process.env.NEXT_PUBLIC_URL}/api/projects`, {
+                headers: {
+                    Authorization: 'Bearer ' + token,
+                }
+            })
+                .then(function (response) {
+                    const projects = response.data
+                    setProjects(projects)
+                })
+                .catch(function (error) {
+                    // console.log(error);
+                })
+        }
+
         fetchProjects()
     }, [])
+
+    // console.log(projects)
 
     return (
         <div className="mb-5" >
             <h1 className="mb-5 text-2xl font-extralight">{props.head}</h1>
+
             <div className="grid grid-cols-12 gap-5">
 
                 {projects.map((project) => (
