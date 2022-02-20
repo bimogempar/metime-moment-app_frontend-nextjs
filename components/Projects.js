@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { BsThreeDots, BsCalendarDate, BsClock } from 'react-icons/bs'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
-import { AiFillSchedule } from 'react-icons/ai'
+import { AiFillSchedule, AiOutlineSearch } from 'react-icons/ai'
 import { MdFileDownloadDone } from 'react-icons/md'
 import { BiLoader, BiCommentDetail, BiPhoneCall } from 'react-icons/bi'
 import { useEffect } from 'react'
@@ -11,13 +11,25 @@ import { useState } from 'react'
 
 export default function Project(props) {
     const [projects, setProjects] = useState([])
+    const [search, setSearch] = useState({ s: '' })
+
+    const searchData = (s) => {
+        setSearch({ s })
+        // console.log(search)
+    }
 
     useEffect(() => {
         const fetchProjects = async () => {
             const cookies = nookies.get()
             const token = cookies.token
 
-            axios.get(`${process.env.NEXT_PUBLIC_URL}/api/projects`, {
+            const arr = []
+
+            if (search.s) {
+                arr.push(`s=${search.s}`)
+            }
+
+            axios.get(`${process.env.NEXT_PUBLIC_URL}/api/projects?${arr.join('&')}`, {
                 headers: {
                     Authorization: 'Bearer ' + token,
                 }
@@ -32,13 +44,22 @@ export default function Project(props) {
         }
 
         fetchProjects()
-    }, [])
+    }, [search])
 
     // console.log(projects)
 
     return (
         <div className="mb-5" >
             <h1 className="mb-5 text-2xl font-extralight">{props.head}</h1>
+
+            <div className="flex flex-row-reverse align-items-center items-center mb-5 gap-3">
+                <div className="flex bg-gray-100 p-2 w-72 space-x-4 rounded-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input className="bg-gray-100 outline-none" type="text" placeholder="Search" onKeyUp={e => searchData(e.target.value)} />
+                </div>
+            </div>
 
             <div className="grid grid-cols-12 gap-5">
 
