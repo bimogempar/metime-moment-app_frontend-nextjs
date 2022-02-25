@@ -13,7 +13,7 @@ export default function Sidebar() {
                 <Image src={LogoMetimeMoment} alt="Logo Metime Moment" />
             </div>
             <div className="flex justify-center mt-2">
-                <Image src={ProfilUser} alt="Logo Metime Moment" />
+                <Image src={ProfilUser} alt="User Metime Moment" />
             </div>
             <div className="text-center">
                 <h1 className="text-xl mt-4 font-light break-word">{userContext.user.name}</h1>

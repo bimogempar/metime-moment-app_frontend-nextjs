@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import nookies from 'nookies'
