@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 
 export function middleware(req) {
     const token = req.cookies.token
-    const url = req.nextUrl
+    const url = req.url
 
     if (!token && url === '/') {
         return NextResponse.redirect('/login')
