@@ -2,7 +2,7 @@ import { FcAddImage, FcExport, FcFolder, FcHome, FcInspection, FcSettings, FcTim
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import { useContext } from "react";
-import { UserContext } from "../pages/context/userContext";
+import { UserContext } from "../components/context/userContext";
 import nookies from "nookies";
 import axios from 'axios';
 

@@ -1,4 +1,4 @@
-import { UserContext } from "../pages/context/userContext"
+import { UserContext } from "../components/context/userContext";
 import { useContext } from "react"
 
 export default function TestComponent() {

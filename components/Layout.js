@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import nookies from 'nookies'
-import { UserContext } from "../pages/context/userContext";
+import { UserContext } from "../components/context/userContext";
 
 export default function Layout(props) {
     const [user, setUser] = useState([])

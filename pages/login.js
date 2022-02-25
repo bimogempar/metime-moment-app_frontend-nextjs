@@ -5,7 +5,6 @@ import { useState } from 'react'
 import nookies from 'nookies'
 import Router from 'next/router'
 import axios from 'axios'
-import { data } from 'autoprefixer'
 
 export default function Home() {
     const [field, setField] = useState({})

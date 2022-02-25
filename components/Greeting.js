@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "../pages/context/userContext";
+import { UserContext } from "../components/context/userContext";
 import Image from "next/image";
 import imgGreeting from "../public/img/headline.png";
 

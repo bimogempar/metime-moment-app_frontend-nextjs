@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "../pages/context/userContext";
+import { UserContext } from "../components/context/userContext";
 import NavLink from "./NavLink";
 import LogoMetimeMoment from "../public/img/logo-metime.png";
 import ProfilUser from "../public/img/ade.png";
