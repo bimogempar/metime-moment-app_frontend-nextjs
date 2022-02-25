@@ -2,21 +2,21 @@ import { NextResponse } from "next/server"
 
 export function middleware(req) {
     const token = req.cookies.token
-    const url = req.url
+    const url = req.nextUrl.pathname
 
-    if (!token && url == `${url}/`) {
+    if (!token && url == '/') {
         return NextResponse.redirect('/login')
     }
 
-    if (token && url == `${url}/login`) {
+    if (token && url == '/login') {
         return NextResponse.redirect('/')
     }
 
-    if (!token && url == `${url}/register`) {
+    if (!token && url == '/logout') {
         return NextResponse.redirect('/login')
     }
 
-    if (!token && url == `${url}/user`) {
+    if (!token && url == '/user') {
         return NextResponse.redirect('/login')
     }
 }
