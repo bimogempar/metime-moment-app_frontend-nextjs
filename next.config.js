@@ -8,3 +8,5 @@ module.exports = {
     domains: ['https://avatars.githubusercontent.com'],
   },
 }
+
+concurrentFeatures: false
