@@ -4,19 +4,19 @@ export function middleware(req) {
     const token = req.cookies.token
     const url = req.nextUrl.pathname
 
-    if (!token && url == '/') {
+    if (!token && url === '/') {
         return NextResponse.redirect('/login')
     }
 
-    if (token && url == '/login') {
+    if (token && url === '/login') {
         return NextResponse.redirect('/')
     }
 
-    if (!token && url == '/logout') {
+    if (!token && url === '/logout') {
         return NextResponse.redirect('/login')
     }
 
-    if (!token && url == '/user') {
+    if (!token && url === '/user') {
         return NextResponse.redirect('/login')
     }
 }
