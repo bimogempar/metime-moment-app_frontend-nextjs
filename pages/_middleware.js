@@ -4,19 +4,19 @@ export function middleware(req) {
     const token = req.cookies.token
     const url = req.url
 
-    if (!token && url == 'http://localhost:3000/') {
+    if (!token && url == '/') {
         return NextResponse.redirect('/login')
     }
 
-    if (token && url == 'http://localhost:3000/login') {
+    if (token && url == '/login') {
         return NextResponse.redirect('/')
     }
 
-    if (!token && url == 'http://localhost:3000/register') {
+    if (!token && url == '/register') {
         return NextResponse.redirect('/login')
     }
 
-    if (!token && url == 'http://localhost:3000/user') {
+    if (!token && url == '/user') {
         return NextResponse.redirect('/login')
     }
 }
