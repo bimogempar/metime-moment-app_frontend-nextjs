@@ -11,11 +11,19 @@ import { useState } from 'react'
 
 export default function Project(props) {
     const [projects, setProjects] = useState([])
-    const [search, setSearch] = useState({ s: '' })
+    const [search, setSearch] = useState({
+        s: '',
+        sort: '',
+        category: '',
+    })
 
     const searchData = (s) => {
         setSearch({ s })
         // console.log(search)
+    }
+
+    const filterCategory = (category) => {
+        setSearch({ category })
     }
 
     useEffect(() => {
@@ -29,14 +37,19 @@ export default function Project(props) {
                 arr.push(`s=${search.s}`)
             }
 
+            if (search.category) {
+                arr.push(`category=${search.category}`)
+            }
+
             axios.get(`${process.env.NEXT_PUBLIC_URL}/api/projects?${arr.join('&')}`, {
                 headers: {
                     Authorization: 'Bearer ' + token,
                 }
             })
                 .then(function (response) {
-                    const projects = response.data
+                    const projects = response.data.data
                     setProjects(projects)
+                    // console.log(projects)
                 })
                 .catch(function (error) {
                     // console.log(error);
@@ -53,6 +66,12 @@ export default function Project(props) {
             <h1 className="mb-5 text-2xl font-extralight">{props.head}</h1>
 
             <div className="flex flex-row-reverse align-items-center items-center mb-5 gap-3">
+                <select className="bg-gray-100 p-2 rounded-xl text-gray-500" onChange={e => filterCategory(e.target.value)}>
+                    <option value="">None</option>
+                    <option value="1">On Scheduled</option>
+                    <option value="2">On Progress</option>
+                    <option value="3">Done</option>
+                </select>
                 <div className="flex bg-gray-100 p-2 w-72 space-x-4 rounded-xl">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
