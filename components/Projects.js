@@ -10,20 +10,24 @@ import axios from 'axios';
 import { useState } from 'react'
 
 export default function Project(props) {
+    const [page, setPage] = useState(1)
     const [projects, setProjects] = useState([])
     const [search, setSearch] = useState({
         s: '',
-        sort: '',
         category: '',
     })
 
     const searchData = (s) => {
         setSearch({ s })
-        // console.log(search)
     }
 
     const filterCategory = (category) => {
         setSearch({ category })
+    }
+
+    const loadMore = () => {
+        setPage(page + 1)
+        console.log(page)
     }
 
     useEffect(() => {
@@ -49,7 +53,6 @@ export default function Project(props) {
                 .then(function (response) {
                     const projects = response.data.data
                     setProjects(projects)
-                    // console.log(projects)
                 })
                 .catch(function (error) {
                     // console.log(error);
@@ -57,7 +60,7 @@ export default function Project(props) {
         }
 
         fetchProjects()
-    }, [search])
+    }, [search, page])
 
     // console.log(projects)
 
@@ -82,8 +85,8 @@ export default function Project(props) {
 
             <div className="grid grid-cols-12 gap-5">
 
-                {projects.map((project) => (
-                    <div key={project.id} className="bg-white xl:col-span-4 lg:col-span-6 col-span-12 rounded-xl p-4 text-sm" >
+                {projects.map((project, id) => (
+                    <div project={project} key={id} className="bg-white xl:col-span-4 lg:col-span-6 col-span-12 rounded-xl p-4 text-sm" >
                         <div className="mb-2 flex justify-between items-center">
                             {project.status == 1 &&
                                 <div className="p-1 px-2 rounded-lg text-xs text bg-yellow-200 text-yellow-800 flex items-center gap-2">
@@ -127,6 +130,9 @@ export default function Project(props) {
                 ))}
 
             </div>
+            <button className="bg-white rounded-xl p-2 mt-3" onClick={loadMore}>
+                Load More
+            </button>
         </div>
     )
 }

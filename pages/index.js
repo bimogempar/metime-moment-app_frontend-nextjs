@@ -31,7 +31,6 @@ export default function Home({ data }) {
 
             <TopEmployee />
 
-            <Project head="Latest Projects" />
         </Layout>
     )
 }
