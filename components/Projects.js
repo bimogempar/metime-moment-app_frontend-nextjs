@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { BsThreeDots, BsCalendarDate, BsClock } from 'react-icons/bs'
+import { BsThreeDots, BsCalendarDate, BsClock, BsTrash, BsInfoLg } from 'react-icons/bs'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { AiFillSchedule, AiOutlineSearch } from 'react-icons/ai'
 import { MdFileDownloadDone } from 'react-icons/md'
@@ -8,6 +8,8 @@ import { useEffect } from 'react'
 import nookies from 'nookies';
 import axios from 'axios';
 import { useState } from 'react'
+import { Popover } from '@headlessui/react'
+import Link from 'next/link'
 
 export default function Project(props) {
     const [page, setPage] = useState(1)
@@ -103,15 +105,21 @@ export default function Project(props) {
                                     <MdFileDownloadDone size={20} /> Done
                                 </div>
                             }
-                            <button>
-                                <BsThreeDots />
-                            </button>
+                            <Popover className="invisible lg:visible">
+                                <Popover.Button> <BsThreeDots /></Popover.Button>
+                                <Popover.Panel className="absolute z-10 bg-white rounded-lg drop-shadow-xl">
+                                    <div className="grid grid-cols-1 rounded-xl p-2">
+                                        <Link href="/"><a className="hover:bg-gray-200 hover:rounded-lg p-2 flex items-center"><BsInfoLg className="mr-2" />View Detail</a></Link>
+                                        <Link href="/"><a className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</a></Link>
+                                    </div>
+                                </Popover.Panel>
+                            </Popover>
                         </div>
                         <div className="mb-2 grid grid-rows-1 gap-2">
-                            <div className="-mx-4 my-2">
+                            <div className="-mx-4 my-2 flex items-center">
                                 {project.img ? <img src={project.img} alt="" /> : <img src="/img/not-yet.png" alt="" />}
                             </div>
-                            <div className="text-md font-light">{project.client}</div>
+                            <div className="text-lg font-light">{project.client}</div>
                             <div className="text-xs font-extralight text-gray-500 flex items-center gap-2"><BsClock /> {project.time}</div>
                             <div className="text-xs font-extralight text-gray-500 flex items-center gap-2"><BsCalendarDate /> {project.date}</div>
                             <div className="text-xs font-extralight text-gray-500 flex items-center gap-2"><HiOutlineLocationMarker /> {project.location}</div>

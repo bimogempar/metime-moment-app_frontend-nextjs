@@ -21,8 +21,8 @@ export default function NavLink() {
         Router.push('/login')
     }
 
-    const inactive = "flex items-center gap-4 p-2 w-full text-center lg:w-auto rounded-full text-sm tracking-wider hover:bg-blue-600 hover:text-white"
-    const active = "flex items-center gap-4 p-2 w-full text-center lg:w-auto rounded-full text-sm tracking-wider hover:bg-blue-600 hover:text-white bg-blue-500 text-white"
+    const inactive = "flex items-center gap-4 p-2 w-full text-center lg:w-auto rounded-full text-sm font-medium tracking-wider hover:bg-blue-200 hover:text-blue-800"
+    const active = "flex items-center gap-4 p-2 w-full text-center lg:w-auto rounded-full text-sm font-medium tracking-wider hover:text-blue-800 bg-blue-200 text-blue-800"
 
     return (
         <div>
@@ -39,7 +39,7 @@ export default function NavLink() {
                         <li className="mt-2">
                             <Link href="/projects">
                                 <a className={router.pathname == "/projects" ? active : inactive}>
-                                    <FcTimeline /> List Project
+                                    <FcTimeline /> Project
                                 </a>
                             </Link>
                         </li>
