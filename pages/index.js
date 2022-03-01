@@ -4,6 +4,7 @@ import Greeting from '../components/Greeting';
 import Statistics from '../components/Statistics';
 import TopEmployee from '../components/TopEmployee';
 import Project from '../components/Projects';
+import Calendar from '../components/Calendar';
 
 // export async function getServerSideProps(ctx) {
 //     const cookies = nookies.get(ctx)
@@ -30,6 +31,8 @@ export default function Home({ data }) {
             <Statistics />
 
             <TopEmployee />
+
+            <Calendar />
 
         </Layout>
     )
