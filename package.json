@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@fullcalendar/daygrid": "^5.10.1",
+    "@fullcalendar/interaction": "^5.10.1",
     "@fullcalendar/react": "^5.10.1",
     "axios": "^0.25.0",
     "chart.js": "^3.7.0",
