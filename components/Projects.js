@@ -109,7 +109,7 @@ export default function Project(props) {
                                 <Popover.Button> <BsThreeDots /></Popover.Button>
                                 <Popover.Panel className="absolute z-10 bg-white rounded-lg drop-shadow-xl">
                                     <div className="grid grid-cols-1 rounded-xl p-2">
-                                        <Link href="/"><a className="hover:bg-gray-200 hover:rounded-lg p-2 flex items-center"><BsInfoLg className="mr-2" />View Detail</a></Link>
+                                        <Link href={"/projects/" + project.slug}><a className="hover:bg-gray-200 hover:rounded-lg p-2 flex items-center"><BsInfoLg className="mr-2" />View Detail</a></Link>
                                         <Link href="/"><a className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</a></Link>
                                     </div>
                                 </Popover.Panel>
@@ -141,6 +141,6 @@ export default function Project(props) {
             <button className="bg-white rounded-xl p-2 mt-3" onClick={loadMore}>
                 Load More
             </button>
-        </div>
+        </div >
     )
 }

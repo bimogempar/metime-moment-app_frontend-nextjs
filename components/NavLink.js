@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { UserContext } from "../components/context/userContext";
 import nookies from "nookies";
 import axios from 'axios';
+import { route } from "next/dist/server/router";
 
 export default function NavLink() {
     const router = useRouter()
@@ -38,7 +39,7 @@ export default function NavLink() {
                         </li>
                         <li className="mt-2">
                             <Link href="/projects">
-                                <a className={router.pathname == "/projects" ? active : inactive}>
+                                <a className={router.pathname == "/projects" || router.pathname == "/projects/[slug]" ? active : inactive}>
                                     <FcTimeline /> Project
                                 </a>
                             </Link>

@@ -19,4 +19,9 @@ export default function middleware(req) {
     if (!token && url == '/user') {
         return NextResponse.redirect('/login')
     }
+
+    if (!token && url == '/projects/') {
+        return NextResponse.redirect('/login')
+    }
+
 }
