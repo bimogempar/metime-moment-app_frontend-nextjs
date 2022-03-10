@@ -122,10 +122,14 @@ export default function Project(props) {
                             </Popover>
                         </div>
                         <div className="mb-2 grid grid-rows-1 gap-2">
-                            <div className="-mx-4 my-2 flex items-center">
-                                {project.img ? <img src={project.img} alt="" /> : <img src="/img/not-yet.png" alt="" />}
-                            </div>
-                            <div className="text-lg font-light">{project.client}</div>
+                            <Link href={"/projects/" + project.slug} passHref>
+                                <a>
+                                    <div className="-mx-4 my-2 flex items-center">
+                                        {project.img ? <img src={project.img} alt="" /> : <img src="/img/not-yet.png" alt="" />}
+                                    </div>
+                                    <div className="text-lg font-light">{project.client}</div>
+                                </a>
+                            </Link>
                             <div className="text-xs font-extralight text-gray-500 flex items-center gap-2"><BsClock /> {project.time}</div>
                             <div className="text-xs font-extralight text-gray-500 flex items-center gap-2"><BsCalendarDate /> {project.date}</div>
                             <div className="text-xs font-extralight text-gray-500 flex items-center gap-2"><HiOutlineLocationMarker /> {project.location}</div>
@@ -144,12 +148,13 @@ export default function Project(props) {
                 ))}
 
             </div>
-            {page < 2 ? null :
-                <button button className="bg-white rounded-xl p-2 mt-3 mr-3" onClick={() => {
-                    setPage(page - 1)
-                }}>
-                    Previous
-                </button>
+            {
+                page < 2 ? null :
+                    <button button className="bg-white rounded-xl p-2 mt-3 mr-3" onClick={() => {
+                        setPage(page - 1)
+                    }}>
+                        Previous
+                    </button>
             }
             {
                 page < projects.last_page &&
