@@ -18,6 +18,7 @@ export default function Project(props) {
         s: '',
         category: '',
     })
+    const [projectsData, setProjectsData] = useState([])
 
     const searchData = (s) => {
         setSearch({ s })
@@ -39,6 +40,10 @@ export default function Project(props) {
 
             const arr = []
 
+            if (search.s === '' || search.category === '') {
+                arr.push(`page=${page}`)
+            }
+
             if (search.s) {
                 arr.push(`s=${search.s}`)
             }
@@ -53,8 +58,9 @@ export default function Project(props) {
                 }
             })
                 .then(function (response) {
-                    const projects = response.data.data
-                    setProjects(projects)
+                    const fetchProjects = response.data
+                    setProjects(fetchProjects)
+                    setProjectsData(fetchProjects.data)
                 })
                 .catch(function (error) {
                     // console.log(error);
@@ -64,7 +70,7 @@ export default function Project(props) {
         fetchProjects()
     }, [search, page])
 
-    // console.log(projects)
+    // console.log(projects.data)
 
     return (
         <div className="mb-5" >
@@ -87,7 +93,7 @@ export default function Project(props) {
 
             <div className="grid grid-cols-12 gap-5">
 
-                {projects.map((project, id) => (
+                {projectsData.map((project, id) => (
                     <div project={project} key={id} className="bg-white xl:col-span-4 lg:col-span-6 col-span-12 rounded-xl p-4 text-sm" >
                         <div className="mb-2 flex justify-between items-center">
                             {project.status == 1 &&
@@ -138,9 +144,21 @@ export default function Project(props) {
                 ))}
 
             </div>
-            <button className="bg-white rounded-xl p-2 mt-3" onClick={loadMore}>
-                Load More
-            </button>
+            {page < 2 ? null :
+                <button button className="bg-white rounded-xl p-2 mt-3 mr-3" onClick={() => {
+                    setPage(page - 1)
+                }}>
+                    Previous
+                </button>
+            }
+            {
+                page < projects.last_page &&
+                <button className="bg-white rounded-xl p-2 mt-3" onClick={() => {
+                    setPage(page + 1)
+                }}>
+                    Next
+                </button>
+            }
         </div >
     )
 }
