@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { BsThreeDots, BsCalendarDate, BsClock, BsTrash, BsInfoLg } from 'react-icons/bs'
+import { BsThreeDots, BsCalendarDate, BsClock, BsTrash, BsInfoLg, BsChevronLeft, BsChevronRight } from 'react-icons/bs'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { AiFillSchedule, AiOutlineSearch } from 'react-icons/ai'
 import { MdFileDownloadDone } from 'react-icons/md'
@@ -10,6 +10,8 @@ import axios from 'axios';
 import { useState } from 'react'
 import { Popover } from '@headlessui/react'
 import Link from 'next/link'
+import ReactDatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 export default function Project(props) {
     const [page, setPage] = useState(1)
@@ -19,6 +21,8 @@ export default function Project(props) {
         category: '',
     })
     const [projectsData, setProjectsData] = useState([])
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
 
     const searchData = (s) => {
         setSearch({ s })
@@ -28,10 +32,11 @@ export default function Project(props) {
         setSearch({ category })
     }
 
-    const loadMore = () => {
-        setPage(page + 1)
-        console.log(page)
-    }
+    const onChange = (dates) => {
+        const [start, end] = dates;
+        setStartDate(start);
+        setEndDate(end);
+    };
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -52,6 +57,12 @@ export default function Project(props) {
                 arr.push(`category=${search.category}`)
             }
 
+            if (startDate && endDate) {
+                arr.pop()
+                arr.push(`start=${startDate.toISOString().slice(0, 10)}`)
+                arr.push(`end=${endDate.toISOString().slice(0, 10)}`)
+            }
+
             axios.get(`${process.env.NEXT_PUBLIC_URL}/api/projects?${arr.join('&')}`, {
                 headers: {
                     Authorization: 'Bearer ' + token,
@@ -68,26 +79,55 @@ export default function Project(props) {
         }
 
         fetchProjects()
-    }, [search, page])
+    }, [search, page, startDate, endDate])
 
-    // console.log(projects.data)
+    // console.log(startDate)
+    // console.log(endDate)
 
     return (
         <div className="mb-5" >
             <h1 className="mb-5 text-2xl font-extralight">{props.head}</h1>
 
-            <div className="flex flex-row-reverse align-items-center items-center mb-5 gap-3">
-                <select className="bg-gray-100 p-2 rounded-xl text-gray-500" onChange={e => filterCategory(e.target.value)}>
-                    <option value="">None</option>
-                    <option value="1">On Scheduled</option>
-                    <option value="2">On Progress</option>
-                    <option value="3">Done</option>
-                </select>
-                <div className="flex bg-gray-100 p-2 w-72 space-x-4 rounded-xl">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    <input className="bg-gray-100 outline-none" type="text" placeholder="Search" onKeyUp={e => searchData(e.target.value)} />
+            <div className="flex align-items-center justify-between items-center mb-5 gap-3">
+
+                <div className="flex justify-start my-5 gap-x-2">
+                    {
+                        page > 1 &&
+                        <button className="bg-white rounded-xl p-2" onClick={() => {
+                            setPage(page - 1)
+                        }}>
+                            <BsChevronLeft />
+                        </button>
+                    }
+                    {
+                        page < projects.last_page &&
+                        <button className="bg-white rounded-xl p-2" onClick={() => {
+                            setPage(page + 1)
+                        }}>
+                            <BsChevronRight />
+                        </button>
+                    }
+                </div>
+
+                <div className="flex gap-x-3 align-items-center">
+                    <ReactDatePicker
+                        onChange={onChange}
+                        startDate={startDate}
+                        endDate={endDate}
+                        selectsRange
+                    />
+                    <div className="flex bg-gray-100 p-2 w-72 space-x-4 rounded-xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input className="bg-gray-100 outline-none" type="text" placeholder="Search" onKeyUp={e => searchData(e.target.value)} />
+                    </div>
+                    <select className="bg-gray-100 p-2 rounded-xl text-gray-500" onChange={e => filterCategory(e.target.value)}>
+                        <option value="">None</option>
+                        <option value="1">On Scheduled</option>
+                        <option value="2">On Progress</option>
+                        <option value="3">Done</option>
+                    </select>
                 </div>
             </div>
 
@@ -148,22 +188,7 @@ export default function Project(props) {
                 ))}
 
             </div>
-            {
-                page < 2 ? null :
-                    <button button className="bg-white rounded-xl p-2 mt-3 mr-3" onClick={() => {
-                        setPage(page - 1)
-                    }}>
-                        Previous
-                    </button>
-            }
-            {
-                page < projects.last_page &&
-                <button className="bg-white rounded-xl p-2 mt-3" onClick={() => {
-                    setPage(page + 1)
-                }}>
-                    Next
-                </button>
-            }
+
         </div >
     )
 }
