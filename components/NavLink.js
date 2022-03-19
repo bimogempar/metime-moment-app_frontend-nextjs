@@ -47,7 +47,7 @@ export default function NavLink() {
                         <li className="mt-2">
                             <Link href="/fav-projects">
                                 <a className={router.pathname == "/fav-projects" ? active : inactive}>
-                                    <FcFolder /> Favorite Project
+                                    <FcFolder /> Favorite
                                 </a>
                             </Link>
                         </li>
