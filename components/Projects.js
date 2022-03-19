@@ -109,7 +109,7 @@ export default function Project(props) {
                     }
                 </div>
 
-                <div className="flex gap-x-3 align-items-center">
+                <div className="flex gap-x-3 justify-between align-items-center">
                     <div className="flex bg-gray-100 p-2 w-72 space-x-4 rounded-xl">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -122,14 +122,18 @@ export default function Project(props) {
                         <option value="2">On Progress</option>
                         <option value="3">Done</option>
                     </select>
+                    <div>
+                        <ReactDatePicker
+                            className="bg-gray-100 p-2 rounded-xl text-gray-500"
+                            onChange={onChange}
+                            startDate={startDate}
+                            endDate={endDate}
+                            placeholderText="Search by date"
+                            selectsRange
+                        />
+                    </div>
                 </div>
-                <ReactDatePicker
-                    className="bg-yellow-500"
-                    onChange={onChange}
-                    startDate={startDate}
-                    endDate={endDate}
-                    selectsRange
-                />
+
             </div>
 
             <div className="grid grid-cols-12 gap-5">
