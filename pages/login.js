@@ -48,10 +48,10 @@ export default function Home() {
         axios.post(`${process.env.NEXT_PUBLIC_URL}/api/login`, field)
             .then(res => {
                 // console.log(res);
-                const token = res.data.access_token
-                // console.log(token)
-                // console.log(res.data.error)
-                setError(res.data.error)
+                const response = res.data
+                const token = response.access_token
+                setError(response.error)
+                // console.log(response)
                 if (token) {
                     nookies.set(null, 'token', token)
                     Router.replace('/')
