@@ -1,6 +1,8 @@
 import Head from 'next/head'
 import React from 'react'
 import { useFormik } from 'formik'
+import Image from "next/image"
+import LogoMetimeMoment from "../../public/img/logo-metime.png"
 
 export async function getServerSideProps(context) {
     // console.log(context.query.token_reset_pass)
@@ -46,14 +48,17 @@ export default function Testing({ response, token_initial_password }) {
             password: '',
         }
     })
-    console.log(formik.values)
+    // console.log(formik.values)
 
     return (
         <div className="grid p-5" >
             <Head>
-                <title>Set Init Password</title>
+                <title>Set Init Password | Metime Moment</title>
                 <link rel="icon" href="/img/logo-metime.png"></link>
             </Head>
+            <div>
+                <Image src={LogoMetimeMoment} alt="Logo Metime Moment" />
+            </div>
             <form>
                 <div className="my-2">
                     <h4 className="mb-3">Set your password first!</h4>
