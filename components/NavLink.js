@@ -8,8 +8,8 @@ import axios from 'axios';
 import { route } from "next/dist/server/router";
 
 export default function NavLink() {
-    const router = useRouter()
     const userContext = useContext(UserContext)
+    const router = useRouter()
     const token = nookies.get()
 
     const doLogout = async () => {
@@ -52,9 +52,9 @@ export default function NavLink() {
                             </Link>
                         </li>
                         <li className="mt-2">
-                            <Link href="/myprofile">
-                                <a className={router.pathname == "/myprofile" ? active : inactive}>
-                                    <FcHome /> My Profile
+                            <Link href={"/myprofile/" + userContext.user.username}>
+                                <a className={router.pathname == "/myprofile/[username]" ? active : inactive}>
+                                    <FcHome /> Profile
                                 </a>
                             </Link>
                         </li>
