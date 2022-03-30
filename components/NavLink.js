@@ -52,8 +52,8 @@ export default function NavLink() {
                             </Link>
                         </li>
                         <li className="mt-2">
-                            <Link href={"/myprofile/" + userContext.user.username}>
-                                <a className={router.pathname == "/myprofile/[username]" ? active : inactive}>
+                            <Link href={"/userprofile/" + userContext.user.username}>
+                                <a className={router.pathname == "/userprofile/[username]" ? active : inactive}>
                                     <FcHome /> Profile
                                 </a>
                             </Link>

@@ -1,6 +1,9 @@
 import React from 'react'
 import Layout from '../../components/Layout'
 import nookies from "nookies"
+import { useContext } from "react";
+import { UserContext } from "../../components/context/userContext";
+import Profile from '../../components/userprofile/profile';
 
 export async function getServerSideProps(ctx) {
     const cookies = nookies.get(ctx)
@@ -26,20 +29,12 @@ export async function getServerSideProps(ctx) {
     }
 }
 
-export default function username({ data }) {
+const Username = ({ data }) => {
     return (
         <Layout title="User Profile ">
-            <div className="mb-5">
-                <h1 className="mb-5 text-2xl font-extralight">My Profile</h1>
-                <div className="grid grid-cols-1 gap-5 bg-white p-5 rounded-xl">
-                    {data.user.name}
-                    {data.user.projects.map((project) => (
-                        <div key={project}>
-                            {project.client}
-                        </div>
-                    ))}
-                </div>
-            </div>
+            <Profile data={data} />
         </Layout >
     )
 }
+
+export default Username

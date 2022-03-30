@@ -81,6 +81,11 @@ export default function Project(props) {
         fetchProjects()
     }, [search, page, startDate, endDate])
 
+    if (projects.data === undefined) {
+        return <div className="flex justify-center items-center h-screen">
+            <BiLoader className="text-6xl" />
+        </div>
+    }
     // console.log(startDate)
     // console.log(endDate)
 
