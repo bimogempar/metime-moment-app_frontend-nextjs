@@ -11,6 +11,8 @@ const withTM = require('next-transpile-modules')([
 // next.config.js
 module.exports = withTM({
   images: {
-    domains: [process.env.IMAGE_DOMAIN]
+    domains: [process.env.IMAGE_DOMAIN],
+    path: '/_next/image',
+    loader: 'default'
   },
 })

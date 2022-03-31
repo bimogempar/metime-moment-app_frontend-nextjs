@@ -12,6 +12,8 @@ import { Popover } from '@headlessui/react'
 import Link from 'next/link'
 import ReactDatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import Image from 'next/image'
+import notYetImageProject from '../public/img/not-yet.png'
 
 export default function Project(props) {
     const [page, setPage] = useState(1)
@@ -172,11 +174,11 @@ export default function Project(props) {
                             </Popover>
                         </div>
                         <div className="mb-2 grid grid-rows-1 gap-2">
+                            <div className="-mx-4 my-2 flex items-center">
+                                {project.img ? <Image src={process.env.NEXT_PUBLIC_URL + '/' + project.img} alt="Image Project" width={1080} height={768} priority /> : <Image src={notYetImageProject} alt="Image Project" width={1080} height={768} priority />}
+                            </div>
                             <Link href={"/projects/" + project.slug} passHref>
                                 <a>
-                                    <div className="-mx-4 my-2 flex items-center">
-                                        {project.img ? <img src={project.img} alt="" /> : <img src="/img/not-yet.png" alt="" />}
-                                    </div>
                                     <div className="text-lg font-light">{project.client}</div>
                                 </a>
                             </Link>
