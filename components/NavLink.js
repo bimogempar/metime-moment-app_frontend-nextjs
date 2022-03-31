@@ -22,8 +22,8 @@ export default function NavLink() {
         Router.push('/login')
     }
 
-    const inactive = "flex items-center gap-4 p-2 w-full text-center lg:w-auto rounded-full text-sm font-medium tracking-wider hover:bg-blue-200 hover:text-blue-800"
-    const active = "flex items-center gap-4 p-2 w-full text-center lg:w-auto rounded-full text-sm font-medium tracking-wider hover:text-blue-800 bg-blue-200 text-blue-800"
+    const inactive = "flex items-center gap-4 p-2 w-full text-center lg:w-auto rounded-full text-sm font-medium tracking-wider hover:bg-blue-200 hover:text-blue-800 transition ease-in-out duration-150"
+    const active = "flex items-center gap-4 p-2 w-full text-center lg:w-auto rounded-full text-sm font-medium tracking-wider hover:text-blue-800 bg-blue-200 text-blue-800 transition ease-in-out duration-150"
 
     return (
         <div>
@@ -73,11 +73,11 @@ export default function NavLink() {
             {/* setting and logout */}
             <div className="mt-10 -mb-2 flex items-center justify-between">
                 <Link href="/" passHref>
-                    <a className="text-2xl hover:scale-150 transition ease-in-out">
+                    <a className="text-2xl">
                         <FcSettings />
                     </a>
                 </Link>
-                <button onClick={doLogout} className="flex items-center bg-gray-100 p-2 rounded-xl hover:scale-110 transition ease-in-out">
+                <button onClick={doLogout} className="flex items-center hover:bg-blue-200 hover:text-blue-800 transition ease-in-out duration-200 p-2 rounded-xl">
                     <a className="text-2xl">
                         <FcExport />
                     </a>
