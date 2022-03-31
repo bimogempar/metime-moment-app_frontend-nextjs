@@ -8,7 +8,6 @@ import { Popover } from '@headlessui/react'
 import { BsCalendarDate, BsClock, BsInfoLg, BsThreeDots, BsTrash } from 'react-icons/bs'
 import Link from 'next/link'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
-import ProfilUser from "../../public/img/ade.png";
 
 export default function Profile(props) {
     const userContext = useContext(UserContext)
@@ -17,7 +16,6 @@ export default function Profile(props) {
             <BiLoader className="text-6xl" />
         </div>
     }
-    console.log(props)
     return (
         <div className="mb-5">
             {

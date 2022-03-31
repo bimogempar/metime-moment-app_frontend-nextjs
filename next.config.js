@@ -11,6 +11,6 @@ const withTM = require('next-transpile-modules')([
 // next.config.js
 module.exports = withTM({
   images: {
-    domains: ['https://avatars.githubusercontent.com'],
+    domains: ['127.0.0.1:8000']
   },
 })

@@ -1,8 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 import { useContext, useState } from "react";
 import { UserContext } from "../components/context/userContext";
 import NavLink from "./NavLink";
 import LogoMetimeMoment from "../public/img/logo-metime.png";
-import ProfilUser from "../public/img/ade.png";
+import UserPlaceholder from "../public/img/userplaceholder.png";
 import Image from "next/image";
 
 export default function Sidebar() {
@@ -35,12 +36,12 @@ export default function Sidebar() {
                 :
                 <div>
                     <div className="flex justify-center mt-2">
-                        <Image src={ProfilUser} alt="User Metime Moment" />
+                        {userContext.user.img ? <img className="rounded-full" src={process.env.NEXT_PUBLIC_URL + '/' + userContext.user.img} alt="User Metime Moment" width={100} height={100} /> : <Image src={UserPlaceholder} alt="User Metime Moment" width={100} height={100} />}
                     </div>
                     <div className="text-center">
                         <h1 className="text-xl mt-4 font-light break-word">{userContext.user.name}</h1>
                         <h1 className="text-md text-gray-500 mb-1 font-light break-all">{userContext.user.username}</h1>
-                        <h3 className="text-md text-gray-500 mb-1 font-light break-all">081898475675</h3>
+                        <h3 className="text-md text-gray-500 mb-1 font-light break-all">{userContext.user.no_hp}</h3>
                         <h1 className="text-md text-gray-500 mb-5 font-light break-all">{userContext.user.email}</h1>
                         <a className="bg-yellow-200 px-5 py-3 w-full text-center lg:w-auto rounded-lg text-yellow-600 text-xs tracking-wider font-semibold uppercase">
                             {userContext.user.role == 2 && "Admin" || userContext.user.role == 1 && "Employee"}
