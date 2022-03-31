@@ -8,6 +8,7 @@ import { Popover } from '@headlessui/react'
 import { BsCalendarDate, BsClock, BsInfoLg, BsThreeDots, BsTrash } from 'react-icons/bs'
 import Link from 'next/link'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
+import ProfilUser from "../../public/img/ade.png";
 
 export default function Profile(props) {
     const userContext = useContext(UserContext)
@@ -16,6 +17,7 @@ export default function Profile(props) {
             <BiLoader className="text-6xl" />
         </div>
     }
+    console.log(props)
     return (
         <div className="mb-5">
             {
@@ -29,7 +31,7 @@ export default function Profile(props) {
 
             <div className="grid grid-cols-12 gap-5">
 
-                {props.data.user.projects.map((project, id) => (
+                {props.data.projects.map((project, id) => (
                     <div project={project} key={id} className="bg-white xl:col-span-4 lg:col-span-6 col-span-12 rounded-xl p-4 text-sm" >
                         <div className="mb-2 flex justify-between items-center">
                             {project.status == 1 &&
@@ -70,6 +72,15 @@ export default function Profile(props) {
                             <div className="text-xs font-extralight text-gray-500 flex items-center gap-2"><BsCalendarDate /> {project.date}</div>
                             <div className="text-xs font-extralight text-gray-500 flex items-center gap-2"><HiOutlineLocationMarker /> {project.location}</div>
                             <div className="text-xs font-extralight text-gray-500 flex items-center gap-2"><BiPhoneCall /> {project.phone_number}</div>
+                        </div>
+                        <div className="flex justify-end items-center">
+                            <div className="-space-x-3">
+                                {project.users.map((user) => {
+                                    return (
+                                        <img key={user.id} className="relative z-10 inline object-cover w-8 h-8 border-2 border-white rounded-full" src="/img/ade.png" alt="Profile image" />
+                                    )
+                                })}
+                            </div>
                         </div>
                     </div>
                 ))}
