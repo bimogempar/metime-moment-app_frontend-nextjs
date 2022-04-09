@@ -1,18 +1,42 @@
 import Head from 'next/head'
-import React from 'react'
+import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import Image from "next/image"
 import LogoMetimeMoment from "../../public/img/logo-metime.png"
+import axios from 'axios'
+import * as Yup from 'yup'
 
 export default function Testing({ response, token_initial_password }) {
+    const [message, setMessage] = useState('')
+
     const formik = useFormik({
         initialValues: {
             email: response.user.email,
-            token: token_initial_password,
+            token_initial_password: token_initial_password,
             password: '',
-        }
+        },
+        // validation schema
+        validationSchema: Yup.object({
+            password: Yup.string()
+                .min(8, 'Password must be at least 8 characters')
+                .matches(/[0-9]/, 'Password must contain at least one number')
+                .required('Required'),
+        }),
+        // onsubmit form
+        onSubmit: values => {
+            // console.log(values)
+            setMessage('Loading...')
+            axios.post(`${process.env.NEXT_PUBLIC_URL}/api/set-pass`, values)
+                .then(res => {
+                    const respMessage = res.data.message
+                    setMessage(respMessage)
+                    formik.setSubmitting(true)
+                })
+                .catch(err => {
+                    // console.log(err)
+                })
+        },
     })
-    // console.log(formik.values)
 
     return (
         <div className="grid p-5" >
@@ -23,7 +47,7 @@ export default function Testing({ response, token_initial_password }) {
             <div>
                 <Image src={LogoMetimeMoment} alt="Logo Metime Moment" />
             </div>
-            <form>
+            <form onSubmit={formik.handleSubmit}>
                 <div className="my-2">
                     <h4 className="mb-3">Set your password first!</h4>
                     <label htmlFor="email"></label>
@@ -33,7 +57,11 @@ export default function Testing({ response, token_initial_password }) {
                     <label htmlFor="password"></label>
                     <input className="bg-white p-2 rounded-xl" type="password" id="password" placeholder="password" name="password" value={formik.values.password} onChange={formik.handleChange} />
                 </div>
-                <button className="p-2 my-2 text-white bg-sky-600 rounded-xl" type="submit">Set password</button>
+                <div className="my-2">
+                    {formik.errors.password ? <div className="text-red-500">{formik.errors.password}</div> : null}
+                    {message ? <div className="text-gray-500">{message}</div> : null}
+                </div>
+                <button className="p-2 my-2 text-white bg-sky-600 rounded-xl" type="submit" disabled={formik.isSubmitting}>Set password</button>
             </form>
         </div >
     )
