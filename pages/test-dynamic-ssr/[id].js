@@ -15,7 +15,7 @@ export async function getServerSideProps(ctx) {
     })
 
     const data = await req.json()
-    console.log(data)
+    // console.log(data)
     return {
         props: { data }
     }
