@@ -5,6 +5,16 @@ import { useContext } from "react";
 import { UserContext } from "../../components/context/userContext";
 import Profile from '../../components/userprofile/profile';
 
+const Username = ({ data }) => {
+    return (
+        <Layout title="User Profile ">
+            <Profile data={data} />
+        </Layout >
+    )
+}
+
+export default Username
+
 export async function getServerSideProps(ctx) {
     const cookies = nookies.get(ctx)
     const token = cookies.token
@@ -28,13 +38,3 @@ export async function getServerSideProps(ctx) {
         props: { data }
     }
 }
-
-const Username = ({ data }) => {
-    return (
-        <Layout title="User Profile ">
-            <Profile data={data} />
-        </Layout >
-    )
-}
-
-export default Username

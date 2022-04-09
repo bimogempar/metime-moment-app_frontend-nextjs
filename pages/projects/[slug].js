@@ -2,6 +2,15 @@ import React from 'react'
 import nookies from 'nookies';
 import Layout from '../../components/Layout';
 
+export default function ProjectDetails({ data }) {
+    const project = data.project
+    return (
+        <Layout title={project.client}>
+            <h1>{project.client}</h1>
+        </Layout>
+    )
+}
+
 export async function getServerSideProps(params) {
     const { slug } = params.query
 
@@ -40,12 +49,4 @@ export async function getServerSideProps(params) {
         props: { data }
     }
 
-}
-export default function ProjectDetails({ data }) {
-    const project = data.project
-    return (
-        <Layout title={project.client}>
-            <h1>{project.client}</h1>
-        </Layout>
-    )
 }
