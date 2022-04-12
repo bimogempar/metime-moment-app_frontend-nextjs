@@ -9,7 +9,33 @@ export default function ProjectDetails({ data }) {
 
     const cookies = nookies.get()
     const token = cookies.token
-    // console.log(features)
+
+    const handleClickCB = (feature) => {
+        // console.log(feature)
+        const newFeatures = features.map((f) => {
+            if (f.id === feature.id) {
+                axios.post(`${process.env.NEXT_PUBLIC_URL}/api/features/${feature.id}`,
+                    {
+                        status: f.status === 1 ? 0 : 1 || f.status === 0 ? 1 : 0,
+                    },
+                    {
+                        headers: {
+                            Authorization: 'Bearer ' + token,
+                        },
+                    }
+                )
+                    .then(res => {
+                        // console.log(res)
+                    })
+                return {
+                    ...f,
+                    status: f.status === 1 ? 0 : 1 || f.status === 0 ? 1 : 0,
+                };
+            }
+            return f
+        });
+        setFeatures(newFeatures);
+    }
 
     return (
         <Layout title={project.client}>
@@ -24,31 +50,7 @@ export default function ProjectDetails({ data }) {
                             name={feature.feature}
                             value={feature.feature}
                             defaultChecked={feature.status === 1}
-                            onChange={() => {
-                                const newFeatures = features.map((f) => {
-                                    if (f.id === feature.id) {
-                                        axios.post(`${process.env.NEXT_PUBLIC_URL}/api/features/${feature.id}`,
-                                            {
-                                                status: f.status === 1 ? 0 : 1 || f.status === 0 ? 1 : 0,
-                                            },
-                                            {
-                                                headers: {
-                                                    Authorization: 'Bearer ' + token,
-                                                },
-                                            }
-                                        )
-                                            .then(res => {
-                                                // console.log(res)
-                                            })
-                                        return {
-                                            ...f,
-                                            status: f.status === 1 ? 0 : 1 || f.status === 0 ? 1 : 0,
-                                        };
-                                    }
-                                    return f
-                                });
-                                setFeatures(newFeatures);
-                            }}
+                            onChange={() => handleClickCB(feature)}
                         />
                         {feature.feature}
                     </div>
