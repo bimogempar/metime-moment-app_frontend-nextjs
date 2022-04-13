@@ -5,6 +5,7 @@ import { useState } from 'react'
 import nookies from 'nookies'
 import Router from 'next/router'
 import axios from 'axios'
+import { Toaster, toast } from 'react-hot-toast'
 
 export default function Home() {
     const [field, setField] = useState({})
@@ -45,18 +46,32 @@ export default function Home() {
 
     async function doLogin(e) {
         e.preventDefault()
+        const toastId = toast.loading('Loading...')
         axios.post(`${process.env.NEXT_PUBLIC_URL}/api/login`, field)
             .then(res => {
                 // console.log(res);
                 const response = res.data
                 const token = response.access_token
-                setError(response.error)
+                if (response.error) {
+                    setError(response.error)
+                    toast.dismiss(toastId)
+                    return toast.error(response.error)
+                }
                 // console.log(response)
+                toast.dismiss(toastId)
+                toast.success('Login Successfully')
                 if (token) {
                     nookies.set(null, 'token', token)
                     Router.replace('/')
                 }
+            }).catch(err => {
+                console.log(err);
             })
+        // toast.promise(mypromies, {
+        //     loading: "Loading",
+        //     success: 'Successfully Login',
+        //     error: 'Login Failed',
+        // });
     }
 
     return (
@@ -85,6 +100,7 @@ export default function Home() {
                     </div>
                 </form>
             </div>
+            <Toaster />
         </div>
     )
 }
