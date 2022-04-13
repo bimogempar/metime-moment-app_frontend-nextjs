@@ -2,10 +2,14 @@ import { React, useState, useEffect } from 'react'
 import nookies from 'nookies';
 import Layout from '../../components/Layout';
 import axios from 'axios';
+import { BsChevronLeft } from 'react-icons/bs';
+import { useRouter } from 'next/router';
 
 export default function ProjectDetails({ data }) {
     const [project, setProject] = useState(data.project);
     const [features, setFeatures] = useState(data.project.features);
+
+    const router = useRouter();
 
     const cookies = nookies.get()
     const token = cookies.token
@@ -14,7 +18,7 @@ export default function ProjectDetails({ data }) {
         // console.log(feature)
         const newFeatures = features.map((f) => {
             if (f.id === feature.id) {
-                axios.post(`${process.env.NEXT_PUBLIC_URL}/api/features/${feature.id}`,
+                axios.patch(`${process.env.NEXT_PUBLIC_URL}/api/features/${feature.id}`,
                     {
                         status: f.status === 1 ? 0 : 1 || f.status === 0 ? 1 : 0,
                     },
@@ -38,7 +42,14 @@ export default function ProjectDetails({ data }) {
     }
 
     return (
-        <Layout title={project.client}>
+        <Layout title={'Project Details | ' + project.client}>
+            <div className="mb-4">
+                <button className="bg-white rounded-xl p-2 px-4" onClick={() => { router.back() }}>
+                    <div className="flex gap-x-3 items-center">
+                        <BsChevronLeft /> Back
+                    </div>
+                </button>
+            </div>
             <h1>{project.client}</h1>
 
             {project.features.map((feature) => {
