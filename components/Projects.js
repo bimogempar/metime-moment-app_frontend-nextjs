@@ -15,6 +15,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import Image from 'next/image'
 import notYetImageProject from '../public/img/not-yet.png'
 import { Fragment } from 'react'
+import toast, { Toaster } from 'react-hot-toast'
 
 export default function Project(props) {
     const [page, setPage] = useState(1)
@@ -96,7 +97,7 @@ export default function Project(props) {
     // console.log(endDate)
 
     const deleteProject = (id) => {
-        axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/projects/${id}/delete`, {
+        const deletePromise = axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/projects/${id}/delete`, {
             headers: {
                 Authorization: 'Bearer ' + token,
             }
@@ -118,6 +119,11 @@ export default function Project(props) {
         }).catch(function (error) {
             console.log(error);
         })
+        toast.promise(deletePromise, {
+            loading: 'Loading..',
+            success: 'Successfully Deleted',
+            error: 'Error..',
+        });
     }
 
     const handleClickOpen = (data) => {
@@ -128,6 +134,7 @@ export default function Project(props) {
 
     return (
         <div className="mb-5" >
+            <Toaster />
 
             <h1 className="mb-5 text-2xl font-extralight">{props.head}</h1>
 
