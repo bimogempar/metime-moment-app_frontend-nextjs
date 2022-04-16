@@ -6,6 +6,7 @@ import nookies from 'nookies'
 import Router from 'next/router'
 import axios from 'axios'
 import { Toaster, toast } from 'react-hot-toast'
+import Link from 'next/link'
 
 export default function Home() {
     const [field, setField] = useState({})
@@ -96,6 +97,11 @@ export default function Home() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                                 </svg>
                             </button>
+                            <div>
+                                <Link href="/forgot-password" passHref>
+                                    <button className="text-blue-500 text-sm mt-5">Forgot Password?</button>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </form>
