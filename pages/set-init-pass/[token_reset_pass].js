@@ -5,9 +5,10 @@ import Image from "next/image"
 import LogoMetimeMoment from "../../public/img/logo-metime.png"
 import axios from 'axios'
 import * as Yup from 'yup'
+import Router from 'next/router'
+import { Toaster, toast } from 'react-hot-toast'
 
 export default function Testing({ response, token_initial_password }) {
-    const [message, setMessage] = useState('')
 
     const formik = useFormik({
         initialValues: {
@@ -25,12 +26,15 @@ export default function Testing({ response, token_initial_password }) {
         // onsubmit form
         onSubmit: values => {
             // console.log(values)
-            setMessage('Loading...')
+            const toastId = toast.loading('Loading...')
             axios.post(`${process.env.NEXT_PUBLIC_URL}/api/set-pass`, values)
                 .then(res => {
-                    const respMessage = res.data.message
-                    setMessage(respMessage)
                     formik.setSubmitting(true)
+                    toast.dismiss(toastId)
+                    toast.success('Set Password Successfully')
+                    setTimeout(() => {
+                        Router.push('/login')
+                    }, 1000)
                 })
                 .catch(err => {
                     // console.log(err)
@@ -59,10 +63,10 @@ export default function Testing({ response, token_initial_password }) {
                 </div>
                 <div className="my-2">
                     {formik.errors.password ? <div className="text-red-500">{formik.errors.password}</div> : null}
-                    {message ? <div className="text-gray-500">{message}</div> : null}
                 </div>
                 <button className="p-2 my-2 text-white bg-sky-600 rounded-xl" type="submit" disabled={formik.isSubmitting}>Set password</button>
             </form>
+            <Toaster />
         </div >
     )
 }
