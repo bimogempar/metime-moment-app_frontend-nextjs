@@ -3,8 +3,8 @@ import { BsThreeDots, BsCalendarDate, BsClock, BsTrash, BsInfoLg, BsChevronLeft,
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { AiFillSchedule, AiOutlineSearch } from 'react-icons/ai'
 import { MdConstruction, MdFileDownloadDone } from 'react-icons/md'
-import { BiLoader, BiCommentDetail, BiPhoneCall } from 'react-icons/bi'
-import { useEffect } from 'react'
+import { BiLoader, BiCommentDetail, BiPhoneCall, BiAddToQueue } from 'react-icons/bi'
+import { useEffect, useRef } from 'react'
 import nookies from 'nookies';
 import axios from 'axios';
 import { useState } from 'react'
@@ -16,6 +16,7 @@ import Image from 'next/image'
 import notYetImageProject from '../public/img/not-yet.png'
 import { Fragment } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
+import ModalCreateProject from '../pages/projects/components/ModalCreateProject'
 
 export default function Project(props) {
     const [page, setPage] = useState(1)
@@ -30,6 +31,8 @@ export default function Project(props) {
 
     const [isOpen, setIsOpen] = useState(false)
     const [dataModal, setDataModal] = useState([{}])
+
+    const [isOpenCreate, setIsOpenCreate] = useState(false)
 
     const cookies = nookies.get()
     const token = cookies.token
@@ -126,10 +129,14 @@ export default function Project(props) {
         });
     }
 
+
     const handleClickOpen = (data) => {
-        // console.log(data)
         setDataModal(data)
         setIsOpen(true)
+    }
+
+    const handleClickCreateProject = () => {
+        setIsOpenCreate(true)
     }
 
     return (
@@ -138,8 +145,11 @@ export default function Project(props) {
 
             <h1 className="mb-5 text-2xl font-extralight">{props.head}</h1>
 
-            <div className="flex flex-wrap align-items-center justify-between items-center mb-5 gap-3">
+            <div className="mb-5">
+                <button onClick={() => handleClickCreateProject()} className="transition ease-in-out duration-200 text-gray-500 bg-gray-100 hover:bg-white p-2 rounded-lg flex items-center"><BiAddToQueue className="mr-2" />Create new project</button>
+            </div>
 
+            <div className="flex flex-wrap align-items-center justify-between items-center mb-5 gap-3">
                 <div className="flex gap-x-3 justify-between align-items-center">
                     <div className="flex bg-gray-100 p-2 w-72 space-x-4 rounded-xl">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -166,9 +176,12 @@ export default function Project(props) {
                         />
                     </div>
                 </div>
-
             </div>
 
+            {/* Modal Create Project */}
+            <ModalCreateProject isOpenCreate={isOpenCreate} setIsOpenCreate={setIsOpenCreate} />
+
+            {/* Modal Delete Project */}
             <Transition as={Fragment} show={isOpen}>
                 <Dialog as="div" className="fixed inset-0 flex items-center justify-center" onClose={() => setIsOpen(false)}>
                     <Transition.Child
@@ -243,9 +256,11 @@ export default function Project(props) {
 
                         </div>
                         <div className="mb-2 grid grid-rows-1 gap-2">
-                            <div className="-mx-4 my-2 flex items-center">
-                                {project.img ? <Image src={process.env.NEXT_PUBLIC_URL + '/' + project.img} alt="Image Project" width={1080} height={768} priority /> : <Image src={notYetImageProject} alt="Image Project" width={1080} height={768} priority />}
-                            </div>
+                            <Link href={"/projects/" + project.slug} passHref>
+                                <button className="-mx-4 my-2 flex items-center">
+                                    {project.img ? <Image src={process.env.NEXT_PUBLIC_URL + '/' + project.img} alt="Image Project" width={1080} height={768} priority /> : <Image src={notYetImageProject} alt="Image Project" width={1080} height={768} priority />}
+                                </button>
+                            </Link>
                             <Link href={"/projects/" + project.slug} passHref>
                                 <a>
                                     <div className="text-lg font-light">{project.client}</div>
