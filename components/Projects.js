@@ -4,7 +4,7 @@ import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { AiFillSchedule, AiOutlineSearch } from 'react-icons/ai'
 import { MdConstruction, MdFileDownloadDone } from 'react-icons/md'
 import { BiLoader, BiCommentDetail, BiPhoneCall, BiAddToQueue } from 'react-icons/bi'
-import { useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import nookies from 'nookies';
 import axios from 'axios';
 import { useState } from 'react'
@@ -17,8 +17,11 @@ import notYetImageProject from '../public/img/not-yet.png'
 import { Fragment } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import ModalCreateProject from '../pages/projects/components/ModalCreateProject'
+import { UserContext } from './context/userContext'
 
 export default function Project(props) {
+    const userContext = useContext(UserContext)
+
     const [page, setPage] = useState(1)
     const [projects, setProjects] = useState([])
     const [search, setSearch] = useState({
@@ -93,7 +96,7 @@ export default function Project(props) {
 
     if (projects.data === undefined) {
         return <div className="flex justify-center items-center h-screen">
-            <BiLoader className="text-6xl" />
+            <BiLoader className="text-6xl text-gray-400" />
         </div>
     }
     // console.log(startDate)
@@ -247,9 +250,17 @@ export default function Project(props) {
                                         <Menu.Item>
                                             <Link href={"/projects/" + project.slug}><a className="hover:bg-gray-200 hover:rounded-lg p-2 flex items-center"><BsInfoLg className="mr-2" />View Detail</a></Link>
                                         </Menu.Item>
-                                        <Menu.Item>
-                                            <button onClick={() => handleClickOpen([project.client, project.id])} className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</button>
-                                        </Menu.Item>
+                                        {
+                                            project.users.map(user => {
+                                                if (user.id == userContext.user.id || userContext.user.role == 2 || userContext.user.role == 3) {
+                                                    return (
+                                                        <Menu.Item key={user.id}>
+                                                            <button onClick={() => handleClickOpen([project.client, project.id])} className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</button>
+                                                        </Menu.Item>
+                                                    )
+                                                }
+                                            })
+                                        }
                                     </div>
                                 </Menu.Items>
                             </Menu>

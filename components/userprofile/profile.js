@@ -15,7 +15,7 @@ export default function Profile(props) {
     const userContext = useContext(UserContext)
     if (userContext.user.username === undefined) {
         return <div className="flex justify-center items-center h-screen">
-            <BiLoader className="text-6xl" />
+            <BiLoader className="text-6xl text-gray-400" />
         </div>
     }
     const userProjects = props.data.projects
@@ -41,7 +41,7 @@ export default function Profile(props) {
                         </div>
                         <div className="flex flex-col justify-center items-center">
                             <a className="bg-yellow-200 px-3 py-2 w-1/4 text-center lg:w-auto rounded-lg text-yellow-600 text-xs tracking-wider font-semibold uppercase">
-                                {props.data.user.role == 2 && "Admin" || props.data.user.role == 1 && "Employee"}
+                                {props.data.user.role == 3 && "Admin" || props.data.user.role == 2 && "Manager" || props.data.user.role == 1 && "Employee"}
                             </a>
                         </div>
                         <div className="grid grid-cols-2 gap-5">
@@ -77,7 +77,11 @@ export default function Profile(props) {
                 </div>
 
                 <div className="col-span-2">
-                    <h1 className="mb-5 text-2xl font-extralight">Projects User</h1>
+                    <h1 className="mb-5 text-2xl font-extralight">
+                        {
+                            userContext.user.username === props.data.user.username ?
+                                "My Projects" : "User Projects"
+                        }</h1>
                     <div className="grid md:grid-cols-12 gap-5">
 
                         {props.data.projects.map((project, id) => (
@@ -103,7 +107,15 @@ export default function Profile(props) {
                                         <Popover.Panel className="absolute z-10 bg-white rounded-lg drop-shadow-xl">
                                             <div className="grid grid-cols-1 rounded-xl p-2">
                                                 <Link href={"/projects/" + project.slug}><a className="hover:bg-gray-200 hover:rounded-lg p-2 flex items-center"><BsInfoLg className="mr-2" />View Detail</a></Link>
-                                                <Link href="/"><a className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</a></Link>
+                                                {
+                                                    project.users.map(user => {
+                                                        if (user.id == userContext.user.id || userContext.user.role == 2 || userContext.user.role == 3) {
+                                                            return (
+                                                                <Link key={user.id} href="/"><a className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</a></Link>
+                                                            )
+                                                        }
+                                                    })
+                                                }
                                             </div>
                                         </Popover.Panel>
                                     </Popover>
@@ -128,7 +140,8 @@ export default function Profile(props) {
                                             return (
                                                 <img key={user.id} className="relative z-10 inline object-cover w-8 h-8 border-2 border-white rounded-full" src="/img/ade.png" alt="Profile image" />
                                             )
-                                        })}
+                                        })
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -139,6 +152,6 @@ export default function Profile(props) {
 
             </div>
 
-        </div>
+        </div >
     )
 }

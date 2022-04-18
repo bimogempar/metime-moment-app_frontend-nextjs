@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 export default function ProjectDetails({ data }) {
     const [project, setProject] = useState(data.project);
     const [features, setFeatures] = useState(data.project.features);
+    // const [permissions, setPermissions] = useState(false);
 
     const router = useRouter();
 
@@ -61,6 +62,7 @@ export default function ProjectDetails({ data }) {
                             name={feature.feature}
                             value={feature.feature}
                             defaultChecked={feature.status === 1}
+                            // onChange={() => handleClickCB(feature)}
                             onChange={() => handleClickCB(feature)}
                         />
                         {feature.feature}
