@@ -20,6 +20,9 @@ export default function Profile(props) {
     }
     const userProjects = props.data.projects
     const userProjectsLength = userProjects.length
+
+
+
     return (
         <div className="mb-5">
             <div className="md:gap-5 grid grid-cols-1 md:grid-cols-3 mb-5">
@@ -108,13 +111,16 @@ export default function Profile(props) {
                                             <div className="grid grid-cols-1 rounded-xl p-2">
                                                 <Link href={"/projects/" + project.slug}><a className="hover:bg-gray-200 hover:rounded-lg p-2 flex items-center"><BsInfoLg className="mr-2" />View Detail</a></Link>
                                                 {
-                                                    project.users.map(user => {
-                                                        if (user.id == userContext.user.id || userContext.user.role == 2 || userContext.user.role == 3) {
-                                                            return (
-                                                                <Link key={user.id} href="/"><a className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</a></Link>
-                                                            )
-                                                        }
-                                                    })
+                                                    userContext.user.role == 2 || userContext.user.role == 3 ?
+                                                        <button key={project.id} onClick={() => handleClickOpen([project.client, project.id])} className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</button>
+                                                        :
+                                                        project.users.map(user => {
+                                                            if (user.id == userContext.user.id) {
+                                                                return (
+                                                                    <button key={user.id} onClick={() => handleClickOpen([project.client, project.id])} className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</button>
+                                                                )
+                                                            }
+                                                        })
                                                 }
                                             </div>
                                         </Popover.Panel>

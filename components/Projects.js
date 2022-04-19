@@ -251,15 +251,19 @@ export default function Project(props) {
                                             <Link href={"/projects/" + project.slug}><a className="hover:bg-gray-200 hover:rounded-lg p-2 flex items-center"><BsInfoLg className="mr-2" />View Detail</a></Link>
                                         </Menu.Item>
                                         {
-                                            project.users.map(user => {
-                                                if (user.id == userContext.user.id || userContext.user.role == 2 || userContext.user.role == 3) {
-                                                    return (
-                                                        <Menu.Item key={user.id}>
-                                                            <button onClick={() => handleClickOpen([project.client, project.id])} className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</button>
-                                                        </Menu.Item>
-                                                    )
-                                                }
-                                            })
+                                            userContext.user.role == 2 || userContext.user.role == 3 ?
+                                                <Menu.Item key={project.id}>
+                                                    <button onClick={() => handleClickOpen([project.client, project.id])} className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</button>
+                                                </Menu.Item>
+                                                : project.users.map(user => {
+                                                    if (user.id == userContext.user.id) {
+                                                        return (
+                                                            <Menu.Item key={user.id}>
+                                                                <button onClick={() => handleClickOpen([project.client, project.id])} className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</button>
+                                                            </Menu.Item>
+                                                        )
+                                                    }
+                                                })
                                         }
                                     </div>
                                 </Menu.Items>
