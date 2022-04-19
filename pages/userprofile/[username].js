@@ -3,7 +3,7 @@ import Layout from '../../components/Layout'
 import nookies from "nookies"
 import { useContext } from "react";
 import { UserContext } from "../../components/context/userContext";
-import Profile from '../../components/userprofile/profile';
+import Profile from '../../components/userprofile/Profile';
 
 const Username = ({ data }) => {
     return (

@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { UserContext } from '../context/userContext'
 import { BiLike, BiLoader, BiPhoneCall, BiPhotoAlbum } from 'react-icons/bi'
 import { AiFillSchedule } from 'react-icons/ai'
@@ -10,9 +10,15 @@ import Link from 'next/link'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 import UserPlaceHolder from '../../public/img/userplaceholder.png'
 import Image from 'next/image'
+import ModalDeleteProject from '../../pages/projects/components/ModalDeleteProject'
 
 export default function Profile(props) {
     const userContext = useContext(UserContext)
+    const [isOpenDelete, setIsOpenDelete] = useState(false)
+    const [dataModalDelete, setDataModalDelete] = useState({
+        'name': 'Bimo',
+    })
+
     if (userContext.user.username === undefined) {
         return <div className="flex justify-center items-center h-screen">
             <BiLoader className="text-6xl text-gray-400" />
@@ -21,10 +27,13 @@ export default function Profile(props) {
     const userProjects = props.data.projects
     const userProjectsLength = userProjects.length
 
-
+    const handleClickOpen = (data) => {
+        setIsOpenDelete(true)
+    }
 
     return (
         <div className="mb-5">
+            <ModalDeleteProject isOpenDelete={isOpenDelete} setIsOpenDelete={setIsOpenDelete} dataModalDelete={dataModalDelete} />
             <div className="md:gap-5 grid grid-cols-1 md:grid-cols-3 mb-5">
                 <div className="col-span-1">
                     {
