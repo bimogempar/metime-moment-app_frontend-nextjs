@@ -4,11 +4,13 @@ import Layout from '../../components/Layout';
 import axios from 'axios';
 import { BsChevronLeft } from 'react-icons/bs';
 import { useRouter } from 'next/router';
+import { useFormik } from 'formik';
 
 export default function ProjectDetails({ data }) {
     const [project, setProject] = useState(data.project);
     const [features, setFeatures] = useState(data.project.features);
     // const [permissions, setPermissions] = useState(false);
+    const [inputClient, setInputClient] = useState(false);
 
     const router = useRouter();
 
@@ -42,6 +44,27 @@ export default function ProjectDetails({ data }) {
         setFeatures(newFeatures);
     }
 
+    const formik = useFormik({
+        initialValues: {
+            client: project.client,
+        },
+        onSubmit: values => {
+            // console.log(values)
+            axios.patch(`${process.env.NEXT_PUBLIC_URL}/api/projects/update/${project.slug}`, values, {
+                headers: {
+                    Authorization: 'Bearer ' + token,
+                },
+            })
+                .then(res => {
+                    // console.log(res)
+                    setInputClient(false);
+                    // setProject({ ...project, client: values.client })
+                    res.data.project.client = values.client;
+                    setProject(res.data.project);
+                    setProject({ ...project, client: values.client })
+                })
+        }
+    })
     return (
         <Layout title={'Project Details | ' + project.client}>
             <div className="mb-4">
@@ -51,7 +74,19 @@ export default function ProjectDetails({ data }) {
                     </div>
                 </button>
             </div>
-            <h1>{project.client}</h1>
+
+            <button onClick={() => { inputClient ? setInputClient(false) : setInputClient(true) }}>Edit</button>
+
+
+            {
+                inputClient ?
+                    <div>
+                        <input type="text" name="client" id="client" value={formik.values.client} onChange={formik.handleChange} />
+                        <button type="button" onClick={formik.handleSubmit}>Simpan</button>
+                    </div>
+                    :
+                    <h1>{project.client}</h1>
+            }
 
             {project.features.map((feature) => {
                 return (
