@@ -44,9 +44,11 @@ export default function ProjectDetails({ data }) {
         setFeatures(newFeatures);
     }
 
-    const formik = useFormik({
+    const formikProjects = useFormik({
         initialValues: {
             client: project.client,
+            status: project.status,
+            date: project.date,
         },
         onSubmit: values => {
             // console.log(values)
@@ -58,13 +60,37 @@ export default function ProjectDetails({ data }) {
                 .then(res => {
                     // console.log(res)
                     setInputClient(false);
-                    // setProject({ ...project, client: values.client })
-                    res.data.project.client = values.client;
                     setProject(res.data.project);
-                    setProject({ ...project, client: values.client })
+                    // setProject({ ...project, ...values });
                 })
         }
     })
+
+    const formikFeatures = useFormik({
+        initialValues: {
+            feature: '',
+            project_id: project.id
+        },
+        onSubmit: values => {
+            // console.log(values)
+            if (values.feature.length > 0) {
+                axios.post(`${process.env.NEXT_PUBLIC_URL}/api/projects/${project.id}/features/store`, values, {
+                    headers: {
+                        Authorization: 'Bearer ' + token,
+                    },
+                })
+                    .then(res => {
+                        // setFeatures(...features, res.data.feature);
+                        setProject({ ...project, features: [...project.features, res.data.feature] });
+                        formikFeatures.resetForm();
+                    })
+            }
+            else {
+                return false
+            }
+        }
+    })
+
     return (
         <Layout title={'Project Details | ' + project.client}>
             <div className="mb-4">
@@ -75,37 +101,55 @@ export default function ProjectDetails({ data }) {
                 </button>
             </div>
 
+            {/* edit status */}
+            <select name="status" id="status" onChange={formikProjects.handleChange} onChangeCapture={formikProjects.handleSubmit} defaultValue={project.status}>
+                <option value="1">On Scheduled</option>
+                <option value="2">On Progress</option>
+                <option value="3">Done</option>
+            </select>
+
+            {/* edit date */}
+            <label htmlFor="date"></label>
+            <input type="date" id="date" name="date" onChange={formikProjects.handleChange} onBlur={formikProjects.handleSubmit} />
+
+            {/* edit client */}
             <button onClick={() => { inputClient ? setInputClient(false) : setInputClient(true) }}>Edit</button>
-
-
             {
                 inputClient ?
                     <div>
-                        <input type="text" name="client" id="client" value={formik.values.client} onChange={formik.handleChange} />
-                        <button type="button" onClick={formik.handleSubmit}>Simpan</button>
+                        <input type="text" name="client" id="client" value={formikProjects.values.client} onChange={formikProjects.handleChange} />
+                        <button type="button" onClick={formikProjects.handleSubmit}>Simpan</button>
                     </div>
                     :
                     <h1>{project.client}</h1>
             }
 
-            {project.features.map((feature) => {
-                return (
-                    <div key={feature.id}>
-                        <input
-                            type="checkbox"
-                            id={feature.id}
-                            name={feature.feature}
-                            value={feature.feature}
-                            defaultChecked={feature.status === 1}
-                            // onChange={() => handleClickCB(feature)}
-                            onChange={() => handleClickCB(feature)}
-                        />
-                        {feature.feature}
-                    </div>
-                )
-            })}
+            {
+                project.features.map((feature) => {
+                    return (
+                        <div key={feature.id}>
+                            <input
+                                type="checkbox"
+                                id={feature.id}
+                                name={feature.feature}
+                                value={feature.feature}
+                                defaultChecked={feature.status === 1}
+                                // onChange={() => handleClickCB(feature)}
+                                onChange={() => handleClickCB(feature)}
+                            />
+                            {feature.feature}
+                        </div>
+                    )
+                })
+            }
 
-        </Layout>
+            {/* add new features */}
+            <form onSubmit={formikFeatures.handleSubmit}>
+                <label htmlFor="features"></label>
+                <input type="text" id="features" name="feature" placeholder="New feature..." value={formikFeatures.values.feature} onChange={formikFeatures.handleChange} />
+                <button type="submit">Simpan</button>
+            </form>
+        </Layout >
     )
 }
 
