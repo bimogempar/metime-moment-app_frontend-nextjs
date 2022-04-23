@@ -17,6 +17,21 @@ export default function ProjectDetails({ data }) {
     const cookies = nookies.get()
     const token = cookies.token
 
+    const deleteFeature = (feature) => {
+        console.log(feature);
+        axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/features/${feature}/delete`, {
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+        })
+            .then(res => {
+                const arrayDelete = features.filter(item => item.id !== feature);
+                setFeatures(arrayDelete)
+            })
+            .catch(err => {
+            })
+    }
+
     const handleClickCB = (feature) => {
         // console.log(feature)
         const newFeatures = features.map((f) => {
@@ -51,14 +66,12 @@ export default function ProjectDetails({ data }) {
             date: project.date,
         },
         onSubmit: values => {
-            // console.log(values)
             axios.patch(`${process.env.NEXT_PUBLIC_URL}/api/projects/update/${project.slug}`, values, {
                 headers: {
                     Authorization: 'Bearer ' + token,
                 },
             })
                 .then(res => {
-                    // console.log(res)
                     setInputClient(false);
                     setProject(res.data.project);
                     // setProject({ ...project, ...values });
@@ -82,6 +95,7 @@ export default function ProjectDetails({ data }) {
                     .then(res => {
                         // setFeatures(...features, res.data.feature);
                         setProject({ ...project, features: [...project.features, res.data.feature] });
+                        setFeatures([...features, res.data.feature]);
                         formikFeatures.resetForm();
                     })
             }
@@ -125,7 +139,7 @@ export default function ProjectDetails({ data }) {
             }
 
             {
-                project.features.map((feature) => {
+                features.map((feature) => {
                     return (
                         <div key={feature.id}>
                             <input
@@ -138,6 +152,7 @@ export default function ProjectDetails({ data }) {
                                 onChange={() => handleClickCB(feature)}
                             />
                             {feature.feature}
+                            <button className="mx-5 text-red-500" onClick={() => deleteFeature(feature.id)}>Delete</button>
                         </div>
                     )
                 })
