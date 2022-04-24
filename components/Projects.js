@@ -18,6 +18,7 @@ import { Fragment } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import ModalCreateProject from '../pages/projects/components/ModalCreateProject'
 import { UserContext } from './context/userContext'
+import ModalDeleteProject from '../pages/projects/components/ModalDeleteProject'
 
 export default function Project(props) {
     const userContext = useContext(UserContext)
@@ -32,10 +33,9 @@ export default function Project(props) {
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
 
-    const [isOpen, setIsOpen] = useState(false)
-    const [dataModal, setDataModal] = useState([{}])
-
     const [isOpenCreate, setIsOpenCreate] = useState(false)
+    const [isOpenDelete, setIsOpenDelete] = useState(false)
+    const [dataModalDelete, setDataModalDelete] = useState([{}])
 
     const cookies = nookies.get()
     const token = cookies.token
@@ -103,6 +103,8 @@ export default function Project(props) {
     // console.log(endDate)
 
     const deleteProject = (id) => {
+        // console.log(id)
+        // return id;
         const deletePromise = axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/projects/${id}/delete`, {
             headers: {
                 Authorization: 'Bearer ' + token,
@@ -117,13 +119,13 @@ export default function Project(props) {
                     const fetchProjects = response.data
                     setProjects(fetchProjects)
                     setProjectsData(fetchProjects.data)
-                    setIsOpen(false)
+                    setIsOpenDelete(false)
                 })
                 .catch(function (error) {
                     // console.log(error);
                 })
         }).catch(function (error) {
-            console.log(error);
+            // console.log(error);
         })
         toast.promise(deletePromise, {
             loading: 'Loading..',
@@ -133,9 +135,9 @@ export default function Project(props) {
     }
 
 
-    const handleClickOpen = (data) => {
-        setDataModal(data)
-        setIsOpen(true)
+    const handleClickDeleteProject = (data) => {
+        setDataModalDelete(data)
+        setIsOpenDelete(true)
     }
 
     const handleClickCreateProject = () => {
@@ -185,43 +187,7 @@ export default function Project(props) {
             <ModalCreateProject isOpenCreate={isOpenCreate} setIsOpenCreate={setIsOpenCreate} />
 
             {/* Modal Delete Project */}
-            <Transition as={Fragment} show={isOpen}>
-                <Dialog as="div" className="fixed inset-0 flex items-center justify-center" onClose={() => setIsOpen(false)}>
-                    <Transition.Child
-                        as={Fragment}
-                        enter="ease-out duration-300"
-                        enterFrom="opacity-0"
-                        enterTo="opacity-100"
-                        leave="ease-in duration-200"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                    >
-                        <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-                    </Transition.Child>
-
-                    <Transition.Child
-                        as={Fragment}
-                        enter="transition duration-100 ease-out"
-                        enterFrom="transform scale-95 opacity-0"
-                        enterTo="transform scale-100 opacity-100"
-                        leave="transition duration-75 ease-out"
-                        leaveFrom="transform scale-100 opacity-100"
-                        leaveTo="transform scale-95 opacity-0"
-                    >
-                        <div className="bg-white p-5 z-10 rounded-xl shadow-xl">
-                            <Dialog.Title className="text-lg text-gray-500">Hapus Project ?</Dialog.Title>
-                            <Dialog.Description className="mt-2">
-                                Yakin hapus {dataModal[0]}
-                            </Dialog.Description>
-
-                            <div className="flex gap-x-3 justify-end items-center mt-6">
-                                <button className="py-2 px-3 bg-red-50 text-red-500 rounded-lg" onClick={() => setIsOpen(false)}>Cancel</button>
-                                <button className="py-2 px-3 bg-blue-50 text-blue-500 rounded-lg" onClick={() => deleteProject(dataModal[1])}>Yes!</button>
-                            </div>
-                        </div>
-                    </Transition.Child>
-                </Dialog>
-            </Transition>
+            <ModalDeleteProject isOpenDelete={isOpenDelete} setIsOpenDelete={setIsOpenDelete} dataModalDelete={dataModalDelete} deleteProject={deleteProject} />
 
             <div className="grid grid-cols-12 gap-5">
                 {projectsData.map((project) => (
@@ -253,13 +219,13 @@ export default function Project(props) {
                                         {
                                             userContext.user.role == 2 || userContext.user.role == 3 ?
                                                 <Menu.Item key={project.id}>
-                                                    <button onClick={() => handleClickOpen([project.client, project.id])} className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</button>
+                                                    <button onClick={() => handleClickDeleteProject([project.client, project.id])} className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</button>
                                                 </Menu.Item>
                                                 : project.users.map(user => {
                                                     if (user.id == userContext.user.id) {
                                                         return (
                                                             <Menu.Item key={user.id}>
-                                                                <button onClick={() => handleClickOpen([project.client, project.id])} className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</button>
+                                                                <button onClick={() => handleClickDeleteProject([project.client, project.id])} className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</button>
                                                             </Menu.Item>
                                                         )
                                                     }

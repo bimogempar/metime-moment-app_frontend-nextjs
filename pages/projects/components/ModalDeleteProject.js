@@ -1,9 +1,9 @@
 import { Dialog, Transition } from '@headlessui/react'
 import React, { Fragment, useRef } from 'react'
 
-export default function ModalDeleteProject({ isOpenDelete, setIsOpenDelete, dataModalDelete }) {
+export default function ModalDeleteProject({ isOpenDelete, setIsOpenDelete, dataModalDelete, deleteProject }) {
     let closeModalRef = useRef(null)
-
+    // console.log(dataModalDelete)
     return (
         <Transition as={Fragment} show={isOpenDelete}>
             <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={() => setIsOpenDelete(false)} >
@@ -31,12 +31,12 @@ export default function ModalDeleteProject({ isOpenDelete, setIsOpenDelete, data
                         <div className="relative bg-white rounded max-w-3xl md:mx-auto p-5 md:my-5 m-5">
                             <Dialog.Title>Are you sure to delete?</Dialog.Title>
                             <Dialog.Description className="mt-2">
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aspernatur, corporis cumque! Harum voluptatem magni porro?
-                                <div className="flex gap-x-3 justify-end items-center mt-6">
-                                    <button ref={closeModalRef} className="py-2 px-3 bg-red-50 text-red-500 rounded-lg" onClick={() => setIsOpenDelete(false)}>Cancel</button>
-                                    <button className="py-2 px-3 bg-blue-50 text-blue-500 rounded-lg" >Yes!</button>
-                                </div>
+                                Client : {dataModalDelete[0]}
                             </Dialog.Description>
+                            <div className="flex gap-x-3 justify-end items-center mt-6">
+                                <button ref={closeModalRef} className="py-2 px-3 bg-red-50 text-red-500 rounded-lg" onClick={() => setIsOpenDelete(false)}>Cancel</button>
+                                <button className="py-2 px-3 bg-blue-50 text-blue-500 rounded-lg" onClick={() => deleteProject(dataModalDelete[1])} >Yes!</button>
+                            </div>
                         </div>
                     </div>
                 </Transition.Child>
