@@ -138,7 +138,7 @@ export default function DetailsProject({ data }) {
             </div>
 
             <div className="grid grid-cols-3 gap-5 mb-5">
-                <div className="col-span-3 md:col-span-2 bg-white rounded-xl">
+                <div className="col-span-3 xl:col-span-2 bg-white rounded-xl">
                     <div className="p-5">
                         <div className="flex items-center justify-between">
                             {/* Client Name */}
@@ -301,7 +301,7 @@ export default function DetailsProject({ data }) {
                 </div>
 
                 {/* Sidebar */}
-                <div className="col-span-2 md:col-span-1 sm:col-span-2 rounded-xl">
+                <div className="col-span-3 xl:col-span-1 lg:col-span-2 md:col-span-2 rounded-xl">
                     <div className="p-5 bg-white rounded-xl">
                         <div className="grid grid-cols-1">
                             <h2 className="text-sm font-light text-gray-500 uppercase">Assignees</h2>
@@ -313,8 +313,8 @@ export default function DetailsProject({ data }) {
                                             <div className='flex items-center justify-center gap-4'>
                                                 <img className="w-9 h-9 rounded-full" src="../../../img/ade.png" alt="Profile image" />
                                                 <div>
-                                                    <p className="text-gray-600 text-sm">{user.name}</p>
-                                                    <p className="text-gray-400 text-sm">{user.email}</p>
+                                                    <p className="text-gray-600 text-xs">{user.name}</p>
+                                                    <p className="text-gray-400 text-xs">{user.email}</p>
                                                 </div>
                                             </div>
                                             <div className='text-gray-500'>
