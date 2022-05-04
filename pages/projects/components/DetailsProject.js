@@ -2,8 +2,9 @@
 import React, { useState, useEffect, useContext } from 'react'
 import nookies from 'nookies';
 import axios from 'axios';
-import { BsChevronLeft, BsFillTelephoneOutboundFill, BsTrash, BsCalendarDate } from 'react-icons/bs';
+import { BsChevronLeft, BsFillTelephoneOutboundFill, BsTrash, BsCalendarDate, BsPlusCircle } from 'react-icons/bs';
 import { FaRegEdit } from "react-icons/fa";
+import { AiOutlineClose } from "react-icons/ai";
 import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import Layout from '../../../components/Layout';
@@ -83,6 +84,7 @@ export default function DetailsProject({ data }) {
             date: project.date,
             phone_number: project.phone_number,
             location: project.location,
+            assignment_user: users.map(u => u.id),
         },
         onSubmit: values => {
             console.log(values);
@@ -195,7 +197,7 @@ export default function DetailsProject({ data }) {
                             }
                         </div>
                         <div>
-                            <h2 className="text-sm font-light text-gray-500 uppercase">Team</h2>
+                            <h2 className="text-sm font-light text-gray-500 uppercase">Assignees</h2>
                             {
                                 users.map(user => {
                                     return (
@@ -269,6 +271,7 @@ export default function DetailsProject({ data }) {
                         }
                     </div>
 
+                    {/* Comment */}
                     <div className="p-5">
                         <h1 className="text-gray-600 text-2xl font-extralight">
                             Comment
@@ -295,13 +298,38 @@ export default function DetailsProject({ data }) {
                             </div>
                         </div>
                     </div>
-
                 </div>
+
+                {/* Sidebar */}
                 <div className="col-span-2 md:col-span-1 sm:col-span-2 rounded-xl">
                     <div className="p-5 bg-white rounded-xl">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cumque, atque?
+                        <div className="grid grid-cols-1">
+                            <h2 className="text-sm font-light text-gray-500 uppercase">Assignees</h2>
+                            <button className="flex items-center justify-center gap-2 text-sm p-2 bg-gray-200 text-gray-600 rounded-lg mt-2 mb-2"><BsPlusCircle />Add Assignees</button>
+                            {
+                                users.map((user) => {
+                                    return (
+                                        <div key={user.id} className="flex items-center justify-between p-3 gap-4">
+                                            <div className='flex items-center justify-center gap-4'>
+                                                <img className="w-9 h-9 rounded-full" src="../../../img/ade.png" alt="Profile image" />
+                                                <div>
+                                                    <p className="text-gray-600 text-sm">{user.name}</p>
+                                                    <p className="text-gray-400 text-sm">{user.email}</p>
+                                                </div>
+                                            </div>
+                                            <div className='text-gray-500'>
+                                                <button>
+                                                    <AiOutlineClose />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
                     </div>
                 </div>
+
             </div>
         </>
     )
