@@ -12,13 +12,19 @@ import { UserContext } from '../../../components/context/userContext';
 import { TiLocationOutline } from 'react-icons/ti';
 import { BiAddToQueue } from 'react-icons/bi';
 import { FiSend } from 'react-icons/fi';
+import ReactSelect from 'react-select'
 
 export default function DetailsProject({ data }) {
     const [project, setProject] = useState(data.project);
     const [features, setFeatures] = useState(data.project.features);
     const [users, setUsers] = useState(data.project.users);
     const [inputClient, setInputClient] = useState(false);
+    const [addUserProject, setAddUserProject] = useState(false);
     const [permissions, setPermissions] = useState(false);
+
+    const [allUsers, setAllUsers] = useState([]);
+
+    console.log(users)
 
     const userContext = useContext(UserContext)
 
@@ -126,6 +132,37 @@ export default function DetailsProject({ data }) {
             }
         }
     })
+
+    const deleteEachUser = (user) => {
+        // console.log("user id " + user);
+        // console.log("project id " + project.id);
+        axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/projects/${project.id}/user/${user}`, {
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+        })
+            .then(res => {
+                const arrayDelete = users.filter(item => item.id !== user);
+                setUsers(arrayDelete)
+            })
+            .catch(err => {
+            })
+    }
+
+    const fetchAllUser = () => {
+        // console.log('clicked')
+        axios.get(`${process.env.NEXT_PUBLIC_URL}/api/users`, {
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+        })
+            .then(res => {
+                setAllUsers(res.data.users)
+                setAddUserProject(true)
+            })
+            .catch(err => {
+            })
+    }
 
     return (
         <>
@@ -305,7 +342,26 @@ export default function DetailsProject({ data }) {
                     <div className="p-5 bg-white rounded-xl">
                         <div className="grid grid-cols-1">
                             <h2 className="text-sm font-light text-gray-500 uppercase">Assignees</h2>
-                            <button className="flex items-center justify-center gap-2 text-sm p-2 bg-gray-200 text-gray-600 rounded-lg mt-2 mb-2"><BsPlusCircle />Add Assignees</button>
+                            {
+                                addUserProject ?
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-full">
+                                            <ReactSelect
+                                                className='my-2'
+                                                defaultValue={users.map(user => {
+                                                    return { value: user.id, label: user.name }
+                                                })}
+                                                options={allUsers.map(user => {
+                                                    return { value: user.id, label: user.name }
+                                                })}
+                                                isMulti
+                                            />
+                                        </div>
+                                        <button type="button" className="p-2 rounded-lg flex items-center gap-2 text-sm bg-blue-500 text-white" onClick={() => { setAddUserProject(false) }}><FiSend /></button>
+                                    </div>
+                                    :
+                                    <button className="flex items-center justify-center gap-2 text-sm p-2 bg-gray-200 text-gray-600 rounded-lg mt-2 mb-2" onClick={() => { fetchAllUser() }}><BsPlusCircle />Add Assignees</button>
+                            }
                             {
                                 users.map((user) => {
                                     return (
@@ -318,9 +374,8 @@ export default function DetailsProject({ data }) {
                                                 </div>
                                             </div>
                                             <div className='text-gray-500'>
-                                                <button>
-                                                    <AiOutlineClose />
-                                                </button>
+                                                {/* Delete each user */}
+                                                <button type="button" className="p-2 rounded-lg flex items-center gap-2 text-sm" onClick={() => deleteEachUser(user.id)}><AiOutlineClose /></button>
                                             </div>
                                         </div>
                                     )
