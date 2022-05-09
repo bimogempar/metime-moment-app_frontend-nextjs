@@ -24,8 +24,6 @@ export default function DetailsProject({ data }) {
 
     const [allUsers, setAllUsers] = useState([]);
 
-    console.log(users)
-
     const userContext = useContext(UserContext)
 
     useEffect(() => {
@@ -90,18 +88,25 @@ export default function DetailsProject({ data }) {
             date: project.date,
             phone_number: project.phone_number,
             location: project.location,
-            assignment_user: users.map(u => u.id),
+            assignment_user: users.map(u => {
+                return { value: u.id, label: u.name }
+            }),
         },
         onSubmit: values => {
-            console.log(values);
-            axios.patch(`${process.env.NEXT_PUBLIC_URL}/api/projects/update/${project.slug}`, values, {
+            // console.log(values);
+            const assignment_user = values.assignment_user.map(u => u.value)
+            // console.log({ ...values, assignment_user });
+            axios.patch(`${process.env.NEXT_PUBLIC_URL}/api/projects/update/${project.slug}`, { ...values, assignment_user }, {
                 headers: {
                     Authorization: 'Bearer ' + token,
                 },
             })
                 .then(res => {
+                    // console.log(res)
                     setInputClient(false);
+                    setAddUserProject(false);
                     setProject(res.data.project);
+                    setUsers(res.data.project.users);
                     // setProject({ ...project, ...values });
                 })
         }
@@ -344,21 +349,25 @@ export default function DetailsProject({ data }) {
                             <h2 className="text-sm font-light text-gray-500 uppercase">Assignees</h2>
                             {
                                 addUserProject ?
-                                    <div className="flex items-center gap-2">
+                                    // <div className="flex items-center gap-2">
+                                    <form onSubmit={formikProjects.handleSubmit} className="flex items-center gap-2">
                                         <div className="w-full">
                                             <ReactSelect
                                                 className='my-2'
-                                                defaultValue={users.map(user => {
-                                                    return { value: user.id, label: user.name }
-                                                })}
+                                                // defaultValue={users.map(user => {
+                                                //     return { value: user.id, label: user.name }
+                                                // })}
                                                 options={allUsers.map(user => {
                                                     return { value: user.id, label: user.name }
                                                 })}
+                                                value={formikProjects.values.assignment_user}
+                                                onChange={value => formikProjects.setFieldValue('assignment_user', value)}
                                                 isMulti
                                             />
                                         </div>
-                                        <button type="button" className="p-2 rounded-lg flex items-center gap-2 text-sm bg-blue-500 text-white" onClick={() => { setAddUserProject(false) }}><FiSend /></button>
-                                    </div>
+                                        <button type="submit" className="p-2 rounded-lg flex items-center gap-2 text-sm bg-blue-500 text-white" ><FiSend /></button>
+                                    </form>
+                                    // </div>
                                     :
                                     <button className="flex items-center justify-center gap-2 text-sm p-2 bg-gray-200 text-gray-600 rounded-lg mt-2 mb-2" onClick={() => { fetchAllUser() }}><BsPlusCircle />Add Assignees</button>
                             }
