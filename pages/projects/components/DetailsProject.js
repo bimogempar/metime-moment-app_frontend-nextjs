@@ -23,8 +23,18 @@ export default function DetailsProject({ data }) {
     const [permissions, setPermissions] = useState(false);
 
     const [allUsers, setAllUsers] = useState([]);
-
     const userContext = useContext(UserContext)
+
+    // Format Date
+    const formatDate = (params) => {
+        const formattedDate = new Date(params)
+            .toLocaleDateString({},
+                { timeZone: "UTC", month: "long", day: "2-digit", year: "numeric" }
+            )
+        // console.log(formattedDate)
+        const sp = formattedDate.split(' ')
+        return `${sp[1]} ${sp[0]} ${sp[2]}`
+    }
 
     useEffect(() => {
         if (userContext.user.role === 3 || userContext.user.role === 2) {
@@ -233,9 +243,9 @@ export default function DetailsProject({ data }) {
                             <h2 className="text-sm font-light text-gray-500 uppercase">Date</h2>
                             {
                                 inputClient ?
-                                    <input className="text-sm p-2 bg-gray-200 text-gray-600 rounded-lg mt-2" type="date" id="date" name="date" defaultValue={project.date} onChange={formikProjects.handleChange} onBlur={formikProjects.handleSubmit} />
+                                    <input className="text-sm p-2 bg-gray-200 text-gray-600 rounded-lg mt-2" type="date" id="date" name="date" defaultValue={project.date} onChange={formikProjects.handleChange} />
                                     :
-                                    <p className="flex items-center gap-2 text-sm p-2 bg-gray-200 text-gray-600 rounded-lg mt-2">{project.date} <BsCalendarDate /></p>
+                                    <p className="flex items-center gap-2 text-sm p-2 bg-gray-200 text-gray-600 rounded-lg mt-2">{formatDate(project.date)} <BsCalendarDate /></p>
                             }
                         </div>
                         <div>
