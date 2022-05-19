@@ -17,6 +17,7 @@ import ReactSelect from 'react-select'
 export default function DetailsProject({ data }) {
     const [project, setProject] = useState(data.project);
     const [features, setFeatures] = useState(data.project.features);
+    const [progress, setProgress] = useState(data.project.progress);
     const [users, setUsers] = useState(data.project.users);
     const [inputClient, setInputClient] = useState(false);
     const [addUserProject, setAddUserProject] = useState(false);
@@ -339,16 +340,22 @@ export default function DetailsProject({ data }) {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex w-3/4 gap-3 items-start mt-4">
-                            <img className="relative z-1 inline object-cover w-8 h-8 border-2 border-white rounded-full" src="../../../img/ade.png" alt="Profile image" />
-                            <div className="g">
-                                <div className="flex justify-between items-center">
-                                    <h4 className="text-gray-700">Ade Novan Guliaano</h4>
-                                    <h4 className="text-sm text-gray-500">4 min ago</h4>
-                                </div>
-                                <p className="text-gray-500 text-sm mt-4">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vitae temporibus ex perspiciatis? Nemo blanditiis quasi commodi obcaecati facere, quia unde.</p>
-                            </div>
-                        </div>
+                        {
+                            progress.map((p) => {
+                                return (
+                                    <div className="flex w-3/4 gap-3 items-start mt-4 bg-gray-200 p-2 rounded-xl" key={p.id}>
+                                        <img className="relative z-1 inline object-cover w-8 h-8 border-2 rounded-full" src="../../../img/ade.png" alt="Profile image" />
+                                        <div className=''>
+                                            <div className="flex justify-between items-center ">
+                                                <h4 className="text-gray-700">{p.name}</h4>
+                                                <h4 className="text-sm text-gray-500">{p.created_at}</h4>
+                                            </div>
+                                            <p className="text-gray-500 text-sm mt-2">{p.description}</p>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                 </div>
 
