@@ -13,6 +13,7 @@ import { TiLocationOutline } from 'react-icons/ti';
 import { BiAddToQueue } from 'react-icons/bi';
 import { FiSend } from 'react-icons/fi';
 import ReactSelect from 'react-select'
+import moment from 'moment';
 
 export default function DetailsProject({ data }) {
     const [project, setProject] = useState(data.project);
@@ -25,17 +26,6 @@ export default function DetailsProject({ data }) {
 
     const [allUsers, setAllUsers] = useState([]);
     const userContext = useContext(UserContext)
-
-    // Format Date
-    const formatDate = (params) => {
-        const formattedDate = new Date(params)
-            .toLocaleDateString({},
-                { timeZone: "UTC", month: "long", day: "2-digit", year: "numeric" }
-            )
-        // console.log(formattedDate)
-        const sp = formattedDate.split(' ')
-        return `${sp[1]} ${sp[0]} ${sp[2]}`
-    }
 
     useEffect(() => {
         if (userContext.user.role === 3 || userContext.user.role === 2) {
@@ -207,11 +197,11 @@ export default function DetailsProject({ data }) {
                             </div>
                             {/* Status */}
                             <div className="flex items-center gap-2">
-                                <select className="p-2 bg-gray-200 text-gray-500 rounded-lg appearance-none" name="status" id="status" onChange={formikProjects.handleChange} onChangeCapture={formikProjects.handleSubmit} defaultValue={project.status}>
+                                {permissions ? <select className="p-2 bg-gray-200 text-gray-500 rounded-lg appearance-none" name="status" id="status" onChange={formikProjects.handleChange} onChangeCapture={formikProjects.handleSubmit} defaultValue={project.status} >
                                     <option value="1">On Scheduled</option>
                                     <option value="2">On Progress</option>
                                     <option value="3">Done</option>
-                                </select>
+                                </select> : <h1 className="p-2 bg-gray-200 text-gray-500 rounded-lg appearance-none">{project.status === 1 ? 'On Scheduled' : project.status === 2 ? 'On Progress' : 'Done'}</h1>}
                                 {/* Button Edit or Submit */}
                                 {inputClient ?
                                     <button className="bg-blue-500 p-3 rounded-lg text-white" type="button" onClick={formikProjects.handleSubmit}><FiSend /></button>
@@ -246,7 +236,7 @@ export default function DetailsProject({ data }) {
                                 inputClient ?
                                     <input className="text-sm p-2 bg-gray-200 text-gray-600 rounded-lg mt-2" type="date" id="date" name="date" defaultValue={project.date} onChange={formikProjects.handleChange} />
                                     :
-                                    <p className="flex items-center gap-2 text-sm p-2 bg-gray-200 text-gray-600 rounded-lg mt-2">{formatDate(project.date)} <BsCalendarDate /></p>
+                                    <p className="flex items-center gap-2 text-sm p-2 bg-gray-200 text-gray-600 rounded-lg mt-2">{moment(project.date).format('D MMM YY')} <BsCalendarDate /></p>
                             }
                         </div>
                         <div>
@@ -329,17 +319,20 @@ export default function DetailsProject({ data }) {
                         <h1 className="text-gray-600 text-2xl font-extralight">
                             Comment
                         </h1>
-                        <div className="flex gap-3 items-start mt-3">
-                            <img className="relative z-1 inline object-cover w-8 h-8 border-2 border-white rounded-full" src="../../../img/ade.png" alt="Profile image" />
-                            <div>
-                                <div>
-                                    <textarea className="bg-gray-100 rounded-lg p-3 text-gray-600 w-full md:w-7/8" placeholder="Input your progress..." cols="50" name="" id="" />
-                                </div>
-                                <div className="flex justify-end mt-1">
-                                    <button className="bg-green-500 p-2 rounded-lg flex items-center gap-2 text-white text-sm"> <FiSend /> Send</button>
-                                </div>
-                            </div>
-                        </div>
+                        {
+                            permissions ?
+                                <div className="flex gap-3 items-start mt-3">
+                                    <img className="relative z-1 inline object-cover w-8 h-8 border-2 border-white rounded-full" src="../../../img/ade.png" alt="Profile image" />
+                                    <div>
+                                        <div>
+                                            <textarea className="bg-gray-100 rounded-lg p-3 text-gray-600 w-full md:w-7/8" placeholder="Input your progress..." cols="50" name="" id="" />
+                                        </div>
+                                        <div className="flex justify-end mt-1">
+                                            <button className="bg-green-500 p-2 rounded-lg flex items-center gap-2 text-white text-sm"> <FiSend /> Send</button>
+                                        </div>
+                                    </div>
+                                </div> : null
+                        }
                         {
                             progress.map((p) => {
                                 return (
@@ -348,7 +341,7 @@ export default function DetailsProject({ data }) {
                                         <div className=''>
                                             <div className="flex justify-between items-center ">
                                                 <h4 className="text-gray-700">{p.name}</h4>
-                                                <h4 className="text-sm text-gray-500">{p.created_at}</h4>
+                                                <h4 className="text-sm text-gray-500">{moment(p.created_at).fromNow()}</h4>
                                             </div>
                                             <p className="text-gray-500 text-sm mt-2">{p.description}</p>
                                         </div>
@@ -366,14 +359,10 @@ export default function DetailsProject({ data }) {
                             <h2 className="text-sm font-light text-gray-500 uppercase">Assignees</h2>
                             {
                                 addUserProject ?
-                                    // <div className="flex items-center gap-2">
                                     <form onSubmit={formikProjects.handleSubmit} className="flex items-center gap-2">
                                         <div className="w-full">
                                             <ReactSelect
                                                 className='my-2'
-                                                // defaultValue={users.map(user => {
-                                                //     return { value: user.id, label: user.name }
-                                                // })}
                                                 options={allUsers.map(user => {
                                                     return { value: user.id, label: user.name }
                                                 })}
@@ -384,9 +373,10 @@ export default function DetailsProject({ data }) {
                                         </div>
                                         <button type="submit" className="p-2 rounded-lg flex items-center gap-2 text-sm bg-blue-500 text-white" ><FiSend /></button>
                                     </form>
-                                    // </div>
                                     :
-                                    <button className="flex items-center justify-center gap-2 text-sm p-2 bg-gray-200 text-gray-600 rounded-lg mt-2 mb-2" onClick={() => { fetchAllUser() }}><BsPlusCircle />Add Assignees</button>
+                                    permissions ?
+                                        <button className="flex items-center justify-center gap-2 text-sm p-2 bg-gray-200 text-gray-600 rounded-lg mt-2 mb-2" onClick={() => { fetchAllUser() }}><BsPlusCircle />Add Assignees</button>
+                                        : null
                             }
                             {
                                 users.map((user) => {
@@ -401,7 +391,11 @@ export default function DetailsProject({ data }) {
                                             </div>
                                             <div className='text-gray-500'>
                                                 {/* Delete each user */}
-                                                <button type="button" className="p-2 rounded-lg flex items-center gap-2 text-sm" onClick={() => deleteEachUser(user.id)}><AiOutlineClose /></button>
+                                                {
+                                                    permissions ?
+                                                        <button type="button" className="p-2 rounded-lg flex items-center gap-2 text-sm" onClick={() => deleteEachUser(user.id)}><AiOutlineClose /></button>
+                                                        : null
+                                                }
                                             </div>
                                         </div>
                                     )
