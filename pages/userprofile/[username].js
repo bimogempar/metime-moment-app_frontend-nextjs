@@ -19,6 +19,14 @@ export default Username
 export async function getServerSideProps(ctx) {
     const cookies = nookies.get(ctx)
     const token = cookies.token
+    if (!token) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/login"
+            }
+        }
+    }
     const req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/user/${ctx.query.username}`, {
         method: 'GET',
         headers: {

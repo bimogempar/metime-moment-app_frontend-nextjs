@@ -195,8 +195,17 @@ export default function DetailsProject({ data }) {
             })
     }
 
-    const deleteProgress = (progress) => {
-        console.log(project.id, progress)
+    const deleteProgress = (id_progress) => {
+        axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/projects/${project.id}/progress/${id_progress}`, {
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+        })
+            .then(res => {
+                setProgress(progress.filter(item => item.id !== id_progress))
+            })
+            .catch(err => {
+            })
     }
 
     return (

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 
 export default function middleware(req) {
     const token = req.cookies.token
+    console.log(token)
     const url = req.nextUrl.pathname
 
     if (!token && url == '/') {
@@ -16,11 +17,11 @@ export default function middleware(req) {
         return NextResponse.redirect('/login')
     }
 
-    if (!token && url == '/user') {
+    if (!token && url == '/userprofile') {
         return NextResponse.redirect('/login')
     }
 
-    if (!token && url == '/projects/') {
+    if (!token && url == '/projects') {
         return NextResponse.redirect('/login')
     }
 

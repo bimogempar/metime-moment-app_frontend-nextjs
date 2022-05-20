@@ -19,7 +19,7 @@ export default function NavLink() {
             }
         })
         nookies.destroy(null, 'token')
-        Router.push('/login')
+        router.push('/login')
     }
 
     const inactive = "flex items-center gap-4 p-2 w-full text-center lg:w-auto rounded-full text-sm font-medium tracking-wider hover:bg-blue-200 hover:text-blue-800 transition ease-in-out duration-150"
