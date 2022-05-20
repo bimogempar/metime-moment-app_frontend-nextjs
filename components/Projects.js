@@ -135,11 +135,6 @@ export default function Project(props) {
         }).catch(function (error) {
             console.log(error);
         })
-        // toast.promise(deletePromise, {
-        //     loading: 'Loading..',
-        //     success: 'Successfully Deleted',
-        //     error: 'Error..',
-        // });
     }
 
     const handleClickDeleteProject = (data) => {
