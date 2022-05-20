@@ -14,6 +14,7 @@ import { BiAddToQueue } from 'react-icons/bi';
 import { FiSend } from 'react-icons/fi';
 import ReactSelect from 'react-select'
 import moment from 'moment';
+import { Toaster, toast } from 'react-hot-toast'
 
 export default function DetailsProject({ data }) {
     const [project, setProject] = useState(data.project);
@@ -71,7 +72,30 @@ export default function DetailsProject({ data }) {
                     }
                 )
                     .then(res => {
-                        // console.log(res)
+                        console.log(res)
+                        if (res.data.features.status === 1) {
+                            toast.success("List done", {
+                                position: "top-center",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                            });
+                        }
+                        if (res.data.features.status === 0) {
+                            toast("List on progress", {
+                                position: "top-center",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                icon: '😓'
+                            });
+                        }
                     })
                 return {
                     ...f,
@@ -110,6 +134,27 @@ export default function DetailsProject({ data }) {
                     setProject(res.data.project);
                     setUsers(res.data.project.users);
                     // setProject({ ...project, ...values });
+                    toast.success('Project updated successfully', {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                    formikFeatures.resetForm();
+                })
+                .catch(err => {
+                    toast.error(err.message, {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
                 })
         }
     })
@@ -131,10 +176,28 @@ export default function DetailsProject({ data }) {
                         // setFeatures(...features, res.data.feature);
                         setProject({ ...project, features: [...project.features, res.data.feature] });
                         setFeatures([...features, res.data.feature]);
+                        toast.success('Feature added successfully', {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
                         formikFeatures.resetForm();
                     })
             }
             else {
+                toast.error('Fail add feature, is empty', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 return false
             }
         }
@@ -155,18 +218,58 @@ export default function DetailsProject({ data }) {
                 })
                     .then(res => {
                         setProgress(res.data.project.progress);
+                        toast.success('Comment added successfully', {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
                         formikComments.resetForm();
                     })
             }
             else {
+                toast.error('Comment is empty', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 return false
             }
         },
     })
 
     const deleteEachUser = (user) => {
-        // console.log("user id " + user);
-        // console.log("project id " + project.id);
+        if (users.length === 1) {
+            toast.error("User can't be null", {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            return false
+        }
+        if (user === userContext.user.id) {
+            toast.error("You can't delete yourself", {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            return false
+        }
         axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/projects/${project.id}/user/${user}`, {
             headers: {
                 Authorization: 'Bearer ' + token,
@@ -175,8 +278,30 @@ export default function DetailsProject({ data }) {
             .then(res => {
                 const arrayDelete = users.filter(item => item.id !== user);
                 setUsers(arrayDelete)
+                formikProjects.setFieldValue('assignment_user', arrayDelete.map(u => {
+                    return { value: u.id, label: u.name }
+                }))
+                toast.success('Assign users deleted successfully', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             })
             .catch(err => {
+                console.log(err)
+                toast.error("Failed assign users", {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             })
     }
 
@@ -203,13 +328,32 @@ export default function DetailsProject({ data }) {
         })
             .then(res => {
                 setProgress(progress.filter(item => item.id !== id_progress))
+                toast.success('Progress deleted successfully', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             })
             .catch(err => {
+                toast.error('Error', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             })
     }
 
     return (
         <>
+            <Toaster />
             <div className="mb-4">
                 <button className="bg-white rounded-xl p-2 px-4" onClick={() => { router.back() }}>
                     <div className="flex gap-x-3 items-center">
