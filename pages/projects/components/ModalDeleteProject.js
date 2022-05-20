@@ -3,7 +3,8 @@ import React, { Fragment, useRef } from 'react'
 
 export default function ModalDeleteProject({ isOpenDelete, setIsOpenDelete, dataModalDelete, deleteProject }) {
     let closeModalRef = useRef(null)
-    // console.log(dataModalDelete)
+    // console.log(deleteProject)
+    // console.log(setIsOpenDelete)
     return (
         <Transition as={Fragment} show={isOpenDelete}>
             <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={() => setIsOpenDelete(false)} >

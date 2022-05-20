@@ -104,7 +104,7 @@ export default function Project(props) {
 
     const deleteProject = (id) => {
         // console.log(id)
-        // return id;
+        // return
         const deletePromise = axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/projects/${id}/delete`, {
             headers: {
                 Authorization: 'Bearer ' + token,
@@ -120,20 +120,27 @@ export default function Project(props) {
                     setProjects(fetchProjects)
                     setProjectsData(fetchProjects.data)
                     setIsOpenDelete(false)
+                    toast.success('Project deleted successfully!', {
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    })
                 })
                 .catch(function (error) {
                     // console.log(error);
                 })
         }).catch(function (error) {
-            // console.log(error);
+            console.log(error);
         })
-        toast.promise(deletePromise, {
-            loading: 'Loading..',
-            success: 'Successfully Deleted',
-            error: 'Error..',
-        });
+        // toast.promise(deletePromise, {
+        //     loading: 'Loading..',
+        //     success: 'Successfully Deleted',
+        //     error: 'Error..',
+        // });
     }
-
 
     const handleClickDeleteProject = (data) => {
         setDataModalDelete(data)

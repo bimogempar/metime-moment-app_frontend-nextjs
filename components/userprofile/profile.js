@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../context/userContext'
 import { BiLike, BiLoader, BiPhoneCall, BiPhotoAlbum } from 'react-icons/bi'
 import { AiFillSchedule } from 'react-icons/ai'
@@ -11,29 +11,57 @@ import { HiOutlineLocationMarker } from 'react-icons/hi'
 import UserPlaceHolder from '../../public/img/userplaceholder.png'
 import Image from 'next/image'
 import ModalDeleteProject from '../../pages/projects/components/ModalDeleteProject'
+import axios from 'axios'
+import nookies from 'nookies';
+import toast, { Toaster } from 'react-hot-toast'
 
 export default function Profile(props) {
     const userContext = useContext(UserContext)
     const [isOpenDelete, setIsOpenDelete] = useState(false)
-    const [dataModalDelete, setDataModalDelete] = useState({
-        'name': 'Bimo',
-    })
+    const [dataModalDelete, setDataModalDelete] = useState([{}])
+    const [projects, setProjects] = useState(props.data.projects)
+
+    const cookies = nookies.get()
+    const token = cookies.token
 
     if (userContext.user.username === undefined) {
         return <div className="flex justify-center items-center h-screen">
             <BiLoader className="text-6xl text-gray-400" />
         </div>
     }
-    const userProjects = props.data.projects
-    const userProjectsLength = userProjects.length
+
+    const userProjectsLength = projects.length
+
+    const deleteProject = (id) => {
+        const deletePromise = axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/projects/${id}/delete`, {
+            headers: {
+                Authorization: 'Bearer ' + token,
+            }
+        }).then(function (response) {
+            setIsOpenDelete(false)
+            setProjects(projects.filter(project => project.id !== id))
+            toast.success('Project deleted successfully!', {
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            })
+        }).catch(function (error) {
+            console.log(error);
+        })
+    }
 
     const handleClickOpen = (data) => {
+        setDataModalDelete(data)
         setIsOpenDelete(true)
     }
 
     return (
         <div className="mb-5">
-            <ModalDeleteProject isOpenDelete={isOpenDelete} setIsOpenDelete={setIsOpenDelete} dataModalDelete={dataModalDelete} />
+            <Toaster />
+            <ModalDeleteProject isOpenDelete={isOpenDelete} setIsOpenDelete={setIsOpenDelete} dataModalDelete={dataModalDelete} deleteProject={deleteProject} />
             <div className="md:gap-5 grid grid-cols-1 md:grid-cols-3 mb-5">
                 <div className="col-span-1">
                     {
@@ -96,7 +124,7 @@ export default function Profile(props) {
                         }</h1>
                     <div className="grid md:grid-cols-12 gap-5">
 
-                        {props.data.projects.map((project, id) => (
+                        {projects.map((project, id) => (
                             <div project={project} key={id} className="bg-white xl:col-span-4 lg:col-span-6 col-span-12 rounded-xl p-4 text-sm" >
                                 <div className="mb-2 flex justify-between items-center">
                                     {project.status == 1 &&

@@ -6,6 +6,7 @@ import { UserContext } from "../../components/context/userContext";
 import Profile from '../../components/userprofile/Profile';
 
 const Username = ({ data }) => {
+
     return (
         <Layout title="User Profile ">
             <Profile data={data} />
