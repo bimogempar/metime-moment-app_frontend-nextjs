@@ -15,6 +15,12 @@ import { FiSend } from 'react-icons/fi';
 import ReactSelect from 'react-select'
 import moment from 'moment';
 import { Toaster, toast } from 'react-hot-toast'
+import HeadProject from './components-detailProject/HeadProject';
+import ImageHeader from './components-detailProject/ImageHeader';
+import Date from './components-detailProject/Date';
+import Assignees from './components-detailProject/Assignees';
+import Location from './components-detailProject/Location';
+import Checklist from './components-detailProject/Checklist';
 
 export default function DetailsProject({ data }) {
     const [project, setProject] = useState(data.project);
@@ -185,7 +191,7 @@ export default function DetailsProject({ data }) {
                             draggable: true,
                             progress: undefined,
                         });
-                        formikFeatures.resetForm();
+                        formikFeatures.resetForm()
                     })
             }
             else {
@@ -364,137 +370,46 @@ export default function DetailsProject({ data }) {
 
             <div className="grid grid-cols-3 gap-5 mb-5">
                 <div className="col-span-3 xl:col-span-2 bg-white rounded-xl">
-                    <div className="p-5">
-                        <div className="flex items-center justify-between">
-                            {/* Client Name */}
-                            <div className="flex w-2/3 gap-2 text-2xl font-light">
-                                {
-                                    inputClient ?
-                                        <div className="flex w-full gap-2">
-                                            <input className="p-2 bg-gray-100 w-full rounded-lg font-light" type="text" name="client" id="client" value={formikProjects.values.client} onChange={formikProjects.handleChange} />
-                                        </div>
-                                        :
-                                        <h1>{project.client}</h1>
-                                }
-                            </div>
-                            {/* Status */}
-                            <div className="flex items-center gap-2">
-                                {permissions ? <select className="p-2 bg-gray-200 text-gray-500 rounded-lg appearance-none" name="status" id="status" onChange={formikProjects.handleChange} onChangeCapture={formikProjects.handleSubmit} defaultValue={project.status} >
-                                    <option value="1">On Scheduled</option>
-                                    <option value="2">On Progress</option>
-                                    <option value="3">Done</option>
-                                </select> : <h1 className="p-2 bg-gray-200 text-gray-500 rounded-lg appearance-none">{project.status === 1 ? 'On Scheduled' : project.status === 2 ? 'On Progress' : 'Done'}</h1>}
-                                {/* Button Edit or Submit */}
-                                {inputClient ?
-                                    <button className="bg-blue-500 p-3 rounded-lg text-white" type="button" onClick={formikProjects.handleSubmit}><FiSend /></button>
-                                    :
-                                    permissions ?
-                                        <button onClick={() => { inputClient ? setInputClient(false) : setInputClient(true) }} className="bg-yellow-400 text-white p-2 rounded-lg"><FaRegEdit size={20} /></button>
-                                        : null
-                                }
-                            </div>
-                        </div>
-                        {/* Phone Number */}
-                        {
-                            inputClient ?
-                                <div className="flex items-center gap-2 text-sm text-gray-500">
-                                    <BsFillTelephoneOutboundFill /><input className="p-2 bg-gray-100 w-1/3 mt-2 rounded-lg" type="text" name="phone_number" id="phone_number" value={formikProjects.values.phone_number} onChange={formikProjects.handleChange} />
-                                </div>
-                                :
-                                <p className="text-sm text-gray-500 mt-2 flex items-center gap-3"><BsFillTelephoneOutboundFill /> {project.phone_number}</p>
-                        }
-                    </div>
+                    <HeadProject
+                        clientName={project.client}
+                        projectStatus={project.status}
+                        projectPhone={project.phone_number}
+                        formikProjectValuePhone={formikProjects.values.phone_number}
+                        formikProjectValueClient={formikProjects.values.client}
+                        formikProjectHandleChange={formikProjects.handleChange}
+                        formikProjectHandleSubmit={formikProjects.handleSubmit}
+                        inputClient={inputClient}
+                        permissions={permissions}
+                        setInputClient={setInputClient}
+                    />
 
-                    {/* Image Header */}
-                    <h1 className="p-5 text-2xl font-light">
-                        This is for image header
-                    </h1>
+                    <ImageHeader />
 
                     <div className="p-5 grid grid-cols-2 gap-3 justify-items-start">
-                        <div>
-                            {/* Date */}
-                            <h2 className="text-sm font-light text-gray-500 uppercase">Date</h2>
-                            {
-                                inputClient ?
-                                    <input className="text-sm p-2 bg-gray-200 text-gray-600 rounded-lg mt-2" type="date" id="date" name="date" defaultValue={project.date} onChange={formikProjects.handleChange} />
-                                    :
-                                    <p className="flex items-center gap-2 text-sm p-2 bg-gray-200 text-gray-600 rounded-lg mt-2">{moment(project.date).format('D MMM YY')} <BsCalendarDate /></p>
-                            }
-                        </div>
-                        <div>
-                            <h2 className="text-sm font-light text-gray-500 uppercase">Assignees</h2>
-                            {
-                                users.map(user => {
-                                    return (
-                                        <img key={user.id} className="relative z-1 inline object-cover w-8 h-8 border-2 border-white rounded-full mt-2" src="../../../img/ade.png" alt="Profile image" />
-                                    )
-                                })
-                            }
-                        </div>
-                        <div>
-                            {/* Location */}
-                            <h2 className="text-sm font-light text-gray-500 uppercase">Location</h2>
-                            {
-                                inputClient ?
-                                    <div className="flex gap-2 items-center">
-                                        <TiLocationOutline className="text-2xl text-gray-500" /><input className="p-2 bg-gray-100 w-full text-gray-500 mt-2 rounded-lg" type="text" name="location" id="location" value={formikProjects.values.location} onChange={formikProjects.handleChange} />
-                                    </div>
-                                    :
-                                    <h2 className="text-sm p-2 text-gray-600 rounded-lg mt-2 flex items-center gap-2"><TiLocationOutline className="text-lg" /> {project.location}</h2>
-                            }
-                        </div>
+                        <Date
+                            valueDate={project.date}
+                            formikProjectHandleChange={formikProjects.handleChange}
+                            inputClient={inputClient}
+                        />
+                        <Assignees users={users} />
+                        <Location
+                            inputClient={inputClient}
+                            valueLocation={project.location}
+                            formikProjectValueLocation={formikProjects.values.location}
+                            formikProjectHandleChange={formikProjects.handleChange}
+                        />
                     </div>
 
-                    {/* Chekclist */}
-                    <div className="p-5">
-                        <h1 className="text-gray-600 text-2xl font-extralight">
-                            Checklist
-                        </h1>
-                        {permissions ? features.map((feature) => {
-                            return (
-                                <div className="mt-3 gap-3" key={feature.id}>
-                                    <div className="flex text-gray-600 items-center gap-3 bg-gray-100 p-2 px-4 inline-flex rounded-lg">
-                                        <input
-                                            type="checkbox"
-                                            id={feature.id}
-                                            name={feature.feature}
-                                            value={feature.feature}
-                                            defaultChecked={feature.status === 1}
-                                            onChange={() => handleClickCB(feature)}
-                                        />
-                                        <p>{feature.feature}</p>
-                                        <button type="button" className="ml-5" onClick={() => deleteFeature(feature.id)}><BsTrash /></button>
-                                    </div>
-                                </div>
-                            )
-                        }) :
-                            features.map((feature) => {
-                                return (
-                                    <div className="mt-3 gap-3" key={feature.id}>
-                                        <div className="flex text-gray-600 items-center gap-3 bg-gray-100 p-2 px-4 inline-flex rounded-lg">
-                                            <input
-                                                type="checkbox"
-                                                id={feature.id}
-                                                name={feature.feature}
-                                                value={feature.feature}
-                                                defaultChecked={feature.status === 1}
-                                                onChange={() => handleClickCB(feature)}
-                                                disabled
-                                            />
-                                            <p>{feature.feature}</p>
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                        {permissions &&
-                            <form onSubmit={formikFeatures.handleSubmit}>
-                                <div className="flex items-center mt-3 gap-3">
-                                    <input id="features" name="feature" value={formikFeatures.values.feature} onChange={formikFeatures.handleChange} type="text" placeholder="Add new feature" className="p-2 bg-gray-100 rounded-lg w-full sm:w-1/2 md:w-1/2" />
-                                    <button type="submit" className="bg-blue-500 p-3 rounded-lg"> <BiAddToQueue className="text-white" /> </button>
-                                </div>
-                            </form>
-                        }
-                    </div>
+                    <Checklist
+                        permissions={permissions}
+                        features={features}
+                        deleteFeature={deleteFeature}
+                        handleClickCB={handleClickCB}
+                        f ormikFeatures={formikFeatures}
+                        formikFeaturseValueFeature={formikFeatures.values.feature}
+                        formikFeaturesHandleSubmit={formikFeatures.handleSubmit}
+                        formikFeaturesHandleChange={formikFeatures.handleChange}
+                    />
 
                     {/* Comment */}
                     <div className="p-5">
