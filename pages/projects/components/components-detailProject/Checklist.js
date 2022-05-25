@@ -2,7 +2,7 @@ import React from 'react'
 import { BiAddToQueue } from 'react-icons/bi'
 import { BsTrash } from 'react-icons/bs'
 
-export default function Checklist({ permissions, features, deleteFeature, handleClickCB, formikFeaturesValueFeature, formikFeaturesHandleSubmit, formikFeaturesHandleChange }) {
+export default function Checklist({ permissions, features, deleteFeature, handleClickCB, formikFeatures, }) {
     return (
         <div className="p-5">
             <h1 className="text-gray-600 text-2xl font-extralight">
@@ -45,9 +45,9 @@ export default function Checklist({ permissions, features, deleteFeature, handle
                     )
                 })}
             {permissions &&
-                <form onSubmit={formikFeaturesHandleSubmit}>
+                <form onSubmit={formikFeatures.handleSubmit}>
                     <div className="flex items-center mt-3 gap-3">
-                        <input id="features" name="feature" value={formikFeaturesValueFeature} onChange={formikFeaturesHandleChange} type="text" placeholder="Add new feature" className="p-2 bg-gray-100 rounded-lg w-full sm:w-1/2 md:w-1/2" />
+                        <input id="features" name="feature" value={formikFeatures.values.feature} onChange={formikFeatures.handleChange} type="text" placeholder="Add new feature" className="p-2 bg-gray-100 rounded-lg w-full sm:w-1/2 md:w-1/2" />
                         <button type="submit" className="bg-blue-500 p-3 rounded-lg"> <BiAddToQueue className="text-white" /> </button>
                     </div>
                 </form>

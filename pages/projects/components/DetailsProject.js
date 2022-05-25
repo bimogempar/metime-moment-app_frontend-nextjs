@@ -2,15 +2,11 @@
 import React, { useState, useEffect, useContext } from 'react'
 import nookies from 'nookies';
 import axios from 'axios';
-import { BsChevronLeft, BsFillTelephoneOutboundFill, BsTrash, BsCalendarDate, BsPlusCircle } from 'react-icons/bs';
-import { FaRegEdit } from "react-icons/fa";
+import { BsChevronLeft, BsTrash, BsPlusCircle } from 'react-icons/bs';
 import { AiOutlineClose } from "react-icons/ai";
 import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
-import Layout from '../../../components/Layout';
 import { UserContext } from '../../../components/context/userContext';
-import { TiLocationOutline } from 'react-icons/ti';
-import { BiAddToQueue } from 'react-icons/bi';
 import { FiSend } from 'react-icons/fi';
 import ReactSelect from 'react-select'
 import moment from 'moment';
@@ -21,6 +17,8 @@ import Date from './components-detailProject/Date';
 import Assignees from './components-detailProject/Assignees';
 import Location from './components-detailProject/Location';
 import Checklist from './components-detailProject/Checklist';
+import Progress from './components-detailProject/Progress';
+import AddAssignees from './components-detailProject/AddAssignees';
 
 export default function DetailsProject({ data }) {
     const [project, setProject] = useState(data.project);
@@ -191,7 +189,7 @@ export default function DetailsProject({ data }) {
                             draggable: true,
                             progress: undefined,
                         });
-                        formikFeatures.resetForm()
+                        formikFeatures.resetForm();
                     })
             }
             else {
@@ -374,10 +372,7 @@ export default function DetailsProject({ data }) {
                         clientName={project.client}
                         projectStatus={project.status}
                         projectPhone={project.phone_number}
-                        formikProjectValuePhone={formikProjects.values.phone_number}
-                        formikProjectValueClient={formikProjects.values.client}
-                        formikProjectHandleChange={formikProjects.handleChange}
-                        formikProjectHandleSubmit={formikProjects.handleSubmit}
+                        formikProjects={formikProjects}
                         inputClient={inputClient}
                         permissions={permissions}
                         setInputClient={setInputClient}
@@ -388,15 +383,14 @@ export default function DetailsProject({ data }) {
                     <div className="p-5 grid grid-cols-2 gap-3 justify-items-start">
                         <Date
                             valueDate={project.date}
-                            formikProjectHandleChange={formikProjects.handleChange}
+                            formikProjects={formikProjects}
                             inputClient={inputClient}
                         />
                         <Assignees users={users} />
                         <Location
                             inputClient={inputClient}
                             valueLocation={project.location}
-                            formikProjectValueLocation={formikProjects.values.location}
-                            formikProjectHandleChange={formikProjects.handleChange}
+                            formikProjects={formikProjects}
                         />
                     </div>
 
@@ -405,107 +399,30 @@ export default function DetailsProject({ data }) {
                         features={features}
                         deleteFeature={deleteFeature}
                         handleClickCB={handleClickCB}
-                        f ormikFeatures={formikFeatures}
-                        formikFeaturseValueFeature={formikFeatures.values.feature}
-                        formikFeaturesHandleSubmit={formikFeatures.handleSubmit}
-                        formikFeaturesHandleChange={formikFeatures.handleChange}
+                        resetForm={formikFeatures.resetForm}
+                        formikFeatures={formikFeatures}
                     />
 
                     {/* Comment */}
-                    <div className="p-5">
-                        <h1 className="text-gray-600 text-2xl font-extralight">
-                            Comment
-                        </h1>
-                        {
-                            permissions ?
-                                <div className="flex gap-3 items-start mt-3">
-                                    <img className="relative z-1 inline object-cover w-8 h-8 border-2 border-white rounded-full" src="../../../img/ade.png" alt="Profile image" />
-                                    <form onSubmit={formikComments.handleSubmit}>
-                                        <div>
-                                            <textarea className="bg-gray-100 rounded-lg p-3 text-gray-600 w-full md:w-7/8" placeholder="Input your progress..." cols="50" name="description" id="description" value={formikComments.values.description} onChange={formikComments.handleChange} />
-                                        </div>
-                                        <div className="flex justify-end mt-1">
-                                            <button type='submit' className="bg-green-500 p-2 rounded-lg flex items-center gap-2 text-white text-sm" onClick={() => formikComments.setFieldValue('user_id', userContext.user.id)}> <FiSend /> Send</button>
-                                        </div>
-                                    </form>
-                                </div> : null
-                        }
-                        {
-                            progress.map((p, index) => {
-                                return (
-                                    <div className="flex sm:w-3/4 gap-3 items-start mt-4 bg-gray-200 p-2 rounded-xl" key={index}>
-                                        <img className="relative z-1 inline object-cover w-8 h-8 border-2 rounded-full" src="../../../img/ade.png" alt="Profile image" />
-                                        <div className='w-full'>
-                                            <div className="flex justify-between items-center">
-                                                <h4 className="text-gray-700">{p.name}</h4>
-                                                <h4 className="text-sm text-gray-500">{moment(p.created_at).fromNow()}</h4>
-                                            </div>
-                                            <p className="text-gray-500 text-sm mt-2">{p.description}</p>
-                                        </div>
-                                        {
-                                            permissions ?
-                                                <button type="button" className="p-2 text-gray-500" onClick={() => deleteProgress(p.id)}><BsTrash /></button>
-                                                : null
-                                        }
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
+                    <Progress
+                        permissions={permissions}
+                        progress={progress}
+                        authUser={userContext.user.id}
+                        deleteProgress={deleteProgress}
+                        formikComments={formikComments}
+                    />
                 </div>
 
                 {/* Sidebar */}
-                <div className="col-span-3 xl:col-span-1 lg:col-span-2 md:col-span-2 rounded-xl">
-                    <div className="p-5 bg-white rounded-xl">
-                        <div className="grid grid-cols-1">
-                            <h2 className="text-sm font-light text-gray-500 uppercase">Assignees</h2>
-                            {
-                                addUserProject ?
-                                    <form onSubmit={formikProjects.handleSubmit} className="flex items-center gap-2">
-                                        <div className="w-full">
-                                            <ReactSelect
-                                                className='my-2'
-                                                options={allUsers.map(user => {
-                                                    return { value: user.id, label: user.name }
-                                                })}
-                                                value={formikProjects.values.assignment_user}
-                                                onChange={value => formikProjects.setFieldValue('assignment_user', value)}
-                                                isMulti
-                                            />
-                                        </div>
-                                        <button type="submit" className="p-2 rounded-lg flex items-center gap-2 text-sm bg-blue-500 text-white" ><FiSend /></button>
-                                    </form>
-                                    :
-                                    permissions ?
-                                        <button className="flex items-center justify-center gap-2 text-sm p-2 bg-gray-200 text-gray-600 rounded-lg mt-2 mb-2" onClick={() => { fetchAllUser() }}><BsPlusCircle />Add Assignees</button>
-                                        : null
-                            }
-                            {
-                                users.map((user) => {
-                                    return (
-                                        <div key={user.id} className="flex items-center justify-between p-3 gap-4">
-                                            <div className='flex items-center justify-center gap-4'>
-                                                <img className="w-9 h-9 rounded-full" src="../../../img/ade.png" alt="Profile image" />
-                                                <div>
-                                                    <p className="text-gray-600 text-xs">{user.name}</p>
-                                                    <p className="text-gray-400 text-xs">{user.email}</p>
-                                                </div>
-                                            </div>
-                                            <div className='text-gray-500'>
-                                                {/* Delete each user */}
-                                                {
-                                                    permissions ?
-                                                        <button type="button" className="p-2 rounded-lg flex items-center gap-2 text-sm" onClick={() => deleteEachUser(user.id)}><AiOutlineClose /></button>
-                                                        : null
-                                                }
-                                            </div>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
-                    </div>
-                </div>
+                <AddAssignees
+                    permissions={permissions}
+                    addUserProject={addUserProject}
+                    users={users}
+                    allUsers={allUsers}
+                    formikProjects={formikProjects}
+                    fetchAllUser={fetchAllUser}
+                    deleteEachUser={deleteEachUser}
+                />
 
             </div>
         </>
