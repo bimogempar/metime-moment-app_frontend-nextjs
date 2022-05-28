@@ -16,10 +16,14 @@ import nookies from 'nookies';
 import toast, { Toaster } from 'react-hot-toast'
 
 export default function Profile(props) {
+    useEffect(() => {
+        setProjects(props.data.projects)
+    }, [props.data.projects])
+
     const userContext = useContext(UserContext)
     const [isOpenDelete, setIsOpenDelete] = useState(false)
     const [dataModalDelete, setDataModalDelete] = useState([{}])
-    const [projects, setProjects] = useState(props.data.projects)
+    const [projects, setProjects] = useState([{}])
 
     const cookies = nookies.get()
     const token = cookies.token
