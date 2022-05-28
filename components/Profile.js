@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useContext, useEffect, useState } from 'react'
-import { UserContext } from '../context/userContext'
+import { UserContext } from './context/userContext'
 import { BiLike, BiLoader, BiPhoneCall, BiPhotoAlbum } from 'react-icons/bi'
 import { AiFillSchedule } from 'react-icons/ai'
 import { MdFileDownloadDone } from 'react-icons/md'
@@ -10,7 +10,7 @@ import Link from 'next/link'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 import UserPlaceHolder from '../../public/img/userplaceholder.png'
 import Image from 'next/image'
-import ModalDeleteProject from '../../pages/projects/components/ModalDeleteProject'
+import ModalDeleteProject from '../pages/projects/components/ModalDeleteProject'
 import axios from 'axios'
 import nookies from 'nookies';
 import toast, { Toaster } from 'react-hot-toast'
