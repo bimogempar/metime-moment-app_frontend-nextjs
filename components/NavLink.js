@@ -53,7 +53,7 @@ export default function NavLink() {
                         </li>
                         <li className="mt-2">
                             <Link href={"/userprofile/" + userContext.user.username}>
-                                <a className={router.pathname == "/userprofile/[username]" ? active : inactive}>
+                                <a className={router.pathname == "/userprofile/[username]" || router.pathname == "/userprofile/setting/[username]" ? active : inactive}>
                                     <FcHome /> Profile
                                 </a>
                             </Link>
@@ -73,7 +73,7 @@ export default function NavLink() {
             </div>
             {/* setting and logout */}
             <div className="mt-10 -mb-2 flex items-center justify-between">
-                <Link href="/" passHref>
+                <Link href={'/userprofile/setting/' + userContext.user.username} passHref>
                     <a className="text-2xl">
                         <FcSettings />
                     </a>
