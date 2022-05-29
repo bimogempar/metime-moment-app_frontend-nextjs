@@ -6,7 +6,7 @@ import { BsChevronLeft, BsTrash, BsPlusCircle } from 'react-icons/bs';
 import { AiOutlineClose } from "react-icons/ai";
 import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
-import { UserContext } from '../context/UserContext';
+import { UserContext } from '../context/userContext';
 import { FiSend } from 'react-icons/fi';
 import ReactSelect from 'react-select'
 import moment from 'moment';
