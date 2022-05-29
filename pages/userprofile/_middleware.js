@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server"
 
 export default function middleware(req) {
-    const { token } = req.cookies.token
-    const url = req.nextUrl.pathname
+    const token = req.cookies.token
+    const urlPathname = req.nextUrl.pathname
+    const url = req.nextUrl.origin
 
-    if (!token && url == '/userprofile/[username]') {
-        return NextResponse.redirect('/')
+    if (!token && urlPathname == '/userprofile/[username]') {
+        return NextResponse.redirect(`${url}`)
     }
 
 }

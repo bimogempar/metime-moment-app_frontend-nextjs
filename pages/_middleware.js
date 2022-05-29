@@ -1,27 +1,28 @@
 import { NextResponse } from "next/server"
 
 export default function middleware(req) {
-    const { token } = req.cookies.token
-    const url = req.nextUrl.pathname
+    const token = req.cookies.token
+    const urlPathname = req.nextUrl.pathname
+    const url = req.nextUrl.origin
 
-    if (!token && url == '/') {
-        return NextResponse.redirect('/login')
+    if (!token && urlPathname == '/') {
+        return NextResponse.redirect(`${url}/login`)
     }
 
-    if (token && url == '/login') {
-        return NextResponse.redirect('/')
+    if (token && urlPathname == '/login') {
+        return NextResponse.redirect(`${url}`)
     }
 
-    if (!token && url == '/logout') {
-        return NextResponse.redirect('/login')
+    if (!token && urlPathname == '/logout') {
+        return NextResponse.redirect(`${url}/login`)
     }
 
-    if (!token && url == '/userprofile') {
-        return NextResponse.redirect('/login')
+    if (!token && urlPathname == '/userprofile') {
+        return NextResponse.redirect(`${url}/login`)
     }
 
-    if (!token && url == '/projects') {
-        return NextResponse.redirect('/login')
+    if (!token && urlPathname == '/projects') {
+        return NextResponse.redirect(`${url}/login`)
     }
 
 }
