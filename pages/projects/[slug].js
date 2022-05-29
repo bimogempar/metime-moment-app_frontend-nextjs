@@ -1,6 +1,6 @@
 import { React } from 'react'
 import nookies from 'nookies';
-import DetailsProject from './components/DetailsProject';
+import DetailsProject from '../../components/Project/DetailsProject';
 import Layout from '../../components/Layout';
 
 export default function ProjectDetails({ data }) {

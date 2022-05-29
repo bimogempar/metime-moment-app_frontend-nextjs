@@ -16,9 +16,9 @@ import Image from 'next/image'
 import notYetImageProject from '../public/img/not-yet.png'
 import { Fragment } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
-import ModalCreateProject from '../pages/projects/components/ModalCreateProject'
 import { UserContext } from './context/userContext'
-import ModalDeleteProject from '../pages/projects/components/ModalDeleteProject'
+import ModalCreateProject from '../components/Project/ModalCreateProject'
+import ModalDeleteProject from '../components/Project/ModalDeleteProject'
 
 export default function Project(props) {
     const userContext = useContext(UserContext)
