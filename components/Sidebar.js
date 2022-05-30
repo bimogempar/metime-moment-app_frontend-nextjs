@@ -35,7 +35,7 @@ export default function Sidebar() {
                 :
                 <div>
                     <div className="flex justify-center mt-2">
-                        {userContext.user.img ? <Image className="rounded-full" src={process.env.NEXT_PUBLIC_URL + '/' + userContext.user.img} alt="User Metime Moment" width={100} height={100} /> : <Image className="rounded-full" src={UserPlaceholder} alt="User Metime Moment" width={100} height={100} />}
+                        {userContext.user.img ? <Image className="rounded-full" src={process.env.NEXT_PUBLIC_URL + '/storage/img_user/' + userContext.user.img} alt="User Metime Moment" width={100} height={100} /> : <Image className="rounded-full" src={UserPlaceholder} alt="User Metime Moment" width={100} height={100} />}
                     </div>
                     <div className="text-center">
                         <h1 className="text-xl mt-4 font-light break-word">{userContext.user.name}</h1>

@@ -29,7 +29,7 @@ export default function Test() {
                 .nullable()
                 .notRequired()
                 .test("FILE_SIZE", "Uploaded file is too big.",
-                    value => !value || (value && value.size <= 2000))
+                    value => !value || (value && value.size <= 1000000))
                 .test("FILE_FORMAT", "Uploaded file has unsupported format.",
                     value => !value || (value && SUPPORTED_FORMATS.includes(value.type)))
         }),
@@ -53,8 +53,8 @@ export default function Test() {
             <form onSubmit={formikFile.handleSubmit}>
                 <input type="text" name="title" id="title" onChange={formikFile.handleChange} value={formikFile.values.title} />
                 <input type="file" onChange={(e) => formikFile.setFieldValue('img', e.target.files[0])} />
-                <input type="file" onChange={(e) => handleChangeFile(e)} />
-                <button type='submit'>Submit</button>
+                {/* <input type="file" onChange={(e) => handleChangeFile(e)} /> */}
+                <button type='submit' disabled={!(formikFile.isValid && formikFile.dirty)}>Submit</button>
             </form>
         </div >
     )
