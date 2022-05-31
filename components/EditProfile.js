@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useFormik } from 'formik';
 import { UserContext } from './context/userContext'
 import nookies from "nookies"
@@ -105,6 +105,8 @@ export default function EditProfile(props) {
                     }
                     setAuthUser(res.data.user)
                     updateUserCtx(res.data.user)
+                    imageRef.current.value = null
+                    formikUpdateUser.setFieldValue('img', '')
                     formikUpdateUser.setFieldValue('old_password', '')
                     formikUpdateUser.setFieldValue('new_password', '')
                     toast.success('Update User Successfully')
@@ -112,7 +114,8 @@ export default function EditProfile(props) {
         }
     })
 
-    const handleChangeAvaatar = (e) => {
+    const imageRef = useRef()
+    const handleChangeAvatar = (e) => {
         const file = e.target.files[0]
         if (file) {
             setAvatar(URL.createObjectURL(file))
@@ -124,13 +127,12 @@ export default function EditProfile(props) {
     return (
         <div>
             <Toaster />
-            <h1 className="mb-5 text-2xl font-extralight">Employee</h1>
+            <h1 className="mb-5 text-2xl font-extralight">Setting Profile</h1>
             <div className="grid grid-cols-2 gap-5">
                 <div className="rounded-xl bg-white col-span-2 md:col-span-1 justify-center">
 
                     <div className="flex p-5 justify-center">
                         <Image className="rounded-full" src={authUser.img ? avatar : UserPlaceholder} alt="User Metime Moment" width={100} height={100} />
-                        {/* {authUser.img ? <Image className="rounded-full" src={process.env.NEXT_PUBLIC_URL + '/storage/img_user/' + authUser.img} alt="User Metime Moment" width={100} height={100} /> : <Image className="rounded-full" src={UserPlaceholder} alt="User Metime Moment" width={100} height={100} />} */}
                     </div>
 
                     <div className="flex m-5 justify-center">
@@ -143,7 +145,8 @@ export default function EditProfile(props) {
                                 file:bg-blue-50 file:text-blue-700
                                 hover:file:bg-blue-100
                                 "
-                            onChange={e => { handleChangeAvaatar(e) }}
+                            ref={imageRef}
+                            onChange={e => { handleChangeAvatar(e) }}
                         />
                     </div>
                     <div className="flex justify-center">

@@ -13,13 +13,13 @@ export default function NavLink() {
     const token = nookies.get()
 
     const doLogout = () => {
-        nookies.destroy(null, 'token')
         router.push('/login')
-        // axios.post(`${process.env.NEXT_PUBLIC_URL}/api/logout`, {}, {
-        //     headers: {
-        //         'Authorization': 'Bearer ' + token.token
-        //     }
-        // })
+        axios.post(`${process.env.NEXT_PUBLIC_URL}/api/logout`, {}, {
+            headers: {
+                'Authorization': 'Bearer ' + token.token
+            }
+        })
+        nookies.destroy(null, 'token')
     }
 
     const inactive = "flex items-center gap-4 p-2 w-full text-center lg:w-auto rounded-full text-sm font-medium tracking-wider hover:bg-blue-200 hover:text-blue-800 transition ease-in-out duration-150"
