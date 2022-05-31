@@ -62,6 +62,8 @@ export default function Profile(props) {
         setIsOpenDelete(true)
     }
 
+    console.log(props.data.user.img)
+
     return (
         <div className="mb-5">
             <Toaster />
@@ -75,7 +77,7 @@ export default function Profile(props) {
                     }
                     <div className="grid grid-cols-1 p-5 gap-5 mb-5 bg-white rounded-lg">
                         <div className="flex justify-center items-center">
-                            <Image src={props.data.user.img ? process.env.NEXT_PUBLIC_URL + '/' + props.data.user.img : UserPlaceHolder} className="rounded-full" height={100} width={100} alt="Profile Picture User" />
+                            <Image src={props.data.user.img ? process.env.NEXT_PUBLIC_URL + '/storage/img_user/' + props.data.user.img : UserPlaceHolder} className="rounded-full" height={100} width={100} alt="Profile Picture User" />
                         </div>
                         <div className="flex flex-col justify-center items-center">
                             <h1 className="text-lg font-light text-center">{props.data.user.name}</h1>

@@ -26,7 +26,8 @@ export default function Layout(props) {
     }
 
     const userContext = {
-        user
+        user: user,
+        setUser: setUser
     }
 
     return (
