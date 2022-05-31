@@ -1,9 +1,10 @@
-/* eslint-disable @next/next/no-img-element */
+import Image from 'next/image'
 import React from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import { BsPlusCircle } from 'react-icons/bs'
 import { FiSend } from 'react-icons/fi'
 import ReactSelect from 'react-select'
+import UserPlaceholder from "../../../public/img/userplaceholder.png"
 
 export default function AddAssignees({ permissions, addUserProject, users, allUsers, formikProjects, formikProjectsHandleSubmit, formikProjectsValueAssignment, fetchAllUser, deleteEachUser }) {
     return (
@@ -37,7 +38,7 @@ export default function AddAssignees({ permissions, addUserProject, users, allUs
                             return (
                                 <div key={user.id} className="flex items-center justify-between p-3 gap-4">
                                     <div className='flex items-center justify-center gap-4'>
-                                        <img className="w-9 h-9 rounded-full" src="../../../img/ade.png" alt="Profile image" />
+                                        <Image className="w-9 h-9 rounded-full" src={!user.img ? UserPlaceholder : process.env.NEXT_PUBLIC_URL + '/storage/img_user/' + user.img} alt="Profile image" width={30} height={30} />
                                         <div>
                                             <p className="text-gray-600 text-xs">{user.name}</p>
                                             <p className="text-gray-400 text-xs">{user.email}</p>

@@ -1,24 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
 import { BsThreeDots, BsCalendarDate, BsClock, BsTrash, BsInfoLg, BsChevronLeft, BsChevronRight } from 'react-icons/bs'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
-import { AiFillSchedule, AiOutlineSearch } from 'react-icons/ai'
-import { MdConstruction, MdFileDownloadDone } from 'react-icons/md'
+import { AiFillSchedule } from 'react-icons/ai'
+import { MdFileDownloadDone } from 'react-icons/md'
 import { BiLoader, BiCommentDetail, BiPhoneCall, BiAddToQueue } from 'react-icons/bi'
-import { useContext, useEffect, useRef } from 'react'
+import { useContext, useEffect } from 'react'
 import nookies from 'nookies';
 import axios from 'axios';
 import { useState } from 'react'
-import { Dialog, Menu, Popover, Transition } from '@headlessui/react'
+import { Menu } from '@headlessui/react'
 import Link from 'next/link'
 import ReactDatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import Image from 'next/image'
 import notYetImageProject from '../public/img/not-yet.png'
-import { Fragment } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import { UserContext } from './context/userContext'
 import ModalCreateProject from '../components/Project/ModalCreateProject'
 import ModalDeleteProject from '../components/Project/ModalDeleteProject'
+import UserPlaceholder from '../public/img/userplaceholder.png'
 
 export default function Project(props) {
     const userContext = useContext(UserContext)
@@ -258,7 +258,8 @@ export default function Project(props) {
                             <div className="-space-x-3">
                                 {project.users.map((user) => {
                                     return (
-                                        <img key={user.id} className="relative z-1 inline object-cover w-8 h-8 border-2 border-white rounded-full" src="img/ade.png" alt="Profile image" />
+                                        <Image key={user.id} className="relative z-1 inline object-cover w-8 h-8 border-2 border-white rounded-full" src={!user.img ? UserPlaceholder : process.env.NEXT_PUBLIC_URL + '/storage/img_user/' + user.img
+                                        } alt="User Metime Moment" width={25} height={25} />
                                     )
                                 })}
                             </div>

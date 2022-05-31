@@ -407,7 +407,7 @@ export default function DetailsProject({ data }) {
                     <Progress
                         permissions={permissions}
                         progress={progress}
-                        authUser={userContext.user.id}
+                        authUser={userContext.user}
                         deleteProgress={deleteProgress}
                         formikComments={formikComments}
                     />
