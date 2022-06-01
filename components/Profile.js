@@ -16,17 +16,42 @@ import nookies from 'nookies';
 import toast, { Toaster } from 'react-hot-toast'
 
 export default function Profile(props) {
-    useEffect(() => {
-        setProjects(props.data.projects)
-    }, [props.data.projects])
-
     const userContext = useContext(UserContext)
     const [isOpenDelete, setIsOpenDelete] = useState(false)
     const [dataModalDelete, setDataModalDelete] = useState([{}])
     const [projects, setProjects] = useState([{}])
+    const [search, setSearch] = useState('')
+    const [userSearch, setUserSearch] = useState('')
 
     const cookies = nookies.get()
     const token = cookies.token
+
+    const searchData = (e) => {
+        setSearch({ s: e })
+    }
+
+    useEffect(() => {
+        setProjects(props.data.projects)
+
+        const searchUser = async () => {
+            const arr = []
+
+            if (search.s) {
+                arr.push(`s=${search.s}`)
+            }
+
+            axios.get(`${process.env.NEXT_PUBLIC_URL}/api/users?${arr.join('&')}`, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                }
+            })
+                .then(res => {
+                    const responseData = res.data.users
+                    setUserSearch(responseData)
+                })
+        }
+        searchUser()
+    }, [props.data.projects, search.s, token])
 
     if (userContext.user.username === undefined) {
         return <div className="flex justify-center items-center h-screen">
@@ -61,8 +86,6 @@ export default function Profile(props) {
         setDataModalDelete(data)
         setIsOpenDelete(true)
     }
-
-    console.log(props.data.user.img)
 
     return (
         <div className="mb-5">
@@ -108,17 +131,32 @@ export default function Profile(props) {
                         </div>
                     </div>
 
-                    <h1 className="mb-5 text-2xl font-extralight">Related User</h1>
-                    <div className="grid grid-cols-1 gap-5 mb-5">
-                        <div className="col-span-1 bg-white rounded-lg p-3">
-                            <div className="flex justify-start space-x-5 items-center">
-                                <Image src={UserPlaceHolder} className="rounded-full" height={40} width={40} alt="Profile Picture User" />
-                                <div>
-                                    <h1 className="text-md font-light">{props.data.user.name}</h1>
-                                    <h1 className="text-sm font-extralight">{props.data.user.username}</h1>
-                                </div>
-                            </div>
+                    <h1 className="mb-5 text-2xl font-extralight">Search User</h1>
+                    <div className="flex gap-x-3 mb-5 justify-between align-items-center">
+                        <div className="flex bg-white p-2 w-72 space-x-4 rounded-xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                            <input className="bg-white w-full outline-none" type="text" placeholder="Search" onKeyUp={e => { searchData(e.target.value) }} />
                         </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-4 mb-5">
+                        {
+                            !search.s ? null :
+                                userSearch.map((user, index) => (
+                                    <div key={user.id} className="col-span-1 bg-white rounded-lg p-3">
+                                        <div className="flex justify-start space-x-5 items-center">
+                                            <Image src={UserPlaceHolder} className="rounded-full" height={40} width={40} alt="Profile Picture User" />
+                                            <Link href={"/userprofile/" + user.username} passHref>
+                                                <a>
+                                                    <h1 className="text-md font-light">{user.name}</h1>
+                                                    <h1 className="text-sm font-extralight">{user.username}</h1>
+                                                </a>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                ))
+                        }
                     </div>
                 </div>
 
