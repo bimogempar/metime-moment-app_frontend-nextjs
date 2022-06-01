@@ -80,9 +80,13 @@ export default function EditProfile(props) {
             formData.append('email', values.email)
             formData.append('no_hp', values.no_hp)
 
-            if (updatePassword) {
-                formData.append('old_password', values.old_password)
-                formData.append('new_password', values.new_password)
+            if (updatePassword == false) {
+                if (values.old_password != '') {
+                    formData.append('old_password', values.old_password)
+                }
+                if (values.new_password != '') {
+                    formData.append('new_password', values.new_password)
+                }
             }
 
             axios.post(`${process.env.NEXT_PUBLIC_URL}/api/user/${authUser.username}/updateprofile`, formData, {
@@ -92,6 +96,7 @@ export default function EditProfile(props) {
             })
                 .then(res => {
                     // console.log(res)
+                    // return
                     if (res.data.error) {
                         console.log(res.data.error)
                         formikUpdateUser.setFieldValue('name', authUser.name)
@@ -109,6 +114,7 @@ export default function EditProfile(props) {
                     formikUpdateUser.setFieldValue('img', '')
                     formikUpdateUser.setFieldValue('old_password', '')
                     formikUpdateUser.setFieldValue('new_password', '')
+                    formikUpdateUser.resetForm({ authUser })
                     toast.success('Update User Successfully')
                 })
         }
