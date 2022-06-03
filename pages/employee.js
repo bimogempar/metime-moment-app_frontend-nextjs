@@ -16,9 +16,9 @@ export default function Employee(props) {
             console.log(values)
         }
     })
-    console.log(formik)
+
     return (
-        <Layout>
+        <Layout title="Human Resource">
             <div className="mb-5">
                 <h1 className="mb-5 text-2xl font-extralight">Employee</h1>
                 <div className="grid grid-cols-1 gap-5 bg-white p-5 rounded-xl">

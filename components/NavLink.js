@@ -1,25 +1,29 @@
 import { FcAddImage, FcExport, FcFolder, FcHome, FcInspection, FcSettings, FcTimeline } from "react-icons/fc";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useState, useRef } from "react";
 import { UserContext } from "../components/context/userContext";
-import nookies from "nookies";
+import nookies, { destroyCookie } from "nookies";
 import axios from 'axios';
 import { route } from "next/dist/server/router";
+import ModalDialog from "./ModalDialog";
 
 export default function NavLink() {
     const userContext = useContext(UserContext)
     const router = useRouter()
     const token = nookies.get()
 
-    const doLogout = () => {
-        router.push('/login')
-        axios.post(`${process.env.NEXT_PUBLIC_URL}/api/logout`, {}, {
+    const [isOpen, setIsOpen] = useState(false);
+    const buttonRef = useRef(null);
+
+    const doLogout = async () => {
+        router.replace('/login')
+        destroyCookie(null, 'token')
+        await axios.post(`${process.env.NEXT_PUBLIC_URL}/api/logout`, {}, {
             headers: {
                 'Authorization': 'Bearer ' + token.token
             }
         })
-        nookies.destroy(null, 'token')
     }
 
     const inactive = "flex items-center gap-4 p-2 w-full text-center lg:w-auto rounded-full text-sm font-medium tracking-wider hover:bg-blue-200 hover:text-blue-800 transition ease-in-out duration-150"
@@ -44,13 +48,13 @@ export default function NavLink() {
                                 </a>
                             </Link>
                         </li>
-                        <li className="mt-2">
+                        {/* <li className="mt-2">
                             <Link href="/fav-projects">
                                 <a className={router.pathname == "/fav-projects" ? active : inactive}>
                                     <FcFolder /> Favorite
                                 </a>
                             </Link>
-                        </li>
+                        </li> */}
                         <li className="mt-2">
                             <Link href={"/userprofile/" + userContext.user.username}>
                                 <a className={router.pathname == "/userprofile/[username]" || router.pathname == "/userprofile/setting/[username]" ? active : inactive}>
@@ -78,13 +82,14 @@ export default function NavLink() {
                         <FcSettings />
                     </a>
                 </Link>
-                <button onClick={doLogout} className="flex items-center hover:bg-blue-200 hover:text-blue-800 transition ease-in-out duration-200 p-2 rounded-xl">
+                <button onClick={() => { setIsOpen(true) }} className="flex items-center hover:bg-blue-200 hover:text-blue-800 transition ease-in-out duration-200 p-2 rounded-xl">
                     <a className="text-2xl">
                         <FcExport />
                     </a>
                     <p className="mx-2">Logout</p>
                 </button>
             </div>
+            <ModalDialog setIsOpen={setIsOpen} isOpen={isOpen} buttonRef={buttonRef} doLogout={doLogout} description="Are u sure to logout ?" />
         </div >
     )
 }
