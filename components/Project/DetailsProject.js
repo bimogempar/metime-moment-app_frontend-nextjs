@@ -27,7 +27,6 @@ export default function DetailsProject({ data }) {
     const [users, setUsers] = useState(data.project.users);
     const [inputClient, setInputClient] = useState(false);
     const [addUserProject, setAddUserProject] = useState(false);
-    const [addComment, setAddComment] = useState(false);
     const [permissions, setPermissions] = useState(false);
 
     const [allUsers, setAllUsers] = useState([]);
@@ -355,6 +354,26 @@ export default function DetailsProject({ data }) {
             })
     }
 
+    const handleButtonSubmitProject = () => {
+        if (formikProjects.dirty) {
+            formikProjects.handleSubmit()
+        }
+        if (!formikProjects.dirty) {
+            // console.log('belum diedit')
+            setInputClient(false)
+        }
+    }
+
+    const handleSubmitAddAssign = (e) => {
+        e.preventDefault()
+        if (formikProjects.dirty) {
+            formikProjects.handleSubmit()
+        }
+        if (!formikProjects.dirty) {
+            setAddUserProject(false)
+        }
+    }
+
     return (
         <>
             <Toaster />
@@ -376,6 +395,7 @@ export default function DetailsProject({ data }) {
                         inputClient={inputClient}
                         permissions={permissions}
                         setInputClient={setInputClient}
+                        handleButtonSubmitProject={handleButtonSubmitProject}
                     />
 
                     <ImageHeader />
@@ -422,6 +442,7 @@ export default function DetailsProject({ data }) {
                     formikProjects={formikProjects}
                     fetchAllUser={fetchAllUser}
                     deleteEachUser={deleteEachUser}
+                    handleSubmitAddAssign={handleSubmitAddAssign}
                 />
 
             </div>

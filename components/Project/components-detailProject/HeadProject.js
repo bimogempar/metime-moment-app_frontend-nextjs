@@ -3,7 +3,7 @@ import { BsFillTelephoneOutboundFill } from 'react-icons/bs';
 import { FaRegEdit } from 'react-icons/fa';
 import { FiSend } from 'react-icons/fi';
 
-export default function HeadProject({ clientName, projectStatus, projectPhone, formikProjects, formikProjectValueClient, formikProjectValuePhone, inputClient, formikProjectHandleChange, formikProjectHandleSubmit, permissions, setInputClient }) {
+export default function HeadProject({ handleButtonSubmitProject, clientName, projectStatus, projectPhone, formikProjects, formikProjectValueClient, formikProjectValuePhone, inputClient, formikProjectHandleChange, formikProjectHandleSubmit, permissions, setInputClient }) {
     return (
         <div className="p-5">
             <div className="flex items-center justify-between">
@@ -27,7 +27,7 @@ export default function HeadProject({ clientName, projectStatus, projectPhone, f
                     </select> : <h1 className="p-2 bg-gray-200 text-gray-500 rounded-lg appearance-none">{projectStatus === 1 ? 'On Scheduled' : projectStatus === 2 ? 'On Progress' : 'Done'}</h1>}
                     {/* Button Edit or Submit */}
                     {inputClient ?
-                        <button className="bg-blue-500 p-3 rounded-lg text-white" type="button" onClick={formikProjects.handleSubmit}><FiSend /></button>
+                        <button className="bg-blue-500 p-3 rounded-lg text-white" type="button" onClick={handleButtonSubmitProject}><FiSend /></button>
                         :
                         permissions ?
                             <button onClick={() => { inputClient ? setInputClient(false) : setInputClient(true) }} className="bg-yellow-400 text-white p-2 rounded-lg"><FaRegEdit size={20} /></button>

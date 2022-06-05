@@ -6,7 +6,7 @@ import { FiSend } from 'react-icons/fi'
 import ReactSelect from 'react-select'
 import UserPlaceholder from "../../../public/img/userplaceholder.png"
 
-export default function AddAssignees({ permissions, addUserProject, users, allUsers, formikProjects, formikProjectsHandleSubmit, formikProjectsValueAssignment, fetchAllUser, deleteEachUser }) {
+export default function AddAssignees({ handleSubmitAddAssign, permissions, addUserProject, users, allUsers, formikProjects, formikProjectsHandleSubmit, formikProjectsValueAssignment, fetchAllUser, deleteEachUser }) {
     return (
         <div className="col-span-3 xl:col-span-1 lg:col-span-2 md:col-span-2 rounded-xl">
             <div className="p-5 bg-white rounded-xl">
@@ -14,7 +14,7 @@ export default function AddAssignees({ permissions, addUserProject, users, allUs
                     <h2 className="text-sm font-light text-gray-500 uppercase">Assignees</h2>
                     {
                         addUserProject ?
-                            <form onSubmit={formikProjects.handleSubmit} className="flex items-center gap-2">
+                            <form onSubmit={handleSubmitAddAssign} className="flex items-center gap-2">
                                 <div className="w-full">
                                     <ReactSelect
                                         className='my-2'
