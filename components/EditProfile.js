@@ -114,7 +114,7 @@ export default function EditProfile(props) {
                     formikUpdateUser.setFieldValue('img', '')
                     formikUpdateUser.setFieldValue('old_password', '')
                     formikUpdateUser.setFieldValue('new_password', '')
-                    formikUpdateUser.resetForm({ authUser })
+                    formikUpdateUser.resetForm({ values })
                     toast.success('Update User Successfully')
                 })
         }
