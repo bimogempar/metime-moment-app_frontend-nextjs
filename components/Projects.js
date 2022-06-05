@@ -24,6 +24,7 @@ export default function Project(props) {
     const userContext = useContext(UserContext)
 
     const [page, setPage] = useState(1)
+    const [lastPage, setLastPage] = useState(2)
     const [projects, setProjects] = useState([])
     const [search, setSearch] = useState({
         s: '',
@@ -59,7 +60,7 @@ export default function Project(props) {
             const arr = []
 
             if (search.s === '' || search.category === '') {
-                arr.push(`page=${page}`)
+                arr.push(`page=1`)
             }
 
             if (search.s) {
@@ -92,7 +93,23 @@ export default function Project(props) {
         }
 
         fetchProjects()
-    }, [search, page, startDate, endDate, token])
+    }, [search, startDate, endDate, token])
+
+    const handleLoadMore = async (e) => {
+        setPage(page + 1)
+        await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/projects?page=${page + 1}`, {
+            headers: {
+                Authorization: 'Bearer ' + token,
+            }
+        })
+            .then(function (response) {
+                setLastPage(response.data.last_page)
+                setProjectsData(projectsData.concat(response.data.data))
+            })
+            .catch(function (error) {
+                // console.log(error);
+            })
+    }
 
     if (projects.data === undefined) {
         return <div className="flex justify-center items-center h-screen">
@@ -192,8 +209,8 @@ export default function Project(props) {
             <ModalDeleteProject isOpenDelete={isOpenDelete} setIsOpenDelete={setIsOpenDelete} dataModalDelete={dataModalDelete} deleteProject={deleteProject} />
 
             <div className="grid grid-cols-12 gap-5">
-                {projectsData.map((project) => (
-                    <div key={project.id} className="bg-white xl:col-span-4 lg:col-span-6 col-span-12 rounded-xl p-4 text-sm" >
+                {projectsData.map((project, index) => (
+                    <div key={index} className="bg-white xl:col-span-4 lg:col-span-6 col-span-12 rounded-xl p-4 text-sm" >
 
                         <div className="mb-2 flex justify-between items-center">
                             {project.status == 1 &&
@@ -270,6 +287,14 @@ export default function Project(props) {
             </div>
             <div className="flex justify-center my-5 gap-x-2">
                 {
+                    page < lastPage &&
+                    <button className="bg-white rounded-xl p-2" onClick={handleLoadMore}>
+                        Load more
+                    </button>
+                }
+            </div>
+            {/* <div className="flex justify-center my-5 gap-x-2">
+                {
                     page > 1 &&
                     <button className="bg-white rounded-xl p-2" onClick={() => {
                         setPage(page - 1)
@@ -285,7 +310,7 @@ export default function Project(props) {
                         <BsChevronRight />
                     </button>
                 }
-            </div>
+            </div> */}
 
         </div >
     )
