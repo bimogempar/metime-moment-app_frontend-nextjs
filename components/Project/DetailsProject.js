@@ -222,7 +222,7 @@ export default function DetailsProject({ data }) {
                 })
                     .then(res => {
                         setProgress(res.data.project.progress);
-                        toast.success('Comment added successfully', {
+                        toast.success('Progress added successfully', {
                             position: "top-center",
                             autoClose: 5000,
                             hideProgressBar: false,
