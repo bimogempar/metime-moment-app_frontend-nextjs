@@ -16,12 +16,17 @@ import nookies from 'nookies';
 import toast, { Toaster } from 'react-hot-toast'
 
 export default function Profile(props) {
+    // console.log(props.data)
+    const initProjects = props.data.projects
     const userContext = useContext(UserContext)
     const [isOpenDelete, setIsOpenDelete] = useState(false)
     const [dataModalDelete, setDataModalDelete] = useState([{}])
-    const [projects, setProjects] = useState([{}])
+    const [projects, setProjects] = useState(initProjects)
     const [search, setSearch] = useState('')
     const [userSearch, setUserSearch] = useState('')
+    const [page, setPage] = useState(1)
+    const [lastPage, setLastPage] = useState(0)
+    const [totalProject, setTotalProject] = useState(0)
 
     const cookies = nookies.get()
     const token = cookies.token
@@ -32,6 +37,7 @@ export default function Profile(props) {
 
     useEffect(() => {
         setProjects(props.data.projects)
+        setTotalProject(props.data.totalProject)
 
         const searchUser = async () => {
             const arr = []
@@ -39,6 +45,9 @@ export default function Profile(props) {
             if (search.s) {
                 arr.push(`s=${search.s}`)
             }
+
+            setLastPage(0)
+            setPage(1)
 
             axios.get(`${process.env.NEXT_PUBLIC_URL}/api/users?${arr.join('&')}`, {
                 headers: {
@@ -51,15 +60,30 @@ export default function Profile(props) {
                 })
         }
         searchUser()
-    }, [props.data.projects, search.s, token])
+    }, [props.data.projects, props.data.totalProject, search.s, token])
+
+    const handleLoadMore = (e) => {
+        setPage(page + 1)
+        axios.get(`${process.env.NEXT_PUBLIC_URL}/api/user/${props.data.user.username}?page=${page + 1}`, {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+            }
+        })
+            .then(res => {
+                const responseData = res.data.projects
+                setLastPage(res.data.last_page)
+                setProjects([...projects, ...responseData])
+            })
+    }
+
+    console.log('last page :' + lastPage)
+    console.log('page :' + page)
 
     if (userContext.user.username === undefined) {
         return <div className="flex justify-center items-center h-screen">
             <BiLoader className="text-6xl text-gray-400" />
         </div>
     }
-
-    const userProjectsLength = projects.length
 
     const deleteProject = (id) => {
         const deletePromise = axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/projects/${id}/delete`, {
@@ -117,7 +141,7 @@ export default function Profile(props) {
                             <div className="col-span-1">
                                 <div className="flex flex-col justify-center items-center gap-3">
                                     <BiPhotoAlbum className="text-2xl text-black/50" />
-                                    <h1 className="font-extralight text-amber-600 text-6xl align-text-left text-center">{userProjectsLength}</h1>
+                                    <h1 className="font-extralight text-amber-600 text-6xl align-text-left text-center">{totalProject}</h1>
                                     <h1 className="font-light text-black/75 text-md text-center">Project</h1>
                                 </div>
                             </div>
@@ -235,10 +259,16 @@ export default function Profile(props) {
                         ))}
 
                     </div>
+                    <div className="flex justify-center mt-5">
+                        {
+                            page > lastPage && totalProject != 0 ?
+                                <button className='bg-white p-2 rounded-lg' onClick={handleLoadMore}>Load More</button>
+                                : null
+                        }
+                    </div>
                 </div>
 
             </div>
-
         </div >
     )
 }

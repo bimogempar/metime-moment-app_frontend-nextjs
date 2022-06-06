@@ -94,6 +94,7 @@ export default function Project(props) {
 
         fetchProjects()
     }, [search, startDate, endDate, token])
+    console.log(projects.total)
 
     const handleLoadMore = async (e) => {
         setPage(page + 1)
@@ -287,30 +288,12 @@ export default function Project(props) {
             </div>
             <div className="flex justify-center my-5 gap-x-2">
                 {
-                    page < lastPage &&
-                    <button className="bg-white rounded-xl p-2" onClick={handleLoadMore}>
-                        Load more
-                    </button>
+                    page < lastPage && projects.total != 0 ?
+                        <button className="bg-white rounded-xl p-2" onClick={handleLoadMore}>
+                            Load more
+                        </button> : null
                 }
             </div>
-            {/* <div className="flex justify-center my-5 gap-x-2">
-                {
-                    page > 1 &&
-                    <button className="bg-white rounded-xl p-2" onClick={() => {
-                        setPage(page - 1)
-                    }}>
-                        <BsChevronLeft />
-                    </button>
-                }
-                {
-                    page < projects.last_page &&
-                    <button className="bg-white rounded-xl p-2" onClick={() => {
-                        setPage(page + 1)
-                    }}>
-                        <BsChevronRight />
-                    </button>
-                }
-            </div> */}
 
         </div >
     )
