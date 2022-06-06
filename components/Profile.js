@@ -25,7 +25,7 @@ export default function Profile(props) {
     const [search, setSearch] = useState('')
     const [userSearch, setUserSearch] = useState('')
     const [page, setPage] = useState(1)
-    const [lastPage, setLastPage] = useState(0)
+    const [lastPage, setLastPage] = useState(props.data.last_page)
     const [totalProject, setTotalProject] = useState(0)
 
     const cookies = nookies.get()
@@ -39,15 +39,15 @@ export default function Profile(props) {
         setProjects(props.data.projects)
         setTotalProject(props.data.totalProject)
 
+        setLastPage(props.data.last_page)
+        setPage(1)
+
         const searchUser = async () => {
             const arr = []
 
             if (search.s) {
                 arr.push(`s=${search.s}`)
             }
-
-            setLastPage(0)
-            setPage(1)
 
             axios.get(`${process.env.NEXT_PUBLIC_URL}/api/users?${arr.join('&')}`, {
                 headers: {
@@ -60,7 +60,7 @@ export default function Profile(props) {
                 })
         }
         searchUser()
-    }, [props.data.projects, props.data.totalProject, search.s, token])
+    }, [props.data.last_page, props.data.projects, props.data.totalProject, search.s, token])
 
     const handleLoadMore = (e) => {
         setPage(page + 1)
@@ -76,8 +76,8 @@ export default function Profile(props) {
             })
     }
 
-    console.log('last page :' + lastPage)
-    console.log('page :' + page)
+    // console.log('last page :' + lastPage)
+    // console.log('page :' + page)
 
     if (userContext.user.username === undefined) {
         return <div className="flex justify-center items-center h-screen">
@@ -261,7 +261,7 @@ export default function Profile(props) {
                     </div>
                     <div className="flex justify-center mt-5">
                         {
-                            page > lastPage && totalProject != 0 ?
+                            page < lastPage && totalProject != 0 ?
                                 <button className='bg-white p-2 rounded-lg' onClick={handleLoadMore}>Load More</button>
                                 : null
                         }

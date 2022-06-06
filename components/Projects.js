@@ -83,9 +83,11 @@ export default function Project(props) {
                 }
             })
                 .then(function (response) {
+                    // console.log(response.data.last_page)
                     const fetchProjects = response.data
                     setProjects(fetchProjects)
                     setProjectsData(fetchProjects.data)
+                    setLastPage(response.data.last_page)
                 })
                 .catch(function (error) {
                     // console.log(error);
@@ -94,7 +96,6 @@ export default function Project(props) {
 
         fetchProjects()
     }, [search, startDate, endDate, token])
-    console.log(projects.total)
 
     const handleLoadMore = async (e) => {
         setPage(page + 1)
@@ -120,6 +121,9 @@ export default function Project(props) {
     // console.log(startDate)
     // console.log(endDate)
 
+    // console.log('page : ' + page)
+    // console.log('lastPage : ' + lastPage)
+
     const deleteProject = (id) => {
         // console.log(id)
         // return
@@ -128,28 +132,10 @@ export default function Project(props) {
                 Authorization: 'Bearer ' + token,
             }
         }).then(function (response) {
-            axios.get(`${process.env.NEXT_PUBLIC_URL}/api/projects?page=${page}`, {
-                headers: {
-                    Authorization: 'Bearer ' + token,
-                }
-            })
-                .then(function (response) {
-                    const fetchProjects = response.data
-                    setProjects(fetchProjects)
-                    setProjectsData(fetchProjects.data)
-                    setIsOpenDelete(false)
-                    toast.success('Project deleted successfully!', {
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    })
-                })
-                .catch(function (error) {
-                    // console.log(error);
-                })
+            // console.log(response)
+            setProjectsData(projectsData.filter(project => project.id !== id))
+            setIsOpenDelete(false)
+            toast.success('Project deleted')
         }).catch(function (error) {
             console.log(error);
         })
