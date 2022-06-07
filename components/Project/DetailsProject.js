@@ -310,7 +310,7 @@ export default function DetailsProject({ data }) {
 
     const fetchAllUser = () => {
         // console.log('clicked')
-        axios.get(`${process.env.NEXT_PUBLIC_URL}/api/users`, {
+        axios.get(`${process.env.NEXT_PUBLIC_URL}/api/users/react-select`, {
             headers: {
                 Authorization: 'Bearer ' + token,
             },

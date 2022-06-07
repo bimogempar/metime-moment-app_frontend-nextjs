@@ -43,6 +43,7 @@ export default function Project(props) {
 
     const searchData = (s) => {
         setSearch({ s })
+        setPage(1)
     }
 
     const filterCategory = (category) => {
@@ -97,6 +98,8 @@ export default function Project(props) {
         fetchProjects()
     }, [search, startDate, endDate, token])
 
+    console.log(projects)
+
     const handleLoadMore = async (e) => {
         setPage(page + 1)
         await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/projects?page=${page + 1}`, {
@@ -133,6 +136,7 @@ export default function Project(props) {
             }
         }).then(function (response) {
             // console.log(response)
+            setLastPage(response.data.last_page)
             setProjectsData(projectsData.filter(project => project.id !== id))
             setIsOpenDelete(false)
             toast.success('Project deleted')
