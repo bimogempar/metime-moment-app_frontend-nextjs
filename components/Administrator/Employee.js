@@ -7,6 +7,7 @@ import UserPlaceholder from '../../public/img/userplaceholder.png'
 import ModalNewEmployee from './Modal/ModalNewEmployee'
 import ModalDeleteEmployee from './Modal/ModalDeleteEmployee'
 import { BsTrash } from 'react-icons/bs'
+import toast, { Toaster } from 'react-hot-toast'
 
 export default function Employee() {
     const [search, setSearch] = useState({
@@ -74,6 +75,21 @@ export default function Employee() {
         setIsOpenDelete(true)
     }
 
+    const deleteEmployee = (id) => {
+        axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/users/${id}/delete`, {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+            }
+        })
+            .then(res => {
+                setEmployees(employees.filter(employee => employee.id !== id))
+                setIsOpenDelete(false)
+                toast.success(res.data.message)
+            }).catch(err => {
+                toast.error(err.response.data.message)
+            })
+    }
+
     const handleNewEmployee = (e) => {
         setIsOpenCreate(true)
     }
@@ -84,14 +100,9 @@ export default function Employee() {
         setIsOpenCreate(false)
     }
 
-    const deleteEmployee = (e) => {
-        console.log('function delete')
-        // axios
-        setIsOpenDelete(false)
-    }
-
     return (
         <div className="grid grid-cols-1 gap-5 bg-white p-5 rounded-xl">
+            <Toaster />
             <div className="flex gap-x-3 justify-between align-items-center">
                 <div className="flex bg-gray-100 p-2 w-2/5 xl:w-1/4 space-x-4 rounded-xl">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -154,13 +165,13 @@ export default function Employee() {
                                             <div className="text-sm text-center">{employee.no_hp}</div>
                                         </td>
                                         <td className="p-2 whitespace-nowrap">
-                                            <div className="text-sm text-center bg-yellow-200 text-yellow-700 py-1 rounded-lg">{employee.role}</div>
+                                            <div className="text-sm text-center bg-yellow-200 text-yellow-700 py-1 rounded-lg">{employee.role == 1 && "Employee" || employee.role == 2 && "Manager" || employee.role == 3 && "Admin"}</div>
                                         </td>
                                         <td className="p-2 whitespace-nowrap">
                                             <div className="text-lg text-center text-amber-600">{employee.projects.length}</div>
                                         </td>
-                                        <td className="p-2 whitespace-nowrap">
-                                            <div className="text-md text-center inline-flex p-1 justify-center rounded-md bg-red-500 text-white cursor-pointer" onClick={e => handleDeleteEmployee(employee)}><BsTrash /></div>
+                                        <td className="p-2 whitespace-nowrap flex justify-center">
+                                            <div className="text-md text-center inline-flex p-1 rounded-md bg-red-500 text-white cursor-pointer" onClick={e => handleDeleteEmployee(employee)}><BsTrash /></div>
                                         </td>
                                     </tr>
                                 ))

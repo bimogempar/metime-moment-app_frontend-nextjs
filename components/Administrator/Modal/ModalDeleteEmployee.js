@@ -29,9 +29,9 @@ export default function ModalDeleteEmployee({ setIsOpen, isOpen, buttonRef, data
                         <div className="relative bg-white rounded max-w-3xl md:mx-auto p-5 md:my-5 m-5">
                             {title}
                             <p>
-                                Yakin ingin menghapus user {data.name} ?
+                                Yakin ingin menghapus user {data == undefined ? '' : data.name} ?
                             </p>
-                            <button className='bg-blue-500 text-white p-2 rounded-lg' onClick={deleteEmployee}>Hapus</button>
+                            <button className='bg-blue-500 text-white py-2 px-3 rounded-lg' onClick={e => deleteEmployee(data.id)}>Hapus</button>
                         </div>
                     </div>
                 </Transition.Child>
