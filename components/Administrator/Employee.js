@@ -1,10 +1,14 @@
-/* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import axios from 'axios'
 import nookies from 'nookies'
+import Link from 'next/link'
+import Image from 'next/image'
+import UserPlaceholder from '../../public/img/userplaceholder.png'
 
 export default function Employee() {
-    const [search, setSearch] = React.useState('')
+    const [search, setSearch] = React.useState({
+        s: '',
+    })
     const [page, setPage] = React.useState(1)
     const [lastPage, setLastPage] = React.useState(1)
     const [employees, setEmployees] = React.useState([])
@@ -12,12 +16,23 @@ export default function Employee() {
     const cookies = nookies.get()
     const token = cookies.token
 
+    const handleSearchEvent = (e) => {
+        setSearch({
+            s: e
+        })
+    }
+
     React.useEffect(() => {
         const searchUser = async () => {
             const arr = []
 
+            if (search.s == '') {
+                setPage(1)
+            }
+
             if (search.s) {
                 arr.push(`s=${search.s}`)
+                setPage(2)
             }
 
             axios.get(`${process.env.NEXT_PUBLIC_URL}/api/users?${arr.join('&')}`, {
@@ -52,7 +67,7 @@ export default function Employee() {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    <input className="bg-gray-100 w-full outline-none" type="text" placeholder="Search" onKeyUp={e => console.log(e.target.value)} />
+                    <input className="bg-gray-100 w-full outline-none" type="text" placeholder="Search" onKeyUp={e => handleSearchEvent(e.target.value)} />
                 </div>
             </div>
             <div className="p-2">
@@ -87,12 +102,17 @@ export default function Employee() {
                             {
                                 employees.map(employee => (
                                     <tr key={employee.id}>
-                                        <td className="p-2 whitespace-nowrap">
-                                            <div className="flex items-center">
-                                                <div className="w-10 h-10 flex-shrink-0 mr-2 sm:mr-3"><img className="rounded-full" src="https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-05.jpg" alt="Alex Shatov" width={40} height={40} /></div>
-                                                <div className="font-medium text-gray-800">{employee.name}</div>
-                                            </div>
-                                        </td>
+                                        <Link href={'/userprofile/' + employee.username} passHref>
+                                            <td className="p-2 whitespace-nowrap cursor-pointer">
+                                                <div className="flex items-center">
+                                                    <div className="w-10 h-10 flex-shrink-0 mr-2 sm:mr-3">
+                                                        <Image className="rounded-full" src={!employee.img ? UserPlaceholder : process.env.NEXT_PUBLIC_URL + '/storage/img_user/' + employee.img
+                                                        } alt="Alex Shatov" width={40} height={40} />
+                                                    </div>
+                                                    <div className="font-medium text-gray-800">{employee.name}</div>
+                                                </div>
+                                            </td>
+                                        </Link>
                                         <td className="p-2 whitespace-nowrap">
                                             <div className="text-left font-medium text-green-500">{employee.username}</div>
                                         </td>
@@ -106,7 +126,7 @@ export default function Employee() {
                                             <div className="text-sm text-center bg-yellow-200 text-yellow-700 py-1 rounded-lg">{employee.role}</div>
                                         </td>
                                         <td className="p-2 whitespace-nowrap">
-                                            <div className="text-lg text-center text-amber-600">9</div>
+                                            <div className="text-lg text-center text-amber-600">{employee.projects.length}</div>
                                         </td>
                                         <td className="p-2 whitespace-nowrap">
                                             <div className="text-sm text-center">This Button</div>
@@ -125,6 +145,6 @@ export default function Employee() {
                         : null
                 }
             </div>
-        </div>
+        </div >
     )
 }

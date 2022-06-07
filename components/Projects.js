@@ -98,8 +98,6 @@ export default function Project(props) {
         fetchProjects()
     }, [search, startDate, endDate, token])
 
-    console.log(projects)
-
     const handleLoadMore = async (e) => {
         setPage(page + 1)
         await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/projects?page=${page + 1}`, {
