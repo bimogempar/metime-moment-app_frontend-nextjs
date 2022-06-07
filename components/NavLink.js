@@ -64,9 +64,9 @@ export default function NavLink() {
                         </li>
                         {userContext.user.role == 2 || userContext.user.role == 3 ?
                             <li className="mt-2">
-                                <Link href="/employee">
-                                    <a className={router.pathname == "/employee" ? active : inactive}>
-                                        <FcAddImage /> HR
+                                <Link href="/administrator">
+                                    <a className={router.pathname == "/administrator" ? active : inactive}>
+                                        <FcAddImage /> Administrator
                                     </a>
                                 </Link>
                             </li>
