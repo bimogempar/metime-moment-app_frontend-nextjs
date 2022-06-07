@@ -1,17 +1,25 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import axios from 'axios'
 import nookies from 'nookies'
 import Link from 'next/link'
 import Image from 'next/image'
 import UserPlaceholder from '../../public/img/userplaceholder.png'
+import ModalNewEmployee from './Modal/ModalNewEmployee'
+import ModalDeleteEmployee from './Modal/ModalDeleteEmployee'
+import { BsTrash } from 'react-icons/bs'
 
 export default function Employee() {
-    const [search, setSearch] = React.useState({
+    const [search, setSearch] = useState({
         s: '',
     })
-    const [page, setPage] = React.useState(1)
-    const [lastPage, setLastPage] = React.useState(1)
-    const [employees, setEmployees] = React.useState([])
+    const [page, setPage] = useState(1)
+    const [lastPage, setLastPage] = useState(1)
+    const [employees, setEmployees] = useState([])
+    const [empDelete, setEmpDelete] = useState()
+
+    const [isOpenCreate, setIsOpenCreate] = useState(false);
+    const [isOpenDelete, setIsOpenDelete] = useState(false);
+    const buttonRef = useRef(null);
 
     const cookies = nookies.get()
     const token = cookies.token
@@ -22,7 +30,7 @@ export default function Employee() {
         })
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         const searchUser = async () => {
             const arr = []
 
@@ -32,7 +40,7 @@ export default function Employee() {
 
             if (search.s) {
                 arr.push(`s=${search.s}`)
-                setPage(2)
+                setPage(1)
             }
 
             axios.get(`${process.env.NEXT_PUBLIC_URL}/api/users?${arr.join('&')}`, {
@@ -43,6 +51,7 @@ export default function Employee() {
                 .then(res => {
                     const responseData = res.data.users
                     setEmployees(responseData)
+                    setLastPage(res.data.last_page)
                 })
         }
         searchUser()
@@ -60,6 +69,27 @@ export default function Employee() {
             })
     }
 
+    const handleDeleteEmployee = (e) => {
+        setEmpDelete(e)
+        setIsOpenDelete(true)
+    }
+
+    const handleNewEmployee = (e) => {
+        setIsOpenCreate(true)
+    }
+
+    const newEmployee = () => {
+        console.log('function create')
+        // axios
+        setIsOpenCreate(false)
+    }
+
+    const deleteEmployee = (e) => {
+        console.log('function delete')
+        // axios
+        setIsOpenDelete(false)
+    }
+
     return (
         <div className="grid grid-cols-1 gap-5 bg-white p-5 rounded-xl">
             <div className="flex gap-x-3 justify-between align-items-center">
@@ -67,8 +97,9 @@ export default function Employee() {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    <input className="bg-gray-100 w-full outline-none" type="text" placeholder="Search" onKeyUp={e => handleSearchEvent(e.target.value)} />
+                    <input className="bg-gray-100 w-full outline-none text-gray-500" type="text" placeholder="Search" onKeyUp={e => handleSearchEvent(e.target.value)} />
                 </div>
+                <button className="bg-gray-200 text-gray-500 p-2 rounded-xl" onClick={handleNewEmployee}>New Employee</button>
             </div>
             <div className="p-2">
                 <div className="overflow-x-auto">
@@ -129,7 +160,7 @@ export default function Employee() {
                                             <div className="text-lg text-center text-amber-600">{employee.projects.length}</div>
                                         </td>
                                         <td className="p-2 whitespace-nowrap">
-                                            <div className="text-sm text-center">This Button</div>
+                                            <div className="text-md text-center inline-flex p-1 justify-center rounded-md bg-red-500 text-white cursor-pointer" onClick={e => handleDeleteEmployee(employee)}><BsTrash /></div>
                                         </td>
                                     </tr>
                                 ))
@@ -140,11 +171,13 @@ export default function Employee() {
             </div>
             <div className="flex justify-end">
                 {
-                    page < lastPage || page == lastPage ?
-                        <button className='bg-gray-200 rounded-lg p-2' onClick={handleLoadMore}>Load more</button>
+                    page < lastPage || page != lastPage ?
+                        <button className='bg-gray-200 text-gray-500 rounded-lg p-2' onClick={handleLoadMore}>Load more</button>
                         : null
                 }
             </div>
+            <ModalDeleteEmployee setIsOpen={setIsOpenDelete} isOpen={isOpenDelete} buttonRef={buttonRef} data={empDelete} deleteEmployee={deleteEmployee} title="Are you sure to delete?" />
+            <ModalNewEmployee setIsOpen={setIsOpenCreate} isOpen={isOpenCreate} buttonRef={buttonRef} newEmployee={newEmployee} title="Create New Employee" />
         </div >
     )
 }

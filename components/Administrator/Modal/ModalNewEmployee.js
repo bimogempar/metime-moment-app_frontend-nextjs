@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
-export default function ModalDialog({ setIsOpen, isOpen, buttonRef, doLogout, description }) {
+export default function ModalNewEmployee({ setIsOpen, isOpen, buttonRef, newEmployee, title }) {
     return (
         <Transition as={Fragment} show={isOpen}>
             <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={() => setIsOpen(false)} initialFocus={buttonRef}>
@@ -27,11 +27,11 @@ export default function ModalDialog({ setIsOpen, isOpen, buttonRef, doLogout, de
                 >
                     <div className="flex items-center justify-center min-h-screen">
                         <div className="relative bg-white rounded max-w-3xl md:mx-auto p-5 md:my-5 m-5">
-                            <Dialog.Title></Dialog.Title>
-                            <Dialog.Description>
-                                {description}
-                            </Dialog.Description>
-                            <button className='bg-blue-500 text-white rounded-lg p-2' onClick={doLogout}>Logout</button>
+                            {title}
+                            <p>
+                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio reiciendis fugit dicta numquam repellendus odit saepe laudantium ipsam vitae natus?
+                            </p>
+                            <button className='bg-blue-500 text-white p-2 rounded-lg' onClick={newEmployee}>Create</button>
                         </div>
                     </div>
                 </Transition.Child>

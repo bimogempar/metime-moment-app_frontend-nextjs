@@ -6,7 +6,7 @@ import { UserContext } from "../components/context/userContext";
 import nookies, { destroyCookie } from "nookies";
 import axios from 'axios';
 import { route } from "next/dist/server/router";
-import ModalDialog from "./ModalDialog";
+import ModalLogout from "./ModalLogout";
 
 export default function NavLink() {
     const userContext = useContext(UserContext)
@@ -89,7 +89,7 @@ export default function NavLink() {
                     <p className="mx-2">Logout</p>
                 </button>
             </div>
-            <ModalDialog setIsOpen={setIsOpen} isOpen={isOpen} buttonRef={buttonRef} doLogout={doLogout} description="Are u sure to logout ?" />
+            <ModalLogout setIsOpen={setIsOpen} isOpen={isOpen} buttonRef={buttonRef} doLogout={doLogout} description="Are u sure to logout ?" />
         </div >
     )
 }
