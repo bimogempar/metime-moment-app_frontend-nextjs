@@ -98,7 +98,7 @@ export default function EditProfile(props) {
                     // console.log(res)
                     // return
                     if (res.data.error) {
-                        console.log(res.data.error)
+                        // console.log(res.data.error)
                         formikUpdateUser.setFieldValue('name', authUser.name)
                         formikUpdateUser.setFieldValue('username', authUser.username)
                         formikUpdateUser.setFieldValue('email', authUser.email)

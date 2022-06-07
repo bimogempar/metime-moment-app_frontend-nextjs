@@ -8,6 +8,8 @@ import ModalNewEmployee from './Modal/ModalNewEmployee'
 import ModalDeleteEmployee from './Modal/ModalDeleteEmployee'
 import { BsTrash } from 'react-icons/bs'
 import toast, { Toaster } from 'react-hot-toast'
+import { useFormik } from 'formik';
+import * as Yup from 'yup'
 
 export default function Employee() {
     const [search, setSearch] = useState({
@@ -94,11 +96,50 @@ export default function Employee() {
         setIsOpenCreate(true)
     }
 
-    const newEmployee = () => {
-        console.log('function create')
-        // axios
-        setIsOpenCreate(false)
-    }
+    const formikUsers = useFormik({
+        initialValues: {
+            name: '',
+            email: '',
+            username: '',
+            role: '1',
+        },
+        validationSchema: Yup.object({
+            name: Yup.string()
+                .min(3, 'Name must be at least 3 characters')
+                .max(40, 'Name must be less than 40 characters'),
+            username: Yup.string()
+                .min(3, 'Username must be at least 3 characters')
+                .max(20, 'Username must be less than 20 characters'),
+            email: Yup.string()
+                .email('Invalid email address'),
+            role: Yup.string()
+                .required('Role is required'),
+        }),
+        onSubmit: values => {
+            const register = axios.post(`${process.env.NEXT_PUBLIC_URL}/api/register`, values, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                }
+            })
+                .catch(err => {
+                    setIsOpenCreate(false)
+                })
+                .then(res => {
+                    if (res.data.error) {
+                        setIsOpenCreate(false)
+                        return catchError(res.data.error)
+                    }
+                    setEmployees([...employees, res.data.user])
+                    setIsOpenCreate(false)
+                    formikUsers.resetForm()
+                })
+            toast.promise(register, {
+                loading: 'Loading',
+                error: 'Failed to create user',
+                success: 'User created successfully',
+            });
+        }
+    })
 
     return (
         <div className="grid grid-cols-1 gap-5 bg-white p-5 rounded-xl">
@@ -188,7 +229,7 @@ export default function Employee() {
                 }
             </div>
             <ModalDeleteEmployee setIsOpen={setIsOpenDelete} isOpen={isOpenDelete} buttonRef={buttonRef} data={empDelete} deleteEmployee={deleteEmployee} title="Are you sure to delete?" />
-            <ModalNewEmployee setIsOpen={setIsOpenCreate} isOpen={isOpenCreate} buttonRef={buttonRef} newEmployee={newEmployee} title="Create New Employee" />
+            <ModalNewEmployee setIsOpen={setIsOpenCreate} isOpen={isOpenCreate} buttonRef={buttonRef} formikUsers={formikUsers} title="Create New Employee" />
         </div >
     )
 }
