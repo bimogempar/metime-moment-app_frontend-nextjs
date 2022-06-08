@@ -15,17 +15,21 @@ import Checklist from './components-detailProject/Checklist';
 import Progress from './components-detailProject/Progress';
 import AddAssignees from './components-detailProject/AddAssignees';
 import ThumbnailProject from './components-detailProject/ThumbnailProject';
+import FilesGDrive from './components-detailProject/FilesGDrive';
 
 export default function DetailsProject({ data }) {
     const [project, setProject] = useState(data.project);
+    const [filesGDrive, setFilesGDrive] = useState(data.files_gdrive)
+    const dirGDrive = data.dir.basename
     const [features, setFeatures] = useState(data.project.features);
     const [progress, setProgress] = useState(data.project.progress);
     const [users, setUsers] = useState(data.project.users);
     const [inputClient, setInputClient] = useState(false);
     const [addUserProject, setAddUserProject] = useState(false);
     const [permissions, setPermissions] = useState(false);
-
     const [allUsers, setAllUsers] = useState([]);
+
+
     const userContext = useContext(UserContext)
 
     useEffect(() => {
@@ -419,6 +423,12 @@ export default function DetailsProject({ data }) {
                         handleClickCB={handleClickCB}
                         resetForm={formikFeatures.resetForm}
                         formikFeatures={formikFeatures}
+                    />
+
+                    {/* Files GDrive */}
+                    <FilesGDrive
+                        dirGDrive={dirGDrive}
+                        filesGDrive={filesGDrive}
                     />
 
                     {/* Comment */}

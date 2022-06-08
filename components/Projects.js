@@ -152,7 +152,6 @@ export default function Project(props) {
         setIsOpenCreate(true)
     }
 
-    console.log(projectsData)
     return (
         <div className="mb-5" >
             <Toaster />
