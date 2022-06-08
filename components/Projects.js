@@ -115,15 +115,21 @@ export default function Project(props) {
             headers: {
                 Authorization: 'Bearer ' + token,
             }
-        }).then(function (response) {
-            // console.log(response)
-            setLastPage(response.data.last_page)
-            setProjectsData(projectsData.filter(project => project.id !== id))
-            setIsOpenDelete(false)
-            toast.success('Project deleted')
-        }).catch(function (error) {
-            console.log(error);
         })
+            .catch(function (error) {
+                // console.log(error);
+            })
+            .then(function (response) {
+                // console.log(response)
+                setLastPage(response.data.last_page)
+                setProjectsData(projectsData.filter(project => project.id !== id))
+                setIsOpenDelete(false)
+            })
+        toast.promise(deletePromise, {
+            loading: 'Loading',
+            error: 'Failed to create user',
+            success: 'User created successfully',
+        });
     }
 
     const handleClickDeleteProject = (data) => {

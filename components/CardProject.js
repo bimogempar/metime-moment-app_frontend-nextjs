@@ -20,22 +20,30 @@ export default function CardProject({ project, handleClickDeleteProject }) {
                     <AiFillSchedule size={20} /> On Scheduled
                 </div>
                 <Menu as="div" className="invisible lg:visible">
-                    <Menu.Button> <BsThreeDots /></Menu.Button>
+                    <Menu.Button>
+                        <BsThreeDots />
+                    </Menu.Button>
                     <Menu.Items className="absolute z-10 bg-white rounded-lg drop-shadow-xl">
                         <div className="grid grid-cols-1 rounded-xl p-2">
                             <Menu.Item>
-                                <Link href={"/projects/" + project.slug}><a className="hover:bg-gray-200 hover:rounded-lg p-2 flex items-center"><BsInfoLg className="mr-2" />View Detail</a></Link>
+                                <div>
+                                    <Link href={"/projects/" + project.slug}><a className="hover:bg-gray-200 hover:rounded-lg p-2 flex items-center"><BsInfoLg className="mr-2" />View Detail</a></Link>
+                                </div>
                             </Menu.Item>
                             {
                                 userContext.user.role == 2 || userContext.user.role == 3 ?
                                     <Menu.Item key={project.id}>
-                                        <button onClick={() => handleClickDeleteProject([project.client, project.id])} className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</button>
+                                        <div>
+                                            <button onClick={() => handleClickDeleteProject([project.client, project.id])} className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</button>
+                                        </div>
                                     </Menu.Item>
                                     : project.users.map(user => {
                                         if (user.id == userContext.user.id) {
                                             return (
                                                 <Menu.Item key={user.id}>
-                                                    <button onClick={() => handleClickDeleteProject([project.client, project.id])} className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</button>
+                                                    <div>
+                                                        <button onClick={() => handleClickDeleteProject([project.client, project.id])} className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</button>
+                                                    </div>
                                                 </Menu.Item>
                                             )
                                         }
@@ -57,13 +65,12 @@ export default function CardProject({ project, handleClickDeleteProject }) {
                         <div className="text-lg font-light">{project.client}</div>
                     </a>
                 </Link>
-            </div>
-
-            <div className='mt-3'>
-                <h3 className="text-sm font-extralight text-gray-500 flex items-center my-1 gap-2"><BsClock /> {project.time}</h3>
-                <h3 className="text-sm font-extralight text-gray-500 flex items-center my-1 gap-2"><BsCalendarDate /> {project.date}</h3>
-                <h3 className="text-sm font-extralight text-gray-500 flex items-center my-1 gap-2"><HiOutlineLocationMarker /> {project.location}</h3>
-                <h3 className="text-sm font-extralight text-gray-500 flex items-center my-1 gap-2"><BiPhoneCall /> {project.phone_number}</h3>
+                <div className='mt-3'>
+                    <h3 className="text-sm font-extralight text-gray-500 flex items-center my-1 gap-2"><BsClock /> {project.time}</h3>
+                    <h3 className="text-sm font-extralight text-gray-500 flex items-center my-1 gap-2"><BsCalendarDate /> {project.date}</h3>
+                    <h3 className="text-sm font-extralight text-gray-500 flex items-center my-1 gap-2"><HiOutlineLocationMarker /> {project.location}</h3>
+                    <h3 className="text-sm font-extralight text-gray-500 flex items-center my-1 gap-2"><BiPhoneCall /> {project.phone_number}</h3>
+                </div>
             </div>
 
             <div className="mt-4 rounded-xl flex justify-end">
