@@ -1,24 +1,15 @@
-/* eslint-disable @next/next/no-img-element */
-import { BsThreeDots, BsCalendarDate, BsClock, BsTrash, BsInfoLg, BsChevronLeft, BsChevronRight } from 'react-icons/bs'
-import { HiOutlineLocationMarker } from 'react-icons/hi'
-import { AiFillSchedule } from 'react-icons/ai'
-import { MdFileDownloadDone } from 'react-icons/md'
-import { BiLoader, BiCommentDetail, BiPhoneCall, BiAddToQueue } from 'react-icons/bi'
+import { BiLoader, BiAddToQueue } from 'react-icons/bi'
 import { useContext, useEffect } from 'react'
 import nookies from 'nookies';
 import axios from 'axios';
 import { useState } from 'react'
-import { Menu } from '@headlessui/react'
-import Link from 'next/link'
 import ReactDatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import Image from 'next/image'
-import notYetImageProject from '../public/img/not-yet.png'
 import toast, { Toaster } from 'react-hot-toast'
 import { UserContext } from './context/userContext'
 import ModalCreateProject from '../components/Project/ModalCreateProject'
 import ModalDeleteProject from '../components/Project/ModalDeleteProject'
-import UserPlaceholder from '../public/img/userplaceholder.png'
+import CardProject from './CardProject'
 
 export default function Project(props) {
     const userContext = useContext(UserContext)
@@ -189,84 +180,14 @@ export default function Project(props) {
             {/* Modal Delete Project */}
             <ModalDeleteProject isOpenDelete={isOpenDelete} setIsOpenDelete={setIsOpenDelete} dataModalDelete={dataModalDelete} deleteProject={deleteProject} />
 
-            <div className="grid grid-cols-12 gap-5">
-                {projectsData.map((project, index) => (
-                    <div key={index} className="bg-white xl:col-span-4 lg:col-span-6 col-span-12 rounded-xl p-4 text-sm" >
-
-                        <div className="mb-2 flex justify-between items-center">
-                            {project.status == 1 &&
-                                <div className="p-1 px-2 rounded-lg text-xs text bg-yellow-200 text-yellow-800 flex items-center gap-2">
-                                    <AiFillSchedule size={20} /> On Scheduled
-                                </div>
-                            }
-                            {project.status == 2 &&
-                                <div className="p-1 px-2 rounded-lg text-xs text bg-blue-200 text-blue-800 flex items-center gap-2">
-                                    <BiLoader size={20} /> On Progress
-                                </div>
-                            }
-                            {project.status == 3 &&
-                                <div className="p-1 px-2 rounded-lg text-xs text bg-green-200 text-green-800 flex items-center gap-2">
-                                    <MdFileDownloadDone size={20} /> Done
-                                </div>
-                            }
-                            <Menu as="div" className="invisible lg:visible">
-                                <Menu.Button> <BsThreeDots /></Menu.Button>
-                                <Menu.Items className="absolute z-10 bg-white rounded-lg drop-shadow-xl">
-                                    <div className="grid grid-cols-1 rounded-xl p-2">
-                                        <Menu.Item>
-                                            <Link href={"/projects/" + project.slug}><a className="hover:bg-gray-200 hover:rounded-lg p-2 flex items-center"><BsInfoLg className="mr-2" />View Detail</a></Link>
-                                        </Menu.Item>
-                                        {
-                                            userContext.user.role == 2 || userContext.user.role == 3 ?
-                                                <Menu.Item key={project.id}>
-                                                    <button onClick={() => handleClickDeleteProject([project.client, project.id])} className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</button>
-                                                </Menu.Item>
-                                                : project.users.map(user => {
-                                                    if (user.id == userContext.user.id) {
-                                                        return (
-                                                            <Menu.Item key={user.id}>
-                                                                <button onClick={() => handleClickDeleteProject([project.client, project.id])} className="hover:bg-red-500 hover:text-white  hover:rounded-lg p-2 flex items-center"><BsTrash className="mr-2" />Delete Project</button>
-                                                            </Menu.Item>
-                                                        )
-                                                    }
-                                                })
-                                        }
-                                    </div>
-                                </Menu.Items>
-                            </Menu>
-                        </div>
-
-                        <div className="mb-2 grid grid-rows-1 gap-2">
-                            <Link href={"/projects/" + project.slug} passHref>
-                                <button className="-mx-4 my-2 flex items-center">
-                                    <Image src={project.thumbnail_img == null ? notYetImageProject : process.env.NEXT_PUBLIC_URL + '/storage/thumbnail_img/' + project.thumbnail_img} alt="Thumbnail Project" objectFit='cover' objectPosition='center' width={1080} height={768} priority />
-                                </button>
-                            </Link>
-                            <Link href={"/projects/" + project.slug} passHref>
-                                <a>
-                                    <div className="text-lg font-light">{project.client}</div>
-                                </a>
-                            </Link>
-                            <div className="text-xs font-extralight text-gray-500 flex items-center gap-2"><BsClock /> {project.time}</div>
-                            <div className="text-xs font-extralight text-gray-500 flex items-center gap-2"><BsCalendarDate /> {project.date}</div>
-                            <div className="text-xs font-extralight text-gray-500 flex items-center gap-2"><HiOutlineLocationMarker /> {project.location}</div>
-                            <div className="text-xs font-extralight text-gray-500 flex items-center gap-2"><BiPhoneCall /> {project.phone_number}</div>
-                        </div>
-
-                        <div className="flex justify-end items-center">
-                            <div className="-space-x-3">
-                                {project.users.map((user) => {
-                                    return (
-                                        <Image key={user.id} className="relative z-1 inline object-cover w-8 h-8 border-2 border-white rounded-full" src={!user.img ? UserPlaceholder : process.env.NEXT_PUBLIC_URL + '/storage/img_user/' + user.img
-                                        } alt="User Metime Moment" width={25} height={25} />
-                                    )
-                                })}
-                            </div>
-                        </div>
-                    </div>
-                ))}
-
+            <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-3 gap-5">
+                {
+                    projectsData.map((project, index) => (
+                        <CardProject key={index} project={project} handleClickDeleteProject={handleClickDeleteProject} />
+                    ))
+                }
             </div>
+
             <div className="flex justify-center my-5 gap-x-2">
                 {
                     page < lastPage && projects.total != 0 ?
