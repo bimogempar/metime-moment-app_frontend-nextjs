@@ -2,23 +2,19 @@
 import React, { useState, useEffect, useContext } from 'react'
 import nookies from 'nookies';
 import axios from 'axios';
-import { BsChevronLeft, BsTrash, BsPlusCircle } from 'react-icons/bs';
-import { AiOutlineClose } from "react-icons/ai";
+import { BsChevronLeft } from 'react-icons/bs';
 import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import { UserContext } from '../context/userContext';
-import { FiSend } from 'react-icons/fi';
-import ReactSelect from 'react-select'
-import moment from 'moment';
 import { Toaster, toast } from 'react-hot-toast'
 import HeadProject from './components-detailProject/HeadProject';
-import ImageHeader from './components-detailProject/ImageHeader';
 import Date from './components-detailProject/Date';
 import Assignees from './components-detailProject/Assignees';
 import Location from './components-detailProject/Location';
 import Checklist from './components-detailProject/Checklist';
 import Progress from './components-detailProject/Progress';
 import AddAssignees from './components-detailProject/AddAssignees';
+import ThumbnailProject from './components-detailProject/ThumbnailProject';
 
 export default function DetailsProject({ data }) {
     const [project, setProject] = useState(data.project);
@@ -398,7 +394,9 @@ export default function DetailsProject({ data }) {
                         handleButtonSubmitProject={handleButtonSubmitProject}
                     />
 
-                    <ImageHeader />
+                    <ThumbnailProject
+                        project={project}
+                    />
 
                     <div className="p-5 grid grid-cols-2 gap-3 justify-items-start">
                         <Date
