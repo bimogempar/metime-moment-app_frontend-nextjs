@@ -127,9 +127,14 @@ export default function Project(props) {
             })
         toast.promise(deletePromise, {
             loading: 'Loading',
-            error: 'Failed to create user',
-            success: 'User created successfully',
+            error: 'Failed delete project',
+            success: 'Delete project successfully',
         });
+    }
+
+    // update project
+    const update = () => {
+
     }
 
     const handleClickDeleteProject = (data) => {

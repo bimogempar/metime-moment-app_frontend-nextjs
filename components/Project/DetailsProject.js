@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import nookies from 'nookies';
 import axios from 'axios';
 import { BsChevronLeft } from 'react-icons/bs';
@@ -29,8 +29,8 @@ export default function DetailsProject({ data }) {
     const [permissions, setPermissions] = useState(false);
     const [allUsers, setAllUsers] = useState([]);
 
-
     const userContext = useContext(UserContext)
+    const imageRef = useRef()
 
     useEffect(() => {
         if (userContext.user.role === 3 || userContext.user.role === 2) {
@@ -122,14 +122,26 @@ export default function DetailsProject({ data }) {
             }),
         },
         onSubmit: values => {
-            // console.log(values);
             const assignment_user = values.assignment_user.map(u => u.value)
-            // console.log({ ...values, assignment_user });
-            axios.patch(`${process.env.NEXT_PUBLIC_URL}/api/projects/update/${project.slug}`, { ...values, assignment_user }, {
+            const thumbnail_img = values.thumbnail_img
+            const formData = new FormData()
+            formData.append('assignment_user', JSON.stringify(assignment_user))
+            formData.append('thumbnail_img', thumbnail_img)
+            formData.append('client', values.client)
+            formData.append('status', values.status)
+            formData.append('date', values.date)
+            formData.append('phone_number', values.phone_number)
+            formData.append('location', values.location)
+            // console.log('without json decode',{ ...values, assignment_user });
+            // console.log(formData.get('assignment_user'))
+            const updateProjectsPromise = axios.post(`${process.env.NEXT_PUBLIC_URL}/api/projects/update/${project.slug}`, formData, {
                 headers: {
                     Authorization: 'Bearer ' + token,
                 },
             })
+                .catch(err => {
+                    // console.log(err)
+                })
                 .then(res => {
                     // console.log(res)
                     setInputClient(false);
@@ -137,28 +149,13 @@ export default function DetailsProject({ data }) {
                     setProject(res.data.project);
                     setUsers(res.data.project.users);
                     // setProject({ ...project, ...values });
-                    toast.success('Project updated successfully', {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
                     formikFeatures.resetForm();
                 })
-                .catch(err => {
-                    toast.error(err.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-                })
+            toast.promise(updateProjectsPromise, {
+                loading: 'Loading',
+                error: 'Failed to update project',
+                success: 'Update project successfully',
+            });
         }
     })
 
@@ -399,7 +396,10 @@ export default function DetailsProject({ data }) {
                     />
 
                     <ThumbnailProject
+                        inputClient={inputClient}
                         project={project}
+                        imageRef={imageRef}
+                        formikProjects={formikProjects}
                     />
 
                     <div className="p-5 grid grid-cols-2 gap-3 justify-items-start">
