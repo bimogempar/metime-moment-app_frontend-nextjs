@@ -183,7 +183,7 @@ export default function Employee() {
                         </thead>
                         <tbody className="text-sm divide-y divide-gray-100">
                             {
-                                employees.map(employee => (
+                                employees.sort((a, b) => (a.created_at < b.created_at) ? 1 : -1).map(employee => (
                                     <tr key={employee.id}>
                                         <Link href={'/userprofile/' + employee.username} passHref>
                                             <td className="p-2 whitespace-nowrap cursor-pointer">
