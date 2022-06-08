@@ -152,6 +152,7 @@ export default function Project(props) {
         setIsOpenCreate(true)
     }
 
+    console.log(projectsData)
     return (
         <div className="mb-5" >
             <Toaster />
@@ -247,7 +248,7 @@ export default function Project(props) {
                         <div className="mb-2 grid grid-rows-1 gap-2">
                             <Link href={"/projects/" + project.slug} passHref>
                                 <button className="-mx-4 my-2 flex items-center">
-                                    {project.img ? <Image src={process.env.NEXT_PUBLIC_URL + '/' + project.img} alt="Image Project" width={1080} height={768} priority /> : <Image src={notYetImageProject} alt="Image Project" width={1080} height={768} priority />}
+                                    <Image src={project.thumbnail_img == null ? notYetImageProject : process.env.NEXT_PUBLIC_URL + '/storage/thumbnail_img/' + project.thumbnail_img} alt="Thumbnail Project" width={1080} height={768} priority />
                                 </button>
                             </Link>
                             <Link href={"/projects/" + project.slug} passHref>
