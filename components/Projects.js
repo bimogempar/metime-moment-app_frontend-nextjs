@@ -84,7 +84,6 @@ export default function Project(props) {
                 }
             })
                 .then(function (response) {
-                    // console.log(response.data.last_page)
                     const fetchProjects = response.data
                     setProjects(fetchProjects)
                     setProjectsData(fetchProjects.data)
@@ -119,15 +118,8 @@ export default function Project(props) {
             <BiLoader className="text-6xl text-gray-400" />
         </div>
     }
-    // console.log(startDate)
-    // console.log(endDate)
-
-    // console.log('page : ' + page)
-    // console.log('lastPage : ' + lastPage)
 
     const deleteProject = (id) => {
-        // console.log(id)
-        // return
         const deletePromise = axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/projects/${id}/delete`, {
             headers: {
                 Authorization: 'Bearer ' + token,
@@ -242,12 +234,12 @@ export default function Project(props) {
                                     </div>
                                 </Menu.Items>
                             </Menu>
-
                         </div>
+
                         <div className="mb-2 grid grid-rows-1 gap-2">
                             <Link href={"/projects/" + project.slug} passHref>
                                 <button className="-mx-4 my-2 flex items-center">
-                                    <Image src={project.thumbnail_img == null ? notYetImageProject : process.env.NEXT_PUBLIC_URL + '/storage/thumbnail_img/' + project.thumbnail_img} alt="Thumbnail Project" width={1080} height={768} priority />
+                                    <Image src={project.thumbnail_img == null ? notYetImageProject : process.env.NEXT_PUBLIC_URL + '/storage/thumbnail_img/' + project.thumbnail_img} alt="Thumbnail Project" objectFit='cover' objectPosition='center' width={1080} height={768} priority />
                                 </button>
                             </Link>
                             <Link href={"/projects/" + project.slug} passHref>
@@ -260,6 +252,7 @@ export default function Project(props) {
                             <div className="text-xs font-extralight text-gray-500 flex items-center gap-2"><HiOutlineLocationMarker /> {project.location}</div>
                             <div className="text-xs font-extralight text-gray-500 flex items-center gap-2"><BiPhoneCall /> {project.phone_number}</div>
                         </div>
+
                         <div className="flex justify-end items-center">
                             <div className="-space-x-3">
                                 {project.users.map((user) => {
