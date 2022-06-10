@@ -8,7 +8,7 @@ export default function Administrator(props) {
             <div className="">
                 <h1 className="mb-5 text-2xl font-extralight">Employee</h1>
                 <Employee />
-                <h1 className="my-5 text-2xl font-extralight">Package</h1>
+                <h1 className="my-5 text-2xl font-extralight">Packages Project</h1>
                 <Package />
             </div>
         </Layout >

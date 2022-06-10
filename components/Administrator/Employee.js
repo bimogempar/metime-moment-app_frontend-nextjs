@@ -197,7 +197,7 @@ export default function Employee() {
                                             </td>
                                         </Link>
                                         <td className="p-2 whitespace-nowrap">
-                                            <div className="text-left font-medium text-green-500">{employee.username}</div>
+                                            <div className="text-left font-medium">{employee.username}</div>
                                         </td>
                                         <td className="p-2 whitespace-nowrap">
                                             <div className="text-left">{employee.email}</div>
