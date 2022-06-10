@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import nookies from 'nookies'
+import ModalEditPackage from './Modal/ModalEditPackage'
+import { useFormik } from 'formik'
 
 export default function Package() {
     const [packagesProject, setPackagesProject] = useState([])
+    const [eachPackage, setEachPackage] = useState(null)
+    const [isOpen, setIsOpen] = useState(false)
+    const buttonRef = useRef(null);
 
     const cookies = nookies.get()
     const token = cookies.token
@@ -26,6 +31,11 @@ export default function Package() {
         getPackagesProject()
     }, [token])
 
+    const handleShowList = (e) => {
+        setIsOpen(true)
+        setEachPackage(e)
+    }
+
     return (
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
             {
@@ -39,15 +49,24 @@ export default function Package() {
                             <div className="flex-1 px-4 py-2 font-extralight">
                                 {item.package_list && item.package_list.map((subitem, index) => {
                                     return (
-                                        <li key={index} className="my-1">{subitem.name}</li>
+                                        <div key={index}>
+                                            <li className="my-1">{subitem.name}</li>
+                                        </div>
                                     )
                                 })}
                             </div>
-                            <div className="bg-gray-100 mt-2 text-center p-2 text-gray-500 rounded-xl">Show</div>
+                            <button className="bg-gray-100 mt-2 text-center p-2 text-gray-500 rounded-xl" onClick={(e) => handleShowList(item)}>Show</button>
                         </div>
                     )
                 })
             }
+            <ModalEditPackage
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                buttonRef={buttonRef}
+                eachPackage={eachPackage}
+                setPackagesProject={setPackagesProject}
+            />
         </div>
     )
 }
