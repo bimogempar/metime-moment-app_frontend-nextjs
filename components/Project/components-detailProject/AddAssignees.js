@@ -36,16 +36,15 @@ export default function AddAssignees({ handleSubmitAddAssign, permissions, addUs
                     {
                         users.map((user) => {
                             return (
-                                <div key={user.id} className="flex items-center justify-between p-3 gap-4">
-                                    <div className='flex items-center justify-center gap-4'>
-                                        <Image className="w-9 h-9 rounded-full" src={!user.img ? UserPlaceholder : process.env.NEXT_PUBLIC_URL + '/storage/img_user/' + user.img} alt="Profile image" width={30} height={30} />
-                                        <div>
-                                            <p className="text-gray-600 text-xs">{user.name}</p>
-                                            <p className="text-gray-400 text-xs">{user.email}</p>
-                                        </div>
+                                <div key={user.id} className="grid grid-cols-12 gap-3 my-2">
+                                    <div className='justify-self-center col-span-2'>
+                                        <Image className="rounded-full grid justify-items-center col-span-2" src={!user.img ? UserPlaceholder : process.env.NEXT_PUBLIC_URL + '/storage/img_user/' + user.img} alt="Profile image" width={35} height={35} />
                                     </div>
-                                    <div className='text-gray-500'>
-                                        {/* Delete each user */}
+                                    <div className='col-span-8'>
+                                        <p className="text-gray-600 text-xs">{user.name}</p>
+                                        <p className="text-gray-400 text-xs">{user.email}</p>
+                                    </div>
+                                    <div className="justify-self-center col-span-2 text-gray-500">
                                         {
                                             permissions ?
                                                 <button type="button" className="p-2 rounded-lg flex items-center gap-2 text-sm" onClick={() => deleteEachUser(user.id)}><AiOutlineClose /></button>
