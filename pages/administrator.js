@@ -1,6 +1,6 @@
 import Layout from '../components/Layout';
-import Employee from '../components/Administrator/Employee';
-import Package from '../components/Administrator/Package';
+import Employee from '../components/Administrator/Employee/Employee';
+import Package from '../components/Administrator/PackageProject/Package';
 
 export default function Administrator(props) {
     return (
