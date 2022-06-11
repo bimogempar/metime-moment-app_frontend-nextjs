@@ -4,10 +4,11 @@ import { Formik, Form, Field, FieldArray, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 import { BsTrash } from 'react-icons/bs';
 import { BiAddToQueue, BiTrash } from 'react-icons/bi';
+import axios from 'axios';
+import nookies from 'nookies'
 
-export default function ModalEditPackage({ setIsOpen, isOpen, buttonRef, eachPackage, setPackagesProject }) {
-    // console.log(formikPackage.values.package_list)
-    // console.log(eachPackage)
+export default function ModalEditPackage({ setIsOpen, isOpen, buttonRef, eachPackage, setPackagesProject, packagesProject }) {
+    const id = eachPackage && eachPackage.id
     return (
         <Transition as={Fragment} show={isOpen}>
             <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={() => setIsOpen(false)} initialFocus={buttonRef}>
@@ -41,20 +42,33 @@ export default function ModalEditPackage({ setIsOpen, isOpen, buttonRef, eachPac
                                 initialValues={{
                                     name: eachPackage ? eachPackage.name : '',
                                     price: eachPackage ? eachPackage.price : '',
-                                    package_list: eachPackage ? eachPackage.package_list.map(item => ({ name: item.name, price: item.price })) : [],
+                                    package_list: eachPackage ? eachPackage.package_list.map(item => ({ name: item.name, price: item.price ? item.price : '' })) : [],
                                 }}
-                                onSubmit={values => alert(JSON.stringify(values, null, 2))}
+                                onSubmit={
+                                    values => {
+                                        // console.log(values)
+                                        axios.post(`${process.env.NEXT_PUBLIC_URL}/api/packages/${id}/update`, values, {
+                                            headers: {
+                                                'Authorization': 'Bearer ' + nookies.get().token,
+                                            }
+                                        }).then(res => {
+                                            // console.log(res)
+                                            setPackagesProject(packagesProject.map(item => item.id === eachPackage.id ? res.data.package : item))
+                                            setIsOpen(false)
+                                        })
+                                    }
+                                }
                             >
                                 {({ values }) => (
                                     <Form>
                                         <div className='grid grid-cols-3 gap-3'>
                                             <div className='col-span-2'>
-                                                <label className="block text-sm text-gray-600  my-2" htmlFor="name">Name Package</label>
+                                                <label className="block text-sm text-gray-600  my-2" htmlFor="name">Name Package <span className='badge text-red-500'>*</span></label>
                                                 <Field placeholder="Package name" name={`name`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" id="name" />
                                                 <ErrorMessage name={`name`} />
                                             </div>
                                             <div className='col-span-1'>
-                                                <label className="block text-sm text-gray-600  my-2" htmlFor="price">Harga Package</label>
+                                                <label className="block text-sm text-gray-600  my-2" htmlFor="price">Harga Package <span className='badge text-red-500'>*</span></label>
                                                 <Field placeholder="Package name" name={`price`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" />
                                                 <ErrorMessage name={`price`} />
                                             </div>
@@ -78,7 +92,7 @@ export default function ModalEditPackage({ setIsOpen, isOpen, buttonRef, eachPac
                                                                             <button type="button" onClick={() => arrayHelpers.remove(index)} className="bg-gray-400 hover:bg-gray-600 text-white font-bold p-2 rounded-lg text-white"><BsTrash /></button>
                                                                         </div>
                                                                         <div className='col-span-5'>
-                                                                            <label className="block text-sm text-gray-600  my-2" htmlFor="name">Name Package List</label>
+                                                                            <label className="block text-sm text-gray-600  my-2" htmlFor="name">Name Package List <span className='badge text-red-500'>*</span></label>
                                                                             <Field placeholder="Package name" name={`package_list[${index}].name`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" id="name" />
                                                                             <ErrorMessage name={`package_list[${index}].name`} />
                                                                         </div>
