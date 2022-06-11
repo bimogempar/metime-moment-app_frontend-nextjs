@@ -36,6 +36,23 @@ export default function Package() {
         setEachPackage(e)
     }
 
+    const handleDeletePackage = (e) => {
+        if (confirm('Hapus package beserta package list?')) {
+            axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/packages/${e.id}/delete`, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                }
+            })
+                .then(res => {
+                    console.log(res)
+                    setPackagesProject(packagesProject.filter(item => item.id !== e.id))
+                    setIsOpen(false)
+                })
+        } else {
+            return
+        }
+    }
+
     return (
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
             {
@@ -67,6 +84,7 @@ export default function Package() {
                 eachPackage={eachPackage}
                 packagesProject={packagesProject}
                 setPackagesProject={setPackagesProject}
+                handleDeletePackage={handleDeletePackage}
             />
         </div>
     )

@@ -7,7 +7,7 @@ import { BiAddToQueue, BiTrash } from 'react-icons/bi';
 import axios from 'axios';
 import nookies from 'nookies'
 
-export default function ModalEditPackage({ setIsOpen, isOpen, buttonRef, eachPackage, setPackagesProject, packagesProject }) {
+export default function ModalEditPackage({ setIsOpen, isOpen, buttonRef, eachPackage, setPackagesProject, packagesProject, handleDeletePackage }) {
     const id = eachPackage && eachPackage.id
     return (
         <Transition as={Fragment} show={isOpen}>
@@ -36,7 +36,7 @@ export default function ModalEditPackage({ setIsOpen, isOpen, buttonRef, eachPac
                         <div className="relative bg-white w-3/5 my-5 rounded-md p-5">
                             <div className="flex justify-between">
                                 <h1 className="text-gray-700 font-light text-2xl">Edit Package</h1>
-                                <h4 className="text-white font-light text-md p-2 rounded-lg flex items-center gap-2 bg-red-500 hover:bg-red-600k cursor-pointer" onClick={(e) => alert('Hapus package!')}><BiTrash /> Hapus Package</h4>
+                                <h4 className="text-white font-light text-md p-2 rounded-lg flex items-center gap-2 bg-red-500 hover:bg-red-600k cursor-pointer" onClick={(e) => handleDeletePackage(eachPackage)}><BiTrash /> Hapus Package</h4>
                             </div>
                             <Formik
                                 initialValues={{
@@ -134,7 +134,7 @@ export default function ModalEditPackage({ setIsOpen, isOpen, buttonRef, eachPac
                                                             </button>
                                                         </div>
                                                         <div className='flex justify-end'>
-                                                            <button type="submit" className={`bg-green-500 rounded-lg text-white p-2 ` + (isValid && `hover:bg-green-600 cursor-pointer`)} disabled={isValid}>Submit</button>
+                                                            <button type="submit" className={`bg-green-500 rounded-lg text-white p-2 ` + (isValid && `hover:bg-green-600 cursor-pointer`)} disabled={!isValid}>Submit</button>
                                                         </div>
                                                     </div>
                                                 );
