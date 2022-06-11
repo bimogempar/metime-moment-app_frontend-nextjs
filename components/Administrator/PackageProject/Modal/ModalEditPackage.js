@@ -44,6 +44,20 @@ export default function ModalEditPackage({ setIsOpen, isOpen, buttonRef, eachPac
                                     price: eachPackage ? eachPackage.price : '',
                                     package_list: eachPackage ? eachPackage.package_list.map(item => ({ name: item.name, price: item.price ? item.price : '' })) : [],
                                 }}
+                                validationSchema={Yup.object({
+                                    name: Yup.string()
+                                        .required('Nama package harus diisi'),
+                                    price: Yup.number()
+                                        .required('Harga package harus diisi'),
+                                    package_list: Yup.string().required(
+                                        "Package list harus diisi"
+                                    ),
+                                    package_list: Yup.array().of(
+                                        Yup.object().shape({
+                                            name: Yup.string().required("Name required"),
+                                        })
+                                    )
+                                })}
                                 onSubmit={
                                     values => {
                                         // console.log(values)
@@ -59,18 +73,22 @@ export default function ModalEditPackage({ setIsOpen, isOpen, buttonRef, eachPac
                                     }
                                 }
                             >
-                                {({ values }) => (
+                                {({ values, isValid }) => (
                                     <Form>
                                         <div className='grid grid-cols-3 gap-3'>
                                             <div className='col-span-2'>
                                                 <label className="block text-sm text-gray-600  my-2" htmlFor="name">Name Package <span className='badge text-red-500'>*</span></label>
                                                 <Field placeholder="Package name" name={`name`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" id="name" />
-                                                <ErrorMessage name={`name`} />
+                                                <div className="text-red-500 text-sm mt-2">
+                                                    <ErrorMessage name={`name`} />
+                                                </div>
                                             </div>
                                             <div className='col-span-1'>
                                                 <label className="block text-sm text-gray-600  my-2" htmlFor="price">Harga Package <span className='badge text-red-500'>*</span></label>
                                                 <Field placeholder="Package name" name={`price`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" />
-                                                <ErrorMessage name={`price`} />
+                                                <div className="text-red-500 text-sm mt-2">
+                                                    <ErrorMessage name={`price`} />
+                                                </div>
                                             </div>
                                         </div>
 
@@ -94,12 +112,16 @@ export default function ModalEditPackage({ setIsOpen, isOpen, buttonRef, eachPac
                                                                         <div className='col-span-5'>
                                                                             <label className="block text-sm text-gray-600  my-2" htmlFor="name">Name Package List <span className='badge text-red-500'>*</span></label>
                                                                             <Field placeholder="Package name" name={`package_list[${index}].name`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" id="name" />
-                                                                            <ErrorMessage name={`package_list[${index}].name`} />
+                                                                            <div className="text-red-500 text-sm mt-2">
+                                                                                <ErrorMessage name={`package_list[${index}].name`} />
+                                                                            </div>
                                                                         </div>
                                                                         <div className="col-span-2">
                                                                             <label className="block text-sm text-gray-600  my-2" htmlFor="name">Price Package List</label>
                                                                             <Field placeholder="price" name={`package_list.${index}.price`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" />
-                                                                            <ErrorMessage name={`item.${index}.price`} />
+                                                                            <div className="text-red-500 text-sm mt-2">
+                                                                                <ErrorMessage name={`package_list.${index}.price`} />
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -112,7 +134,7 @@ export default function ModalEditPackage({ setIsOpen, isOpen, buttonRef, eachPac
                                                             </button>
                                                         </div>
                                                         <div className='flex justify-end'>
-                                                            <button type="submit" className='bg-green-500 hover:bg-green-600 rounded-lg text-white p-2'>Submit</button>
+                                                            <button type="submit" className={`bg-green-500 rounded-lg text-white p-2 ` + (isValid && `hover:bg-green-600 cursor-pointer`)} disabled={isValid}>Submit</button>
                                                         </div>
                                                     </div>
                                                 );
