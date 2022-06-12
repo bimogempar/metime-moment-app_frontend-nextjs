@@ -1,18 +1,18 @@
 import { Dialog, Transition } from '@headlessui/react'
+import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik'
 import React, { Fragment } from 'react'
-import { Formik, Form, Field, FieldArray, ErrorMessage } from 'formik';
+import { BiAddToQueue } from 'react-icons/bi'
+import { BsTrash } from 'react-icons/bs'
 import * as Yup from "yup";
-import { BsTrash } from 'react-icons/bs';
-import { BiAddToQueue, BiTrash } from 'react-icons/bi';
-import axios from 'axios';
+import axios from 'axios'
 import nookies from 'nookies'
 import toast, { Toaster } from 'react-hot-toast'
 
-export default function ModalEditPackage({ setIsOpenEdit, isOpenEdit, buttonRef, eachPackage, setPackagesProject, packagesProject, handleDeletePackage }) {
-    const id = eachPackage && eachPackage.id
+export default function ModalNewPackage({ isOpenCreate, setIsOpenCreate, buttonRef, setPackagesProject, packagesProject }) {
+    // console.log(packagesProject)
     return (
-        <Transition as={Fragment} show={isOpenEdit}>
-            <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={() => setIsOpenEdit(false)} initialFocus={buttonRef}>
+        <Transition as={Fragment} show={isOpenCreate}>
+            <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={() => setIsOpenCreate(false)} initialFocus={buttonRef}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -37,13 +37,12 @@ export default function ModalEditPackage({ setIsOpenEdit, isOpenEdit, buttonRef,
                         <div className="relative bg-white w-3/5 my-5 rounded-md p-5">
                             <div className="flex justify-between">
                                 <h1 className="text-gray-700 font-light text-2xl">Edit Package</h1>
-                                <h4 className="text-white font-light text-md p-2 rounded-lg flex items-center gap-2 bg-red-500 hover:bg-red-600 cursor-pointer" onClick={(e) => handleDeletePackage(eachPackage)}><BiTrash /> Hapus Package</h4>
                             </div>
                             <Formik
                                 initialValues={{
-                                    name: eachPackage ? eachPackage.name : '',
-                                    price: eachPackage ? eachPackage.price : '',
-                                    package_list: eachPackage ? eachPackage.package_list.map(item => ({ name: item.name, price: item.price ? item.price : '' })) : [],
+                                    name: '',
+                                    price: '',
+                                    package_list: [{ name: '', price: '' }]
                                 }}
                                 validationSchema={Yup.object({
                                     name: Yup.string()
@@ -62,23 +61,19 @@ export default function ModalEditPackage({ setIsOpenEdit, isOpenEdit, buttonRef,
                                 onSubmit={
                                     values => {
                                         // console.log(values)
-                                        const updatePackage = axios.post(`${process.env.NEXT_PUBLIC_URL}/api/packages/${id}/update`, values, {
+                                        const newPackage = axios.post(`${process.env.NEXT_PUBLIC_URL}/api/packages/store`, values, {
                                             headers: {
                                                 'Authorization': 'Bearer ' + nookies.get().token,
                                             }
+                                        }).then(res => {
+                                            const newPackage = res.data.package
+                                            setPackagesProject(newPackage)
+                                            setIsOpenCreate(false)
                                         })
-                                            .catch(err => {
-                                                // console.log(err)
-                                            })
-                                            .then(res => {
-                                                // console.log(res)
-                                                setPackagesProject(packagesProject.map(item => item.id === eachPackage.id ? res.data.package : item))
-                                                setIsOpenEdit(false)
-                                            })
-                                        toast.promise(updatePackage, {
+                                        toast.promise(newPackage, {
                                             loading: 'Loading',
-                                            error: 'Failed to update package',
-                                            success: 'Package updated successfully',
+                                            error: 'Failed to create new package',
+                                            success: 'Package created successfully',
                                         });
                                     }
                                 }
@@ -113,7 +108,7 @@ export default function ModalEditPackage({ setIsOpenEdit, isOpenEdit, buttonRef,
                                                     if (package_list.length > 1) {
                                                         arrayHelpers.remove(index);
                                                     }
-                                                    alert('Tidak bisa menghapus semua list package')
+                                                    alert('Harus ada minimal 1 package')
                                                 }
                                                 return (
                                                     <div>
