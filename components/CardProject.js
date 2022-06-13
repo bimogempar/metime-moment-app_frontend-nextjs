@@ -3,11 +3,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useContext } from 'react'
 import { AiFillSchedule } from 'react-icons/ai'
-import { BiPhoneCall } from 'react-icons/bi'
+import { BiLoader, BiPhoneCall } from 'react-icons/bi'
 import { BsCalendarDate, BsClock, BsInfoLg, BsThreeDots, BsTrash } from 'react-icons/bs'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 import notYetImageProject from '../public/img/not-yet.png'
 import { UserContext } from './context/userContext'
+import { MdFileDownloadDone } from 'react-icons/md'
 import UserPlaceholder from '../public/img/userplaceholder.png'
 
 export default function CardProject({ project, handleClickDeleteProject }) {
@@ -16,9 +17,21 @@ export default function CardProject({ project, handleClickDeleteProject }) {
     return (
         <div className="w-full p-4 bg-white rounded-xl flex flex-col">
             <div className="flex justify-between items-start mb-2">
-                <div className="p-1 px-2 rounded-lg text-xs text bg-yellow-200 text-yellow-800 flex items-center gap-2">
-                    <AiFillSchedule size={20} /> On Scheduled
-                </div>
+                {project.status == 1 &&
+                    <div className="p-1 px-2 rounded-lg text-xs text bg-yellow-200 text-yellow-800 flex items-center gap-2">
+                        <AiFillSchedule size={20} /> On Scheduled
+                    </div>
+                }
+                {project.status == 2 &&
+                    <div className="p-1 px-2 rounded-lg text-xs text bg-blue-200 text-blue-800 flex items-center gap-2">
+                        <BiLoader size={20} /> On Progress
+                    </div>
+                }
+                {project.status == 3 &&
+                    <div className="p-1 px-2 rounded-lg text-xs text bg-green-200 text-green-800 flex items-center gap-2">
+                        <MdFileDownloadDone size={20} /> Done
+                    </div>
+                }
                 <Menu as="div" className="invisible lg:visible">
                     <Menu.Button>
                         <BsThreeDots />
