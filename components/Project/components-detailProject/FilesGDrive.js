@@ -4,13 +4,14 @@ import React from 'react'
 import notYetImg from './../../../public/img/not-yet.png'
 
 export default function FilesGDrive({ filesGDrive, dirGDrive }) {
+    // console.log(filesGDrive)
     return (
         <div className="p-5">
             <h1 className="text-gray-600 my-5 text-2xl font-extralight">
                 Gallery
             </h1>
             {
-                filesGDrive.length == 0 ?
+                filesGDrive == 'No such folder' || filesGDrive.length == 0 ?
                     <div className="grid grid-cols-3 gap-2">
                         <a href={`https://drive.google.com/drive/folders/${dirGDrive}`} target="_blank" rel="noopener noreferrer">
                             <Image alt='Add Files' className='rounded-lg' src={notYetImg} />

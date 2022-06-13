@@ -4,9 +4,11 @@ import interactionPlugin from '@fullcalendar/interaction'
 import nookies from 'nookies';
 import axios from 'axios';
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router';
 
 export default function Calendar() {
     const [projects, setProjects] = useState([])
+    const router = useRouter();
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -30,6 +32,31 @@ export default function Calendar() {
         fetchProjects()
     }, [])
 
+    const handleClick = (e) => {
+        // console.log(e.event._def.extendedProps.slug)
+        router.push(`/projects/${e.event._def.extendedProps.slug}`)
+    }
+
+    const handleMouseEnter = (info) => {
+        if (info.event.extendedProps.slug) {
+            console.log(info.event.extendedProps.slug)
+        }
+    };
+
+    const handleMouseLeave = (info) => {
+        console.log('leave')
+    };
+
+    const toolTip = (e) => {
+        <div className="relative flex flex-col items-center group">
+            children
+            <div className="absolute bottom-0 flex flex-col items-center hidden mb-6 group-hover:flex">
+                <span className="relative z-10 p-2 text-xs leading-none text-white whitespace-no-wrap bg-gray-600 shadow-lg rounded-md">message</span>
+                <div className="w-3 h-3 -mt-2 rotate-45 bg-gray-600"></div>
+            </div>
+        </div>
+    }
+
     return (
         <div className="mb-5">
             <h1 className="mb-5 text-2xl font-extralight">Calendar</h1>
@@ -40,11 +67,15 @@ export default function Calendar() {
                     initialView="dayGridMonth"
                     dateClick={(info) => console.log(info)}
                     nowIndicator={true}
+                    eventClick={(info) => handleClick(info)}
+                    eventMouseEnter={handleMouseEnter}
+                    eventMouseLeave={handleMouseLeave}
                     eventSources={
                         [
                             projects.map(project => {
                                 return {
                                     key: project.id,
+                                    slug: project.slug,
                                     title: project.client,
                                     start: project.date,
                                 }

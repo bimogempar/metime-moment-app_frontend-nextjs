@@ -20,7 +20,7 @@ import FilesGDrive from './components-detailProject/FilesGDrive';
 export default function DetailsProject({ data }) {
     const [project, setProject] = useState(data.project);
     const [filesGDrive, setFilesGDrive] = useState(data.files_gdrive)
-    const dirGDrive = data.dir.basename
+    const [dirGDrive, setDirGDrive] = useState(data.dir ? data.dir : '')
     const [features, setFeatures] = useState(data.project.features);
     const [progress, setProgress] = useState(data.project.progress);
     const [users, setUsers] = useState(data.project.users);
