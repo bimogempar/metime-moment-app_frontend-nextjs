@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { FcInspection, } from "react-icons/fc"
-import ProfilUser from "../public/img/ade.png";
+import UserPlaceHolder from "../public/img/userplaceholder.png";
 
 export default function TopEmployee() {
     return (
@@ -8,7 +8,7 @@ export default function TopEmployee() {
             <h1 className="mb-5 text-2xl font-extralight">Top Employee</h1>
             <div className="grid grid-cols-12 gap-5">
                 <div className="bg-white xl:col-span-4 lg:col-span-6 col-span-6 rounded-xl p-3 flex gap-5 items-center">
-                    <Image src={ProfilUser} alt="User Metime Moment" width={50} height={50} />
+                    <Image src={UserPlaceHolder} alt="User Metime Moment" className="rounded-full" width={50} height={50} />
                     <div className="w-full">
                         <h1 className="text-sm md:text-sm font-extralight">Ade Novan Guliano</h1>
                         <div className="flex justify-between items-center">
