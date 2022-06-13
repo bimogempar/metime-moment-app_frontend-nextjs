@@ -121,7 +121,7 @@ export default function Project(props) {
             })
             .then(function (response) {
                 // console.log(response)
-                setLastPage(response.data.last_page)
+                setLastPage(2)
                 setProjectsData(projectsData.filter(project => project.id !== id))
                 setIsOpenDelete(false)
             })
@@ -132,11 +132,6 @@ export default function Project(props) {
         });
     }
 
-    // update project
-    const update = () => {
-
-    }
-
     const handleClickDeleteProject = (data) => {
         setDataModalDelete(data)
         setIsOpenDelete(true)
@@ -145,6 +140,9 @@ export default function Project(props) {
     const handleClickCreateProject = () => {
         setIsOpenCreate(true)
     }
+
+    console.log('page : ', page)
+    console.log('last page : ', lastPage)
 
     return (
         <div className="mb-5" >
