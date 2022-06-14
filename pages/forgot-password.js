@@ -43,25 +43,29 @@ export default function ForgotPassword() {
     })
 
     return (
-        <div className="grid p-5" >
+        <div className="flex h-screen">
             <Head>
                 <title>Set Init Password | Metime Moment</title>
                 <link rel="icon" href="/img/logo-metime.png"></link>
             </Head>
-            <div>
-                <Image src={LogoMetimeMoment} alt="Logo Metime Moment" />
+            <div className="m-auto">
+                <div className="grid grid-cols-1 justify-items-center bg-white p-3 rounded-xl">
+                    <div>
+                        <Image src={LogoMetimeMoment} alt="Logo Metime Moment" />
+                    </div>
+                    <form onSubmit={formik.handleSubmit}>
+                        <div className="my-2">
+                            <h4 className="mb-3">Forgot Password</h4>
+                            <label htmlFor="email"></label>
+                            <input className="border rounded-lg px-3 py-2 text-gray-600 text-sm w-full" type="email" id="email" placeholder="Email" value={formik.values.email} onChange={formik.handleChange} />
+                        </div>
+                        <div className="my-2">
+                            {formik.errors.email ? <div className="text-red-500">{formik.errors.email}</div> : null}
+                        </div>
+                        <button className="p-2 my-2 text-white bg-sky-600 rounded-xl" type="submit">Send</button>
+                    </form>
+                </div>
             </div>
-            <form onSubmit={formik.handleSubmit}>
-                <div className="my-2">
-                    <h4 className="mb-3">Forgot Password</h4>
-                    <label htmlFor="email"></label>
-                    <input className="bg-white p-2 rounded-xl" type="email" id="email" placeholder="Email" value={formik.values.email} onChange={formik.handleChange} />
-                </div>
-                <div className="my-2">
-                    {formik.errors.email ? <div className="text-red-500">{formik.errors.email}</div> : null}
-                </div>
-                <button className="p-2 my-2 text-white bg-sky-600 rounded-xl" type="submit">Send</button>
-            </form>
             <Toaster />
         </div >
     )

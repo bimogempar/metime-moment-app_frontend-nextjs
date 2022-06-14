@@ -43,31 +43,36 @@ export default function Testing({ response, token_initial_password }) {
     })
 
     return (
-        <div className="grid p-5" >
+        <div className="flex h-screen">
             <Head>
                 <title>Set Init Password | Metime Moment</title>
                 <link rel="icon" href="/img/logo-metime.png"></link>
             </Head>
-            <div>
-                <Image src={LogoMetimeMoment} alt="Logo Metime Moment" />
+            <div className="m-auto">
+                <div className="grid grid-cols-1 justify-items-center bg-white p-3 rounded-xl">
+                    <div>
+                        <Image src={LogoMetimeMoment} alt="Logo Metime Moment" />
+                    </div>
+                    <form onSubmit={formik.handleSubmit}>
+                        <div className="my-2">
+                            <h4 className="mb-3">Set your password first!</h4>
+                            <label htmlFor="email"></label>
+                            <input className="border rounded-lg px-3 py-2 text-gray-600 text-sm w-full" type="email" id="email" defaultValue={response.user.email} disabled={true} />
+                        </div>
+                        <div className="my-2">
+                            <label htmlFor="password"></label>
+                            <input className="border rounded-lg px-3 py-2 text-gray-600 text-sm w-full" type="password" id="password" placeholder="password" name="password" value={formik.values.password} onChange={formik.handleChange} />
+                        </div>
+                        <div className="my-2">
+                            {formik.errors.password ? <div className="text-red-500">{formik.errors.password}</div> : null}
+                        </div>
+                        <div className="flex justify-end">
+                            <button className="p-2 my-2 text-white bg-sky-600 rounded-xl" type="submit" disabled={formik.isSubmitting}>Set password</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <form onSubmit={formik.handleSubmit}>
-                <div className="my-2">
-                    <h4 className="mb-3">Set your password first!</h4>
-                    <label htmlFor="email"></label>
-                    <input className="bg-white p-2 rounded-xl" type="email" id="email" defaultValue={response.user.email} disabled={true} />
-                </div>
-                <div className="my-2">
-                    <label htmlFor="password"></label>
-                    <input className="bg-white p-2 rounded-xl" type="password" id="password" placeholder="password" name="password" value={formik.values.password} onChange={formik.handleChange} />
-                </div>
-                <div className="my-2">
-                    {formik.errors.password ? <div className="text-red-500">{formik.errors.password}</div> : null}
-                </div>
-                <button className="p-2 my-2 text-white bg-sky-600 rounded-xl" type="submit" disabled={formik.isSubmitting}>Set password</button>
-            </form>
-            <Toaster />
-        </div >
+        </div>
     )
 }
 
