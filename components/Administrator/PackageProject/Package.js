@@ -78,6 +78,7 @@ export default function Package() {
                                     <div className="text-xl font-light">{item.name}</div>
                                     <div className="font-light bg-green-200 text-green-800 p-1 rounded-lg text-sm">{item.price}</div>
                                 </div>
+                                <hr className='my-2' />
                                 <div className="flex-1 px-4 py-2 font-extralight">
                                     {item.package_list && item.package_list.map((subitem, index) => {
                                         return (
