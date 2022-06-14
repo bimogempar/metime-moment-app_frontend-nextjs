@@ -186,7 +186,7 @@ export default function Project(props) {
             {/* Modal Delete Project */}
             <ModalDeleteProject isOpenDelete={isOpenDelete} setIsOpenDelete={setIsOpenDelete} dataModalDelete={dataModalDelete} deleteProject={deleteProject} />
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
                 {
                     projectsData.map((project, index) => (
                         <CardProject key={index} project={project} handleClickDeleteProject={handleClickDeleteProject} />
