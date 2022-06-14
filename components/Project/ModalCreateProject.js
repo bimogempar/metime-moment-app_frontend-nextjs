@@ -28,13 +28,16 @@ export default function ModalCreateProject({ isOpenCreate, setIsOpenCreate }) {
                     leaveTo="transform scale-95 opacity-0"
                 >
                     <div className="flex items-center justify-center min-h-screen">
-                        <div className="relative bg-white rounded max-w-3xl md:mx-auto p-5 md:my-5 m-5">
-                            <Dialog.Title>Complete your order</Dialog.Title>
-
-                            <Dialog.Description>
-
-                                <button ref={closeModalRef} onClick={() => setIsOpenCreate(false)}>Close</button>
-                            </Dialog.Description>
+                        <div className="relative w-1/2 xl:w-1/3 bg-white my-5 rounded-md p-4">
+                            <div className="grid grid-cols-1 gap-3">
+                                <div className="flex justify-between">
+                                    <h1 className="text-gray-700 font-light text-2xl">Create New Project</h1>
+                                </div>
+                                <hr />
+                                <p className="text-gray-700 font-light text-md">Description</p>
+                                <div className="flex justify-end">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </Transition.Child>

@@ -151,7 +151,7 @@ export default function Employee() {
                     </svg>
                     <input className="bg-gray-100 w-full outline-none text-gray-500" type="text" placeholder="Search" onKeyUp={e => handleSearchEvent(e.target.value)} />
                 </div>
-                <button className="bg-gray-200 text-gray-500 p-2 rounded-xl" onClick={handleNewEmployee}>New Employee</button>
+                <button className="bg-gray-100 text-gray-500 p-2 rounded-xl" onClick={handleNewEmployee}>New Employee</button>
             </div>
             <div className="p-2">
                 <div className="overflow-x-auto">

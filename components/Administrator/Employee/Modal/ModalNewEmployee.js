@@ -26,39 +26,44 @@ export default function ModalNewEmployee({ setIsOpen, isOpen, buttonRef, formikU
                     leaveTo="transform scale-95 opacity-0"
                 >
                     <div className="flex items-center justify-center min-h-screen">
-                        <div className="relative bg-white rounded max-w-3xl md:mx-auto p-5 md:my-5 m-5">
-                            <h1 className="mb-5 text-2xl font-extralight">
-                                {title}
-                            </h1>
-                            <form className='w-full md:w-full' onSubmit={formikUsers.handleSubmit}>
-                                <div>
-                                    <label className="block text-sm text-gray-600  my-2" htmlFor="name">Name</label>
-                                    <input type="text" className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" id="name" onChange={formikUsers.handleChange} value={formikUsers.values.name} />
-                                    {formikUsers.errors.name ? <label className="block text-sm text-red-600 my-2">{formikUsers.errors.name}</label> : null}
+                        <div className="relative w-4/5 md:w-1/2 xl:w-1/3 bg-white my-5 rounded-md p-5">
+                            <div className="grid grid-cols-1 gap-3">
+                                <div className="flex justify-between">
+                                    <h1 className="text-gray-700 font-light text-2xl">Create New Project</h1>
                                 </div>
-                                <div>
-                                    <label className="block text-sm text-gray-600  my-2" htmlFor="username">Username</label>
-                                    <input type="text" className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" id="username" onChange={formikUsers.handleChange} value={formikUsers.values.username} />
-                                    {formikUsers.errors.username ? <label className="block text-sm text-red-600 my-2">{formikUsers.errors.username}</label> : null}
-                                </div>
-                                <div>
-                                    <label className="block text-sm text-gray-600  my-2" htmlFor="email">Email</label>
-                                    <input type="email" className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" id="email" onChange={formikUsers.handleChange} value={formikUsers.values.email} />
-                                    {formikUsers.errors.email ? <label className="block text-sm text-red-600 my-2">{formikUsers.errors.email}</label> : null}
-                                </div>
-                                <div>
-                                    <label className="block text-sm text-gray-600  my-2" htmlFor="role">Role</label>
-                                    <select className='text-gray-500 bg-gray-200 rounded-lg p-2' name="role" id="role" onChange={e => formikUsers.setFieldValue('role', e.target.value)} value={formikUsers.values.role}>
-                                        <option value="1">Employee</option>
-                                        <option value="2">Manager</option>
-                                        <option value="3">Admin</option>
-                                    </select>
-                                    {formikUsers.errors.role ? <label className="block text-sm text-red-600 my-2">{formikUsers.errors.email}</label> : null}
-                                </div>
-                                <div className='mt-4 flex justify-end'>
-                                    <button className='bg-blue-500 text-white p-2 rounded-lg' type='submit'>Create</button>
-                                </div>
-                            </form>
+                                <hr />
+                                <p className="text-gray-700 font-light text-md">Create new user and user got the email for set init password...</p>
+                                <form className='w-full md:w-full' onSubmit={formikUsers.handleSubmit}>
+                                    <div>
+                                        <label className="block text-sm text-gray-600  my-2" htmlFor="name">Name</label>
+                                        <input type="text" className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full md:w-2/3" id="name" onChange={formikUsers.handleChange} value={formikUsers.values.name} />
+                                        {formikUsers.errors.name ? <label className="block text-sm text-red-600 my-2">{formikUsers.errors.name}</label> : null}
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-gray-600  my-2" htmlFor="username">Username</label>
+                                        <input type="text" className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full md:w-2/3" id="username" onChange={formikUsers.handleChange} value={formikUsers.values.username} />
+                                        {formikUsers.errors.username ? <label className="block text-sm text-red-600 my-2">{formikUsers.errors.username}</label> : null}
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-gray-600  my-2" htmlFor="email">Email</label>
+                                        <input type="email" className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full md:w-2/3" id="email" onChange={formikUsers.handleChange} value={formikUsers.values.email} />
+                                        {formikUsers.errors.email ? <label className="block text-sm text-red-600 my-2">{formikUsers.errors.email}</label> : null}
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-gray-600  my-2" htmlFor="role">Role</label>
+                                        <select className='text-gray-500 bg-gray-200 rounded-lg p-2' name="role" id="role" onChange={e => formikUsers.setFieldValue('role', e.target.value)} value={formikUsers.values.role}>
+                                            <option value="1">Employee</option>
+                                            <option value="2">Manager</option>
+                                            <option value="3">Admin</option>
+                                        </select>
+                                        {formikUsers.errors.role ? <label className="block text-sm text-red-600 my-2">{formikUsers.errors.email}</label> : null}
+                                    </div>
+                                    <div className="flex justify-end">
+                                        <button className='  text-white p-2 rounded-lg' type='submit'>Create</button>
+                                    </div>
+                                </form>
+                            </div>
+
                         </div>
                     </div>
                 </Transition.Child>

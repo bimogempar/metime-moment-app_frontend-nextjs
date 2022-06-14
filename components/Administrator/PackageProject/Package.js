@@ -69,7 +69,7 @@ export default function Package() {
         <div>
             <Toaster />
             <button onClick={() => setIsOpenCreate(true)} className="bg-white p-2 rounded-lg text-gray-500 mb-4 text-sm">Create new package</button>
-            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
                 {
                     packagesProject && packagesProject.map((item, index) => {
                         return (

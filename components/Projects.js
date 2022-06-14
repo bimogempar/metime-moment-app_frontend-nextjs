@@ -141,9 +141,6 @@ export default function Project(props) {
         setIsOpenCreate(true)
     }
 
-    console.log('page : ', page)
-    console.log('last page : ', lastPage)
-
     return (
         <div className="mb-5" >
             <Toaster />

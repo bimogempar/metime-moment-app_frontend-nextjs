@@ -34,126 +34,130 @@ export default function ModalNewPackage({ isOpenCreate, setIsOpenCreate, buttonR
                     leaveTo="transform scale-95 opacity-0"
                 >
                     <div className="flex items-center justify-center min-h-screen">
-                        <div className="relative bg-white w-3/5 my-5 rounded-md p-5">
-                            <div className="flex justify-between">
-                                <h1 className="text-gray-700 font-light text-2xl">Edit Package</h1>
-                            </div>
-                            <Formik
-                                initialValues={{
-                                    name: '',
-                                    price: '',
-                                    package_list: [{ name: '', price: '' }]
-                                }}
-                                validationSchema={Yup.object({
-                                    name: Yup.string()
-                                        .required('Nama package harus diisi'),
-                                    price: Yup.number()
-                                        .required('Harga package harus diisi'),
-                                    package_list: Yup.string().required(
-                                        "Package list harus diisi"
-                                    ),
-                                    package_list: Yup.array().of(
-                                        Yup.object().shape({
-                                            name: Yup.string().required("Name required"),
-                                        })
-                                    )
-                                })}
-                                onSubmit={
-                                    values => {
-                                        // console.log(values)
-                                        const newPackage = axios.post(`${process.env.NEXT_PUBLIC_URL}/api/packages/store`, values, {
-                                            headers: {
-                                                'Authorization': 'Bearer ' + nookies.get().token,
-                                            }
-                                        }).then(res => {
-                                            const newPackage = res.data.package
-                                            setPackagesProject(newPackage)
-                                            setIsOpenCreate(false)
-                                        })
-                                        toast.promise(newPackage, {
-                                            loading: 'Loading',
-                                            error: 'Failed to create new package',
-                                            success: 'Package created successfully',
-                                        });
-                                    }
-                                }
-                            >
-                                {({ values, isValid }) => (
-                                    <Form>
-                                        <div className='grid grid-cols-3 gap-3'>
-                                            <div className='col-span-2'>
-                                                <label className="block text-sm text-gray-600  my-2" htmlFor="name">Name Package <span className='badge text-red-500'>*</span></label>
-                                                <Field placeholder="Package name" name={`name`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" id="name" />
-                                                <div className="text-red-500 text-sm mt-2">
-                                                    <ErrorMessage name={`name`} />
-                                                </div>
-                                            </div>
-                                            <div className='col-span-1'>
-                                                <label className="block text-sm text-gray-600  my-2" htmlFor="price">Harga Package <span className='badge text-red-500'>*</span></label>
-                                                <Field placeholder="Package name" name={`price`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" />
-                                                <div className="text-red-500 text-sm mt-2">
-                                                    <ErrorMessage name={`price`} />
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <h1 className="text-gray-700 font-light text-lg my-4">Package List</h1>
-
-                                        <FieldArray
-                                            name="package_list"
-                                            render={arrayHelpers => {
-                                                const package_list = values.package_list;
-                                                // console.log(package_list)
-                                                const handleDeleteRow = (index) => {
-                                                    if (package_list.length > 1) {
-                                                        arrayHelpers.remove(index);
-                                                    }
-                                                    alert('Harus ada minimal 1 package')
+                        <div className="relative w-4/5 lg:w-1/2 xl:w-1/2 bg-white my-5 rounded-md p-5">
+                            <div className="grid grid-cols-1 gap-3">
+                                <div className="flex justify-between">
+                                    <h1 className="text-gray-700 font-light text-2xl">Create new package</h1>
+                                </div>
+                                <hr />
+                                <Formik
+                                    initialValues={{
+                                        name: '',
+                                        price: '',
+                                        package_list: [{ name: '', price: '' }]
+                                    }}
+                                    validationSchema={Yup.object({
+                                        name: Yup.string()
+                                            .required('Nama package harus diisi'),
+                                        price: Yup.number()
+                                            .required('Harga package harus diisi'),
+                                        package_list: Yup.string().required(
+                                            "Package list harus diisi"
+                                        ),
+                                        package_list: Yup.array().of(
+                                            Yup.object().shape({
+                                                name: Yup.string().required("Name required"),
+                                            })
+                                        )
+                                    })}
+                                    onSubmit={
+                                        values => {
+                                            // console.log(values)
+                                            const newPackage = axios.post(`${process.env.NEXT_PUBLIC_URL}/api/packages/store`, values, {
+                                                headers: {
+                                                    'Authorization': 'Bearer ' + nookies.get().token,
                                                 }
-                                                return (
-                                                    <div>
-                                                        {package_list && package_list.length > 0
-                                                            ? package_list.map((item, index) => (
-                                                                <div key={index}>
-                                                                    <div className='grid grid-cols-8 gap-3'>
-                                                                        <div className="col-span-1 justify-self-center">
-                                                                            <label className="block text-sm text-gray-600 my-2" htmlFor="name">Action</label>
-                                                                            <button type="button" onClick={() => handleDeleteRow(index)} className="bg-gray-400 hover:bg-gray-600 text-white font-bold p-2 rounded-lg text-white"><BsTrash /></button>
-                                                                        </div>
-                                                                        <div className='col-span-5'>
-                                                                            <label className="block text-sm text-gray-600  my-2" htmlFor="name">Name Package List <span className='badge text-red-500'>*</span></label>
-                                                                            <Field placeholder="Package name" name={`package_list[${index}].name`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" id="name" />
-                                                                            <div className="text-red-500 text-sm mt-2">
-                                                                                <ErrorMessage name={`package_list[${index}].name`} />
+                                            }).then(res => {
+                                                const newPackage = res.data.package
+                                                setPackagesProject(newPackage)
+                                                setIsOpenCreate(false)
+                                            })
+                                            toast.promise(newPackage, {
+                                                loading: 'Loading',
+                                                error: 'Failed to create new package',
+                                                success: 'Package created successfully',
+                                            });
+                                        }
+                                    }
+                                >
+                                    {({ values, isValid }) => (
+                                        <Form>
+                                            <div className='grid grid-cols-1 md:grid-cols-3 gap-2'>
+                                                <div className='col-span-2'>
+                                                    <label className="block text-sm text-gray-600  my-2" htmlFor="name">Name Package <span className='badge text-red-500'>*</span></label>
+                                                    <Field placeholder="Package name" name={`name`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" id="name" />
+                                                    <div className="text-red-500 text-sm mt-2">
+                                                        <ErrorMessage name={`name`} />
+                                                    </div>
+                                                </div>
+                                                <div className='col-span-1'>
+                                                    <label className="block text-sm text-gray-600  my-2" htmlFor="price">Harga Package <span className='badge text-red-500'>*</span></label>
+                                                    <Field placeholder="Harga package" name={`price`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-1/2 md:w-full" />
+                                                    <div className="text-red-500 text-sm mt-2">
+                                                        <ErrorMessage name={`price`} />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <h1 className="text-gray-700 font-light text-lg my-4">Package List</h1>
+
+                                            <FieldArray
+                                                name="package_list"
+                                                render={arrayHelpers => {
+                                                    const package_list = values.package_list;
+                                                    // console.log(package_list)
+                                                    const handleDeleteRow = (index) => {
+                                                        if (package_list.length > 1) {
+                                                            arrayHelpers.remove(index);
+                                                        } else {
+                                                            alert('Package list harus ada')
+                                                        }
+                                                    }
+                                                    return (
+                                                        <div>
+                                                            {package_list && package_list.length > 0
+                                                                ? package_list.map((item, index) => (
+                                                                    <div key={index}>
+                                                                        <div className='grid grid-cols-1 md:grid-cols-6 gap-3'>
+                                                                            <div className="justify-self-start md:justify-self-center md:col-span-1">
+                                                                                <label className="block text-sm text-gray-600 my-2 mb-2" htmlFor="name">Action</label>
+                                                                                <button type="button" onClick={() => handleDeleteRow(index)} className="bg-gray-400 hover:bg-gray-600 text-white font-bold p-2 rounded-lg text-white"><BsTrash /></button>
                                                                             </div>
-                                                                        </div>
-                                                                        <div className="col-span-2">
-                                                                            <label className="block text-sm text-gray-600  my-2" htmlFor="name">Price Package List</label>
-                                                                            <Field placeholder="price" name={`package_list.${index}.price`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" />
-                                                                            <div className="text-red-500 text-sm mt-2">
-                                                                                <ErrorMessage name={`package_list.${index}.price`} />
+                                                                            <div className='md:col-span-3'>
+                                                                                <label className="block text-sm text-gray-600  my-2" htmlFor="name">Name Package List <span className='badge text-red-500'>*</span></label>
+                                                                                <Field placeholder="Package name" name={`package_list[${index}].name`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" id="name" />
+                                                                                <div className="text-red-500 text-sm mt-2">
+                                                                                    <ErrorMessage name={`package_list[${index}].name`} />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className='md:col-span-2'>
+                                                                                <label className="block text-sm text-gray-600  my-2" htmlFor="name">Price Package List</label>
+                                                                                <Field placeholder="price" name={`package_list.${index}.price`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-1/2 md:w-full" />
+                                                                                <div className="text-red-500 text-sm mt-2">
+                                                                                    <ErrorMessage name={`package_list.${index}.price`} />
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                            ))
-                                                            : null}
-                                                        <h1 className="text-gray-700 font-light text-lg mt-4 mb-2">Add new package list... </h1>
-                                                        <div className='flex m-5'>
-                                                            <button className='bg-blue-500 hover:bg-blue-700 p-2 rounded-lg text-white' type="button" onClick={() => arrayHelpers.push({ name: "", price: "" })}>
-                                                                <BiAddToQueue />
-                                                            </button>
+                                                                ))
+                                                                : null}
+                                                            <h1 className="text-gray-700 font-light text-lg mt-4 mb-2">Add new package list... </h1>
+                                                            <div className='flex m-5'>
+                                                                <button className='bg-green-500 hover:bg-green-600 p-2 rounded-lg text-white' type="button" onClick={() => arrayHelpers.push({ name: "", price: "" })}>
+                                                                    <BiAddToQueue />
+                                                                </button>
+                                                            </div>
+                                                            <div className='flex justify-end'>
+                                                                <button type="submit" className={`bg-blue-500 rounded-lg text-white p-2 ` + (isValid && `hover:bg-blue-600 cursor-pointer`)} disabled={!isValid}>Submit</button>
+                                                            </div>
                                                         </div>
-                                                        <div className='flex justify-end'>
-                                                            <button type="submit" className={`bg-green-500 rounded-lg text-white p-2 ` + (isValid && `hover:bg-green-600 cursor-pointer`)} disabled={!isValid}>Submit</button>
-                                                        </div>
-                                                    </div>
-                                                );
-                                            }}
-                                        />
-                                    </Form>
-                                )}
-                            </Formik>
+                                                    );
+                                                }}
+                                            />
+                                        </Form>
+                                    )}
+                                </Formik>
+                            </div>
                         </div>
                     </div>
                 </Transition.Child>
