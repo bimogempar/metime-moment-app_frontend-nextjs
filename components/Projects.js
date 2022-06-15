@@ -162,7 +162,7 @@ export default function Project(props) {
                 </div>
                 <div className="flex gap-x-3 justify-between">
                     <select className="bg-gray-100 p-2 rounded-xl text-gray-500" onChange={e => filterCategory(e.target.value)}>
-                        <option value="">None</option>
+                        <option value="">Filter Status</option>
                         <option value="1">On Scheduled</option>
                         <option value="2">On Progress</option>
                         <option value="3">Done</option>
