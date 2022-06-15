@@ -29,7 +29,7 @@ export default function ModalNewEmployee({ setIsOpen, isOpen, buttonRef, formikU
                         <div className="relative w-4/5 md:w-1/2 xl:w-1/3 bg-white my-5 rounded-md p-5">
                             <div className="grid grid-cols-1 gap-3">
                                 <div className="flex justify-between">
-                                    <h1 className="text-gray-700 font-light text-2xl">Create New Project</h1>
+                                    <h1 className="text-gray-700 font-light text-2xl">Create New Employee</h1>
                                 </div>
                                 <hr />
                                 <p className="text-gray-700 font-light text-md">Create new user and user got the email for set init password...</p>

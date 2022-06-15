@@ -1,5 +1,9 @@
 import { Dialog, Transition } from '@headlessui/react'
 import React, { Fragment, useRef } from 'react'
+import { BsCalendarDate } from 'react-icons/bs'
+import ReactSelect from 'react-select'
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 export default function ModalCreateProject({ isOpenCreate, setIsOpenCreate }) {
     let closeModalRef = useRef(null)
@@ -28,15 +32,92 @@ export default function ModalCreateProject({ isOpenCreate, setIsOpenCreate }) {
                     leaveTo="transform scale-95 opacity-0"
                 >
                     <div className="flex items-center justify-center min-h-screen">
-                        <div className="relative w-1/2 xl:w-1/3 bg-white my-5 rounded-md p-4">
-                            <div className="grid grid-cols-1 gap-3">
-                                <div className="flex justify-between">
-                                    <h1 className="text-gray-700 font-light text-2xl">Create New Project</h1>
+                        <div className="relative w-4/5 md:w-2/3 lg:w-1/2 xl:w-2/5 bg-white my-5 rounded-md p-5">
+                            <div className="flex justify-between mb-3">
+                                <h1 className="text-gray-700 font-light text-2xl">Create New Project</h1>
+                            </div>
+                            <hr />
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="col-span-1">
+                                    <div>
+                                        <label className="block text-sm text-gray-600  my-2" htmlFor="name">Client Name</label>
+                                        <input type="text" className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" id="client" />
+                                        {/* {formikUsers.errors.name ? <label className="block text-sm text-red-600 my-2">{formikUsers.errors.name}</label> : null} */}
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-gray-600  my-2" htmlFor="username">Date</label>
+                                        <div className="flex items-center space-x-3">
+                                            <input type="date" className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm" id="date" />
+                                            <span className='text-gray-500'>
+                                                <BsCalendarDate size={25} className="mt-1" />
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-gray-600  my-2" htmlFor="no_hp">Phone Number</label>
+                                        <PhoneInput
+                                            enableSearch={true}
+                                            containerClass='rounded-lg text-gray-600 text-sm'
+                                            containerStyle={{ width: '70%', }}
+                                            country={'id'}
+                                            value={'+62'}
+                                            onChange={phone => console.log(phone)}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-gray-600  my-2" htmlFor="location">Location</label>
+                                        <input type="text" className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-5/6" id="location" />
+                                    </div>
                                 </div>
-                                <hr />
-                                <p className="text-gray-700 font-light text-md">Description</p>
-                                <div className="flex justify-end">
+                                <div className="col-span-1">
+                                    <div>
+                                        <label className="block text-sm text-gray-600  my-2" htmlFor="username">Thumbnail Project</label>
+                                        <input
+                                            type="file"
+                                            className="text-sm my-1 text-slate-500
+                                                        file:mr-4 file:py-2 file:px-4
+                                                        file:rounded-full file:border-0
+                                                        file:text-sm file:font-semibold
+                                                        file:bg-blue-50 file:text-blue-700
+                                                        hover:file:bg-blue-100
+                                                        "
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-gray-600  my-2" htmlFor="package">Package</label>
+                                        <ReactSelect
+                                            className='w-4/5'
+                                            placeholder="Select Package..."
+                                            options={
+                                                [
+                                                    { value: '1', label: 'User 1' },
+                                                    { value: '2', label: 'User 2' },
+                                                    { value: '3', label: 'User 3' },
+                                                ]
+                                            }
+                                            onChange={e => console.log(e)}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-gray-600  my-2" htmlFor="user_assignment">Assign to</label>
+                                        <ReactSelect
+                                            className='w-4/5'
+                                            placeholder="Select Users..."
+                                            options={
+                                                [
+                                                    { value: '1', label: 'User 1' },
+                                                    { value: '2', label: 'User 2' },
+                                                    { value: '3', label: 'User 3' },
+                                                ]
+                                            }
+                                            onChange={e => console.log(e)}
+                                            isMulti
+                                        />
+                                    </div>
                                 </div>
+                            </div>
+                            <div className="flex justify-end mt-4">
+                                <button className='text-white bg-blue-500 p-2 rounded-lg' type='submit'>Create</button>
                             </div>
                         </div>
                     </div>
