@@ -181,14 +181,14 @@ export default function Project(props) {
             </div>
 
             {/* Modal Create Project */}
-            <ModalCreateProject isOpenCreate={isOpenCreate} setIsOpenCreate={setIsOpenCreate} />
+            <ModalCreateProject token={token} isOpenCreate={isOpenCreate} setIsOpenCreate={setIsOpenCreate} setProjectsData={setProjectsData} projectsData={projectsData} />
 
             {/* Modal Delete Project */}
             <ModalDeleteProject isOpenDelete={isOpenDelete} setIsOpenDelete={setIsOpenDelete} dataModalDelete={dataModalDelete} deleteProject={deleteProject} />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
                 {
-                    projectsData.map((project, index) => (
+                    projectsData.sort((a, b) => (a.created_at < b.created_at) ? 1 : -1).map((project, index) => (
                         <CardProject key={index} project={project} handleClickDeleteProject={handleClickDeleteProject} />
                     ))
                 }
