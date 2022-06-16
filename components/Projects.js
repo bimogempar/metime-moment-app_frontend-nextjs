@@ -121,7 +121,7 @@ export default function Project(props) {
             })
             .then(function (response) {
                 // console.log(response)
-                setLastPage(2)
+                setLastPage(lastPage)
                 setProjectsData(projectsData.filter(project => project.id !== id))
                 setIsOpenDelete(false)
             })

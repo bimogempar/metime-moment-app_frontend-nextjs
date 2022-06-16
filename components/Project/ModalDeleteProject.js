@@ -35,7 +35,7 @@ export default function ModalDeleteProject({ isOpenDelete, setIsOpenDelete, data
                                     <h1 className="text-gray-700 font-light text-2xl">Delete Project</h1>
                                 </div>
                                 <hr />
-                                <p className="text-gray-700 font-light text-md">Are you sure to delete? Client : <span className="font-medium">{dataModalDelete[0]}</span></p>
+                                <p className="text-gray-700 font-light text-md">Are you sure to delete client <span className="font-medium">{dataModalDelete[0]}</span> ?</p>
                                 <div className="flex justify-end">
                                     <div className="flex gap-x-3 justify-end items-center mt-6">
                                         <button ref={closeModalRef} className="py-2 px-3 bg-red-50 text-red-500 rounded-lg" onClick={() => setIsOpenDelete(false)}>Cancel</button>

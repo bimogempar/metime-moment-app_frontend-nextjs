@@ -136,7 +136,7 @@ export default function ModalCreateProject({ token, isOpenCreate, setIsOpenCreat
                                         });
                                     }}
                                 >
-                                    {({ values, errors, isValid, setFieldTouched, setSubmitting }) => (
+                                    {({ values, errors, isValid, dirty, setFieldTouched, setSubmitting }) => (
                                         <Form>
                                             <div className="col-span-1">
                                                 <div>
@@ -280,7 +280,7 @@ export default function ModalCreateProject({ token, isOpenCreate, setIsOpenCreat
                                                 </div>
                                             </div>
                                             <div className="flex justify-end mt-4">
-                                                <button className={`bg-blue-400 rounded-lg text-white p-2 ` + (isValid && `hover:bg-blue-600 cursor-pointer`)} type='submit' disabled={!isValid}>Create</button>
+                                                <button className={(!dirty && `bg-blue-400 rounded-lg text-white p-2 `) + (isValid && ` bg-blue-500 hover:bg-blue-600 rounded-lg text-white p-2 `)} type='submit' disabled={!isValid}>Create</button>
                                             </div>
                                         </Form>
                                     )}
