@@ -4,10 +4,12 @@ import { BsCalendarDate } from 'react-icons/bs'
 import ReactSelect from 'react-select'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
-import { Field, FieldArray, Form, Formik } from 'formik'
+import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik'
 import ReactDatePicker from 'react-datepicker'
 import axios from 'axios'
 import moment from 'moment'
+import * as Yup from "yup";
+import toast from 'react-hot-toast'
 
 export default function ModalCreateProject({ token, isOpenCreate, setIsOpenCreate, setProjectsData, projectsData }) {
     let closeModalRef = useRef(null)
@@ -79,14 +81,28 @@ export default function ModalCreateProject({ token, isOpenCreate, setIsOpenCreat
                                             client: '',
                                             phone_number: '',
                                             date: '',
-                                            time: moment(new Date()).format('HH:mm:ss'),
+                                            time: '',
                                             location: '',
-                                            status: 1,
+                                            status: '',
                                             thumbnail_img: '',
                                             package_id: '',
                                             assignment_user: ''
                                         }
                                     }
+                                    validationSchema={Yup.object({
+                                        client: Yup.string().required('Nama Client harus diisi'),
+                                        phone_number: Yup.number().required('No hp client harus diisi'),
+                                        date: Yup.date().required('Tanggal harus diisi'),
+                                        time: Yup.string().required('Waktu harus diisi').test('time', 'Waktu harus diisi', (value) => {
+                                            return moment(value, 'HH:mm:ss').isValid()
+                                        }),
+                                        location: Yup.string().required('Lokasi harus diisi'),
+                                        status: Yup.number().required('Status harus diisi'),
+                                        package_id: Yup.number().required('Package harus diisi'),
+                                        assignment_user: Yup.array()
+                                            .min(1, 'Pilih minimal 1 user')
+                                            .required('Assignment user harus diisi')
+                                    })}
                                     onSubmit={values => {
                                         // console.log(values)
                                         // return
@@ -101,7 +117,7 @@ export default function ModalCreateProject({ token, isOpenCreate, setIsOpenCreat
                                         formData.append('package_id', values.package_id)
                                         // formData.append('assignment_user', values.assignment_user)
                                         formData.append('assignment_user', JSON.stringify(values.assignment_user))
-                                        axios.post(`${process.env.NEXT_PUBLIC_URL}/api/projects/store`, formData, {
+                                        const createProject = axios.post(`${process.env.NEXT_PUBLIC_URL}/api/projects/store`, formData, {
                                             headers: {
                                                 'Authorization': 'Bearer ' + token,
                                             }
@@ -111,10 +127,16 @@ export default function ModalCreateProject({ token, isOpenCreate, setIsOpenCreat
                                                 // merge project with new response
                                                 const newProjects = [...projectsData, res.data.project]
                                                 setProjectsData(newProjects)
+                                                setIsOpenCreate(false)
                                             })
+                                        toast.promise(createProject, {
+                                            loading: 'Loading',
+                                            error: 'Failed to create new project',
+                                            success: 'Project created successfully',
+                                        });
                                     }}
                                 >
-                                    {({ values }) => (
+                                    {({ values, errors, isValid, setFieldTouched, setSubmitting }) => (
                                         <Form>
                                             <div className="col-span-1">
                                                 <div>
@@ -129,12 +151,17 @@ export default function ModalCreateProject({ token, isOpenCreate, setIsOpenCreat
                                                                 { value: '3', label: 'Done' },
                                                             ]
                                                         }
-                                                        onChange={e => values.status = e.value}
+                                                        onChange={e => {
+                                                            values.status = e.value
+                                                            setFieldTouched(e.value, true, true);
+                                                        }}
                                                     />
+                                                    {errors.status ? <label className="block text-sm text-red-600 my-2">{errors.status}</label> : null}
                                                 </div>
                                                 <div>
                                                     <label className="block text-sm text-gray-600 my-2" htmlFor="client">Client Name</label>
                                                     <Field type="text" className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full sm:w-1/2 md:w-2/3" id="client" placeholder="Nama Client" name={`client`} />
+                                                    {errors.client ? <label className="block text-sm text-red-600 my-2">{errors.client}</label> : null}
                                                 </div>
                                                 <div>
                                                     <label className="block text-sm text-gray-600 my-2" htmlFor="no_hp">Phone Number</label>
@@ -144,19 +171,26 @@ export default function ModalCreateProject({ token, isOpenCreate, setIsOpenCreat
                                                         containerStyle={{ width: '70%', }}
                                                         country={'id'}
                                                         value={'+62'}
-                                                        onChange={phone =>
+                                                        onChange={phone => {
                                                             values.phone_number = phone
-                                                        }
+                                                            setFieldTouched(phone, true, true);
+                                                        }}
                                                     />
+                                                    {errors.phone_number ? <label className="block text-sm text-red-600 my-2">{errors.phone_number}</label> : null}
                                                 </div>
                                                 <div>
                                                     <label className="block text-sm text-gray-600 my-2" htmlFor="date">Date</label>
                                                     <div className="flex items-center space-x-3">
-                                                        <input type="date" className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-1/2 md:w-1/3" id="date" onChange={date => values.date = date.target.value} />
+                                                        <input type="date" className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-1/2 md:w-1/3" id="date" onChange={date => {
+                                                            values.date = date.target.value
+                                                            setFieldTouched(date, true, true);
+                                                            // console.log(date.target.value)
+                                                        }} />
                                                         <span className='text-gray-500'>
                                                             <BsCalendarDate size={30} className="mt-1" />
                                                         </span>
                                                     </div>
+                                                    {errors.date ? <label className="block text-sm text-red-600 my-2">{errors.date}</label> : null}
                                                 </div>
                                                 <div>
                                                     <label className="block text-sm text-gray-600 my-2" htmlFor="time">Time</label>
@@ -167,6 +201,8 @@ export default function ModalCreateProject({ token, isOpenCreate, setIsOpenCreat
                                                             onChange={(date) => {
                                                                 setTime(date)
                                                                 values.time = moment(date).format('HH:mm:ss')
+                                                                setFieldTouched(date, true, true);
+                                                                // console.log(moment(date).format('HH:mm:ss'))
                                                             }}
                                                             showTimeSelect
                                                             showTimeSelectOnly
@@ -174,10 +210,12 @@ export default function ModalCreateProject({ token, isOpenCreate, setIsOpenCreat
                                                             dateFormat="h:mm aa"
                                                         />
                                                     </div>
+                                                    {errors.time ? <label className="block text-sm text-red-600 my-2">{errors.time}</label> : null}
                                                 </div>
                                                 <div>
                                                     <label className="block text-sm text-gray-600 my-2" htmlFor="location">Location</label>
                                                     <Field type="text" className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-4/5 md:w-1/2" id="location" name={`location`} />
+                                                    {errors.location ? <label className="block text-sm text-red-600 my-2">{errors.location}</label> : null}
                                                 </div>
                                             </div>
                                             <div className="col-span-1">
@@ -212,8 +250,12 @@ export default function ModalCreateProject({ token, isOpenCreate, setIsOpenCreat
                                                                 }
                                                             })
                                                         }
-                                                        onChange={e => values.package_id = e.value}
+                                                        onChange={e => {
+                                                            values.package_id = e.value
+                                                            setFieldTouched(e.value, true, true);
+                                                        }}
                                                     />
+                                                    {errors.package_id ? <label className="block text-sm text-red-600 my-2">{errors.package_id}</label> : null}
                                                 </div>
                                                 <div>
                                                     <label className="block text-sm text-gray-600 my-2" htmlFor="user_assignment">Assign to</label>
@@ -230,13 +272,15 @@ export default function ModalCreateProject({ token, isOpenCreate, setIsOpenCreat
                                                         }
                                                         onChange={e => {
                                                             values.assignment_user = e.map(item => item.value)
+                                                            setFieldTouched(e, true, true);
                                                         }}
                                                         isMulti
                                                     />
+                                                    {errors.assignment_user ? <label className="block text-sm text-red-600 my-2">{errors.assignment_user}</label> : null}
                                                 </div>
                                             </div>
                                             <div className="flex justify-end mt-4">
-                                                <button className='text-white bg-blue-500 p-2 rounded-lg' type='submit'>Create</button>
+                                                <button className={`bg-blue-400 rounded-lg text-white p-2 ` + (isValid && `hover:bg-blue-600 cursor-pointer`)} type='submit' disabled={!isValid}>Create</button>
                                             </div>
                                         </Form>
                                     )}
