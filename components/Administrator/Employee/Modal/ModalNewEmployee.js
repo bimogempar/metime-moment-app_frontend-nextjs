@@ -59,7 +59,7 @@ export default function ModalNewEmployee({ setIsOpen, isOpen, buttonRef, formikU
                                         {formikUsers.errors.role ? <label className="block text-sm text-red-600 my-2">{formikUsers.errors.email}</label> : null}
                                     </div>
                                     <div className="flex justify-end">
-                                        <button className='  text-white p-2 rounded-lg' type='submit'>Create</button>
+                                        <button className='bg-blue-500 text-white p-2 rounded-lg' type='submit'>Create</button>
                                     </div>
                                 </form>
                             </div>
