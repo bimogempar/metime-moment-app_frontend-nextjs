@@ -7,7 +7,7 @@ import LogoMetimeSquare from '../../../public/img/metime-moment.jpeg'
 export default function PrintProject({ data }) {
     const date = new Date()
     if (typeof window !== "undefined") {
-        // window.print()
+        window.print()
     }
     return (
         <div style={{ fontSize: 12 }} className="flex bg-white justify-center min-h-screen">

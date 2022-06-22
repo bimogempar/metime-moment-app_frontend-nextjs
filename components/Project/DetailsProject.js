@@ -16,6 +16,7 @@ import Progress from './components-detailProject/Progress';
 import AddAssignees from './components-detailProject/AddAssignees';
 import ThumbnailProject from './components-detailProject/ThumbnailProject';
 import FilesGDrive from './components-detailProject/FilesGDrive';
+import PrintInvoice from './components-detailProject/PrintInvoice';
 
 export default function DetailsProject({ data }) {
     const [project, setProject] = useState(data.project);
@@ -441,17 +442,24 @@ export default function DetailsProject({ data }) {
                     />
                 </div>
 
-                {/* Sidebar */}
-                <AddAssignees
-                    permissions={permissions}
-                    addUserProject={addUserProject}
-                    users={users}
-                    allUsers={allUsers}
-                    formikProjects={formikProjects}
-                    fetchAllUser={fetchAllUser}
-                    deleteEachUser={deleteEachUser}
-                    handleSubmitAddAssign={handleSubmitAddAssign}
-                />
+                <div className="col-span-3 xl:col-span-1 lg:col-span-2 md:col-span-2 rounded-xl space-y-4">
+                    {/* Print Invoice */}
+                    <PrintInvoice
+                        project={project}
+                    />
+
+                    {/* Sidebar */}
+                    <AddAssignees
+                        permissions={permissions}
+                        addUserProject={addUserProject}
+                        users={users}
+                        allUsers={allUsers}
+                        formikProjects={formikProjects}
+                        fetchAllUser={fetchAllUser}
+                        deleteEachUser={deleteEachUser}
+                        handleSubmitAddAssign={handleSubmitAddAssign}
+                    />
+                </div>
 
             </div>
         </>
