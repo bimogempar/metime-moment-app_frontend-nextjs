@@ -42,7 +42,7 @@ export default function Package() {
 
     const handleDeletePackage = (e) => {
         if (confirm('Hapus package beserta package list?')) {
-            const deletePackage = axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/packages/${e.id}/delete`, {
+            const deletePackage = axios.delete(`${process.env.NEXT_PUBLIC_URL}/api/packages/${e}/delete`, {
                 headers: {
                     'Authorization': 'Bearer ' + token,
                 }
@@ -52,7 +52,8 @@ export default function Package() {
                 })
                 .then(res => {
                     // console.log(res)
-                    setPackagesProject(packagesProject.filter(item => item.id !== e.id))
+                    // return
+                    setPackagesProject(packagesProject.filter(item => item.id !== e))
                     setIsOpenEdit(false)
                 })
             toast.promise(deletePackage, {

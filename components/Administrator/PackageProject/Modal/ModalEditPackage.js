@@ -38,6 +38,7 @@ export default function ModalEditPackage({ setIsOpenEdit, isOpenEdit, buttonRef,
                             <div className="grid grid-cols-1 gap-3">
                                 <div className="flex justify-between">
                                     <h1 className="text-gray-700 font-light text-2xl">Edit package</h1>
+                                    <button className='bg-red-500 hover:bg-red-600 p-2 text-white rounded-lg' onClick={() => handleDeletePackage(id)}><BsTrash /></button>
                                 </div>
                                 <hr />
                                 <Formik
