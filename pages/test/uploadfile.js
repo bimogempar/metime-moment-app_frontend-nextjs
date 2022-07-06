@@ -3,7 +3,7 @@ import { useFormik } from 'formik'
 import React from 'react'
 import * as Yup from 'yup'
 
-export default function Test() {
+export default function UploadFIle() {
 
     const handleChangeFile = (e) => {
         console.log(e.target.files[0])
