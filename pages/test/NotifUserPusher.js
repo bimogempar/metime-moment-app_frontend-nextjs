@@ -27,8 +27,8 @@ export default function NotifUserPusher() {
         var channel = pusher.subscribe('private-notif-user.' + userContext.user.id);
         channel.bind('notif-user', function (data) {
             // alert(JSON.stringify(data));
-            // console.log(data.message.message)
-            setMessage(data.message.message)
+            console.log(data.message.message.message);
+            setMessage(data.message.message.message)
         });
     }, [cookies.user_id, token, userContext.user.id])
 
