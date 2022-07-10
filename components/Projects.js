@@ -10,6 +10,7 @@ import { UserContext } from './context/userContext'
 import ModalCreateProject from '../components/Project/ModalCreateProject'
 import ModalDeleteProject from '../components/Project/ModalDeleteProject'
 import CardProject from './CardProject'
+import Pusher from 'pusher-js'
 
 export default function Project(props) {
     const userContext = useContext(UserContext)
@@ -48,6 +49,26 @@ export default function Project(props) {
     };
 
     useEffect(() => {
+        var pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+            auth: {
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            },
+            authEndpoint: `${process.env.NEXT_PUBLIC_URL}/api/broadcasting/auth`,
+            cluster: 'ap1',
+            encrypted: true,
+        });
+
+        var channel = pusher.subscribe('project-channel');
+        channel.bind('project-event', function (data) {
+            // alert(JSON.stringify(data));
+            // console.log(data.project.message)
+            toast(data.project.message, { icon: '🔥' })
+            fetchProjects()
+        });
+
         const fetchProjects = async () => {
             const arr = []
 
@@ -85,8 +106,13 @@ export default function Project(props) {
                 })
         }
 
-        fetchProjects()
-    }, [search, startDate, endDate, token])
+        return () => {
+            fetchProjects()
+            channel.unbind('project-event')
+            channel.unsubscribe('project-channel')
+        }
+
+    }, [search, startDate, endDate, token, userContext.user.id])
 
     const handleLoadMore = async (e) => {
         setPage(page + 1)
@@ -186,6 +212,7 @@ export default function Project(props) {
             {/* Modal Delete Project */}
             <ModalDeleteProject isOpenDelete={isOpenDelete} setIsOpenDelete={setIsOpenDelete} dataModalDelete={dataModalDelete} deleteProject={deleteProject} />
 
+            {/* Card Project */}
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
                 {
                     projectsData.sort((a, b) => (a.created_at < b.created_at) ? 1 : -1).map((project, index) => (
