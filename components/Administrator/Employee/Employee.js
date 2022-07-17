@@ -209,7 +209,7 @@ export default function Employee() {
                                             <div className="text-left">{employee.email}</div>
                                         </td>
                                         <td className="p-2 whitespace-nowrap">
-                                            <div className="text-sm text-center">{employee.no_hp}</div>
+                                            <div className="text-sm text-center">+{employee.no_hp}</div>
                                         </td>
                                         <td className="p-2 whitespace-nowrap">
                                             <div className="text-sm text-center bg-yellow-200 text-yellow-700 py-1 rounded-lg">{employee.role == 1 && "Employee" || employee.role == 2 && "Manager" || employee.role == 3 && "Admin"}</div>

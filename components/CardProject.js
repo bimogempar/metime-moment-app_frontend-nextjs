@@ -10,6 +10,7 @@ import notYetImageProject from '../public/img/not-yet.png'
 import { UserContext } from './context/userContext'
 import { MdFileDownloadDone } from 'react-icons/md'
 import UserPlaceholder from '../public/img/userplaceholder.png'
+import moment from 'moment'
 
 export default function CardProject({ project, handleClickDeleteProject }) {
     const userContext = useContext(UserContext)
@@ -80,9 +81,9 @@ export default function CardProject({ project, handleClickDeleteProject }) {
                 </Link>
                 <div className='mt-3'>
                     <h3 className="text-sm font-extralight text-gray-500 flex items-center my-1 gap-2"><BsClock /> {project.time}</h3>
-                    <h3 className="text-sm font-extralight text-gray-500 flex items-center my-1 gap-2"><BsCalendarDate /> {project.date}</h3>
+                    <h3 className="text-sm font-extralight text-gray-500 flex items-center my-1 gap-2"><BsCalendarDate /> {moment(project.date).format('D MMM YY')}</h3>
                     <h3 className="text-sm font-extralight text-gray-500 flex items-center my-1 gap-2"><HiOutlineLocationMarker /> {project.location}</h3>
-                    <h3 className="text-sm font-extralight text-gray-500 flex items-center my-1 gap-2"><BiPhoneCall /> {project.phone_number}</h3>
+                    <h3 className="text-sm font-extralight text-gray-500 flex items-center my-1 gap-2"><BiPhoneCall /> +{project.phone_number}</h3>
                 </div>
             </div>
 

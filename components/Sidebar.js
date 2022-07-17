@@ -40,7 +40,7 @@ export default function Sidebar() {
                     <div className="text-center">
                         <h1 className="text-xl mt-4 font-light break-word">{userContext.user.name}</h1>
                         <h1 className="text-md text-gray-500 mb-1 font-light break-all">{userContext.user.username}</h1>
-                        <h3 className="text-md text-gray-500 mb-1 font-light break-all">{userContext.user.no_hp}</h3>
+                        <h3 className="text-md text-gray-500 mb-1 font-light break-all">+{userContext.user.no_hp}</h3>
                         <h1 className="text-md text-gray-500 mb-5 font-light break-all">{userContext.user.email}</h1>
                         <a className="bg-yellow-200 px-5 py-3 w-full text-center lg:w-auto rounded-lg text-yellow-600 text-xs tracking-wider font-semibold uppercase">
                             {userContext.user.role == 2 && "Manager" || userContext.user.role == 1 && "Employee" || userContext.user.role == 3 && "Admin"}
