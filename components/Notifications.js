@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import Pusher from 'pusher-js'
 import nookies from 'nookies';
 import { MdOutlineNotifications } from 'react-icons/md'
 import { UserContext } from './context/userContext';
+import ModalNotifications from './ModalNotifications';
 
 export default function Notifications() {
     const [message, setMessage] = useState('')
@@ -11,7 +12,10 @@ export default function Notifications() {
     const cookies = nookies.get()
     const token = cookies.token
     const { user } = useContext(UserContext);
-    // console.log(user)
+
+    const [isOpenNotifications, setIsOpenNotifications] = useState(false)
+    const buttonRef = useRef();
+
     useEffect(() => {
         if (user.length !== 0) {
             ((user.length === 0) ? console.log('user is empty') :
@@ -21,7 +25,7 @@ export default function Notifications() {
                     }
                 }).then(res => {
                     // console.log(res.data)
-                    setMessage(res.data.message)
+                    setMessage(res.data.notifications)
                     setCountMessage(res.data.notifications.length)
                 })
             )
@@ -41,8 +45,7 @@ export default function Notifications() {
             var channel = pusher.subscribe('private-notif-user.' + user.id);
             channel.bind('notif-user', function (data) {
                 // alert(JSON.stringify(data));
-                // console.log(data)
-                setMessage(data.message.message)
+                setMessage((prev) => [...prev, data.message])
                 setCountMessage((countMessage) => countMessage + 1)
             });
 
@@ -56,7 +59,7 @@ export default function Notifications() {
     return (
         <div className="mb-5">
             <h1 className="mb-5 text-2xl font-extralight">Notifications</h1>
-            <div className="bg-white rounded-lg p-3 w-3/5 md:w-2/5 xl:w-1/5 space-y-2">
+            <div className="bg-white rounded-lg p-3 w-3/5 md:w-2/5 xl:w-1/5 space-y-2 cursor-pointer" onClick={() => setIsOpenNotifications(true)}>
                 {
                     countMessage !== 0 &&
                     <div className="text-right">
@@ -78,6 +81,7 @@ export default function Notifications() {
                     </p>
                 </div>
             </div>
+            <ModalNotifications setIsOpenNotifications={setIsOpenNotifications} isOpenNotifications={isOpenNotifications} buttonRef={buttonRef} notifications={message} />
         </div >
     )
 }
