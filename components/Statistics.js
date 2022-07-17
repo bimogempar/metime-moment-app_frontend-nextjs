@@ -32,6 +32,13 @@ export default function Statistics() {
         datasets: [{
             label: 'Statistic of Projects',
             data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            },
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -60,9 +67,10 @@ export default function Statistics() {
                 'rgba(153, 102, 255, 0.2)',
                 'rgba(255, 159, 64, 0.2)',
             ],
-            borderWidth: 1
-        }]
-    })
+            borderWidth: 1,
+        }],
+    },
+    )
 
     useEffect(() => {
         if (user.length !== 0) {
@@ -89,14 +97,23 @@ export default function Statistics() {
 
     return (
         <div className="mb-5">
-            <h1 className="mb-5 text-2xl font-extralight">Statistic</h1>
+            <h1 className="mb-5 text-2xl font-extralight">Statistic Project</h1>
             <div className="grid grid-cols-4">
                 {/* Statistic */}
                 <div className="bg-white col-span-4 lg:col-span-3 rounded-xl p-5">
                     <Bar
                         data={data}
                         height={250}
-                        options={{ maintainAspectRatio: false }}
+                        options={
+                            {
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
                     />
                 </div>
             </div>
