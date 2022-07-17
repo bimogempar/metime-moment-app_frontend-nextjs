@@ -101,21 +101,27 @@ export default function Employee() {
             name: '',
             email: '',
             username: '',
+            no_hp: '',
             role: '1',
         },
         validationSchema: Yup.object({
             name: Yup.string()
                 .min(3, 'Name must be at least 3 characters')
-                .max(40, 'Name must be less than 40 characters'),
+                .max(40, 'Name must be less than 40 characters')
+                .required('Name is required'),
             username: Yup.string()
                 .min(3, 'Username must be at least 3 characters')
-                .max(20, 'Username must be less than 20 characters'),
+                .max(20, 'Username must be less than 20 characters')
+                .required('Username is required'),
+            no_hp: Yup.number().required('No hp client harus diisi'),
             email: Yup.string()
-                .email('Invalid email address'),
+                .email('Invalid email address')
+                .required('Email is required'),
             role: Yup.string()
                 .required('Role is required'),
         }),
         onSubmit: values => {
+            // return alert(JSON.stringify(values, null, 2));
             const register = axios.post(`${process.env.NEXT_PUBLIC_URL}/api/register`, values, {
                 headers: {
                     'Authorization': 'Bearer ' + token,
@@ -183,7 +189,7 @@ export default function Employee() {
                         </thead>
                         <tbody className="text-sm divide-y divide-gray-100">
                             {
-                                employees.sort((a, b) => (a.created_at < b.created_at) ? 1 : -1).map(employee => (
+                                employees.map(employee => (
                                     <tr key={employee.id}>
                                         <Link href={'/userprofile/' + employee.username} passHref>
                                             <td className="p-2 whitespace-nowrap cursor-pointer">

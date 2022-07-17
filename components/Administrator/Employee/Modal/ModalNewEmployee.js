@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css'
 
 export default function ModalNewEmployee({ setIsOpen, isOpen, buttonRef, formikUsers, title }) {
     return (
@@ -48,6 +50,21 @@ export default function ModalNewEmployee({ setIsOpen, isOpen, buttonRef, formikU
                                         <label className="block text-sm text-gray-600  my-2" htmlFor="email">Email</label>
                                         <input type="email" className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full md:w-2/3" id="email" onChange={formikUsers.handleChange} value={formikUsers.values.email} />
                                         {formikUsers.errors.email ? <label className="block text-sm text-red-600 my-2">{formikUsers.errors.email}</label> : null}
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-gray-600 my-2" htmlFor="no_hp">Phone Number</label>
+                                        <PhoneInput
+                                            enableSearch={true}
+                                            containerClass='rounded-lg text-gray-600 text-sm'
+                                            containerStyle={{ width: '70%', }}
+                                            country={'id'}
+                                            value={'+62'}
+                                            onChange={phone => {
+                                                formikUsers.setFieldValue('no_hp', phone)
+                                                formikUsers.setFieldTouched(phone, true, true)
+                                            }}
+                                        />
+                                        {formikUsers.errors.no_hp ? <label className="block text-sm text-red-600 my-2">{formikUsers.errors.no_hp}</label> : null}
                                     </div>
                                     <div>
                                         <label className="block text-sm text-gray-600  my-2" htmlFor="role">Role</label>
