@@ -41,7 +41,7 @@ export default function Notifications() {
             var channel = pusher.subscribe('private-notif-user.' + user.id);
             channel.bind('notif-user', function (data) {
                 // alert(JSON.stringify(data));
-                console.log(data)
+                // console.log(data)
                 setMessage(data.message.message)
                 setCountMessage((countMessage) => countMessage + 1)
             });

@@ -34,17 +34,19 @@ export default function Calendar() {
 
     const handleClick = (e) => {
         // console.log(e.event._def.extendedProps.slug)
-        router.push(`/projects/${e.event._def.extendedProps.slug}`)
+        // router.push(`/projects/${e.event._def.extendedProps.slug}`)
+        window.open(`/projects/${e.event._def.extendedProps.slug}`, '_blank', 'noopener,noreferrer')
     }
 
     const handleMouseEnter = (info) => {
-        if (info.event.extendedProps.slug) {
-            console.log(info.event.extendedProps.slug)
-        }
+        // if (info.event.extendedProps.slug) {
+        //     console.log(info.event.extendedProps.slug)
+        // }
+        // console.log(info)
     };
 
     const handleMouseLeave = (info) => {
-        console.log('leave')
+        // console.log('leave')
     };
 
     const toolTip = (e) => {
@@ -65,7 +67,7 @@ export default function Calendar() {
                     plugins={[dayGridPlugin, interactionPlugin]}
                     locale="id"
                     initialView="dayGridMonth"
-                    dateClick={(info) => console.log(info)}
+                    // dateClick={(info) => console.log(info)}
                     nowIndicator={true}
                     eventClick={(info) => handleClick(info)}
                     eventMouseEnter={handleMouseEnter}
