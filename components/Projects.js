@@ -220,7 +220,7 @@ export default function Project(props) {
             {/* Card Project */}
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
                 {
-                    projectsData.sort((a, b) => (a.created_at < b.created_at) ? 1 : -1).map((project, index) => (
+                    projectsData.map((project, index) => (
                         <CardProject key={index} project={project} handleClickDeleteProject={handleClickDeleteProject} />
                     ))
                 }
