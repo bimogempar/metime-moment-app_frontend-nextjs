@@ -3,11 +3,11 @@ import moment from 'moment'
 import React, { Fragment } from 'react'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 
-export default function ModalNotifications({ isOpenNotifications, setIsOpenNotifications, buttonRef, notifications }) {
-    console.log(notifications)
+export default function ModalNotifications({ isOpenNotifications, setIsOpenNotifications, buttonRef, notifications, handleReadNotifications }) {
+    // console.log(notifications)
     return (
         <Transition as={Fragment} show={isOpenNotifications} >
-            <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={() => setIsOpenNotifications(false)} initialFocus={buttonRef}>
+            <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={handleReadNotifications} initialFocus={buttonRef}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"

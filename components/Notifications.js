@@ -7,7 +7,7 @@ import { UserContext } from './context/userContext';
 import ModalNotifications from './ModalNotifications';
 
 export default function Notifications() {
-    const [message, setMessage] = useState('')
+    const [message, setMessage] = useState([])
     const [countMessage, setCountMessage] = useState(0)
     const cookies = nookies.get()
     const token = cookies.token
@@ -15,6 +15,21 @@ export default function Notifications() {
 
     const [isOpenNotifications, setIsOpenNotifications] = useState(false)
     const buttonRef = useRef();
+
+    const handleReadNotifications = () => {
+        setIsOpenNotifications(false)
+        axios.put(`${process.env.NEXT_PUBLIC_URL}/api/notifications/${user.id}`, {
+            headers: {
+                Authorization: 'Bearer ' + token,
+            }
+        }).then(res => {
+            // console.log(res.data)
+            setMessage([])
+            setCountMessage(0)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
 
     useEffect(() => {
         if (user.length !== 0) {
@@ -81,7 +96,7 @@ export default function Notifications() {
                     </p>
                 </div>
             </div>
-            <ModalNotifications setIsOpenNotifications={setIsOpenNotifications} isOpenNotifications={isOpenNotifications} buttonRef={buttonRef} notifications={message} />
+            <ModalNotifications setIsOpenNotifications={setIsOpenNotifications} isOpenNotifications={isOpenNotifications} buttonRef={buttonRef} notifications={message} handleReadNotifications={handleReadNotifications} />
         </div >
     )
 }
