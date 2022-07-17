@@ -9,7 +9,8 @@ import axios from 'axios';
 import * as Yup from 'yup'
 import UserPlaceholder from "../public/img/userplaceholder.png";
 import { BiLoader } from 'react-icons/bi';
-
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css'
 
 export default function EditProfile(props) {
     const [authUser, setAuthUser] = useState(props.data.authUser);
@@ -176,8 +177,18 @@ export default function EditProfile(props) {
                             {formikUpdateUser.errors.email ? <label className="block text-sm text-red-600 my-2">{formikUpdateUser.errors.email}</label> : null}
                         </div>
                         <div>
-                            <label className="block text-sm text-gray-600  my-2" htmlFor="no_hp">Nomor Telephone</label>
-                            <input type="text" className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-full" id="no_hp" onChange={formikUpdateUser.handleChange} value={formikUpdateUser.values.no_hp} />
+                            <label className="block text-sm text-gray-600 my-2" htmlFor="no_hp">Nomor Telephone</label>
+                            <PhoneInput
+                                enableSearch={true}
+                                containerClass='rounded-lg text-gray-600 text-sm w-3/4'
+                                containerStyle={{ width: '70%', }}
+                                country={'id'}
+                                value={formikUpdateUser.values.no_hp}
+                                onChange={phone => {
+                                    formikUpdateUser.setFieldValue('no_hp', phone)
+                                    formikUpdateUser.setFieldTouched(phone, true, true)
+                                }}
+                            />
                             {formikUpdateUser.errors.no_hp ? <label className="block text-sm text-red-600 my-2">{formikUpdateUser.errors.no_hp}</label> : null}
                         </div>
                         {
