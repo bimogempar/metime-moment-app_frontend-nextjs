@@ -7,6 +7,7 @@ import { BiAddToQueue, BiTrash } from 'react-icons/bi';
 import axios from 'axios';
 import nookies from 'nookies'
 import toast, { Toaster } from 'react-hot-toast'
+import CurrencyFormat from 'react-currency-format';
 
 export default function ModalEditPackage({ setIsOpenEdit, isOpenEdit, buttonRef, eachPackage, setPackagesProject, packagesProject, handleDeletePackage }) {
     const id = eachPackage && eachPackage.id
@@ -64,6 +65,8 @@ export default function ModalEditPackage({ setIsOpenEdit, isOpenEdit, buttonRef,
                                     onSubmit={
                                         values => {
                                             // console.log(values)
+                                            // alert(JSON.stringify(values, null, 2))
+                                            // return
                                             const updatePackage = axios.post(`${process.env.NEXT_PUBLIC_URL}/api/packages/${id}/update`, values, {
                                                 headers: {
                                                     'Authorization': 'Bearer ' + nookies.get().token,
@@ -85,7 +88,7 @@ export default function ModalEditPackage({ setIsOpenEdit, isOpenEdit, buttonRef,
                                         }
                                     }
                                 >
-                                    {({ values, isValid }) => (
+                                    {({ values, isValid, setFieldValue }) => (
                                         <Form>
                                             <div className='grid grid-cols-1 md:grid-cols-3 gap-2'>
                                                 <div className='col-span-2'>
@@ -97,7 +100,20 @@ export default function ModalEditPackage({ setIsOpenEdit, isOpenEdit, buttonRef,
                                                 </div>
                                                 <div className='col-span-1'>
                                                     <label className="block text-sm text-gray-600  my-2" htmlFor="price">Harga Package <span className='badge text-red-500'>*</span></label>
-                                                    <Field placeholder="Harga package" name={`price`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-1/2 md:w-full" />
+                                                    <CurrencyFormat
+                                                        placeholder="Harga package"
+                                                        onValueChange={
+                                                            (values) => {
+                                                                const { value } = values;
+                                                                setFieldValue('price', value)
+                                                            }
+                                                        }
+                                                        className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-1/2 md:w-full"
+                                                        name={`price`}
+                                                        value={values.price}
+                                                        thousandSeparator={true}
+                                                        prefix={"Rp. "}
+                                                    />
                                                     <div className="text-red-500 text-sm mt-2">
                                                         <ErrorMessage name={`price`} />
                                                     </div>
@@ -137,7 +153,21 @@ export default function ModalEditPackage({ setIsOpenEdit, isOpenEdit, buttonRef,
                                                                             </div>
                                                                             <div className='md:col-span-2'>
                                                                                 <label className="block text-sm text-gray-600  my-2" htmlFor="name">Price Package List</label>
-                                                                                <Field placeholder="price" name={`package_list.${index}.price`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-1/2 md:w-full" />
+                                                                                {/* <Field placeholder="price" name={`package_list.${index}.price`} className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-1/2 md:w-full" /> */}
+                                                                                <CurrencyFormat
+                                                                                    placeholder="price"
+                                                                                    onValueChange={
+                                                                                        (values) => {
+                                                                                            const { value } = values;
+                                                                                            setFieldValue(`package_list[${index}].price`, value)
+                                                                                        }
+                                                                                    }
+                                                                                    className="border rounded-lg px-3 py-2 mt-1 text-gray-600 text-sm w-1/2 md:w-full"
+                                                                                    name={`package_list[${index}].price`}
+                                                                                    thousandSeparator={true}
+                                                                                    prefix={"Rp. "}
+                                                                                    value={values.package_list[index].price}
+                                                                                />
                                                                                 <div className="text-red-500 text-sm mt-2">
                                                                                     <ErrorMessage name={`package_list.${index}.price`} />
                                                                                 </div>
