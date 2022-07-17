@@ -173,9 +173,14 @@ export default function Project(props) {
 
             <h1 className="mb-5 text-2xl font-extralight">{props.head}</h1>
 
-            <div className="mb-5">
-                <button onClick={() => handleClickCreateProject()} className="transition ease-in-out duration-200 text-gray-500 bg-gray-100 hover:bg-white p-2 rounded-lg flex items-center"><BiAddToQueue className="mr-2" />Create new project</button>
-            </div>
+            {
+                userContext.user.role == '2' || userContext.user.role == '3' ?
+                    <div className="mb-5">
+                        <button onClick={() => handleClickCreateProject()} className="transition ease-in-out duration-200 text-gray-500 bg-gray-100 hover:bg-white p-2 rounded-lg flex items-center"><BiAddToQueue className="mr-2" />Create new project</button>
+                    </div>
+                    :
+                    null
+            }
 
             <div className="flex flex-wrap align-items-center justify-between items-center mb-5 gap-3">
                 <div className="flex gap-x-3 justify-between align-items-center">
