@@ -123,7 +123,7 @@ export default function ModalCreateProject({ token, isOpenCreate, setIsOpenCreat
                                             }
                                         })
                                             .then(res => {
-                                                console.log(res.data.project)
+                                                // console.log(res.data.project)
                                                 // merge project with new response
                                                 const newProjects = [...projectsData, res.data.project]
                                                 setProjectsData(newProjects)
@@ -280,7 +280,7 @@ export default function ModalCreateProject({ token, isOpenCreate, setIsOpenCreat
                                                 </div>
                                             </div>
                                             <div className="flex justify-end mt-4">
-                                                <button className={(!dirty && `bg-blue-400 rounded-lg text-white p-2 `) + (isValid && ` bg-blue-500 hover:bg-blue-600 rounded-lg text-white p-2 `)} type='submit' disabled={!isValid}>Create</button>
+                                                <button className="bg-blue-500 hover:bg-blue-600 rounded-lg text-white p-2" type='submit' disabled={!isValid}>Create</button>
                                             </div>
                                         </Form>
                                     )}
