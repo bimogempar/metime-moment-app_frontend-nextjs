@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import axios from 'axios'
 import Pusher from 'pusher-js'
 import nookies from 'nookies';
 import { MdOutlineNotifications } from 'react-icons/md'
@@ -9,35 +10,49 @@ export default function Notifications() {
     const [countMessage, setCountMessage] = useState(0)
     const cookies = nookies.get()
     const token = cookies.token
-    const userContext = useContext(UserContext);
-
+    const { user } = useContext(UserContext);
+    // console.log(user)
     useEffect(() => {
-        // Enable pusher logging - don't include this in production
-        // Pusher.logToConsole = true;
-        var pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
-            auth: {
-                headers: {
-                    'Accept': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                }
-            },
-            authEndpoint: `${process.env.NEXT_PUBLIC_URL}/api/broadcasting/auth`,
-            cluster: 'ap1',
-            encrypted: true,
-        });
+        if (user.length !== 0) {
+            ((user.length === 0) ? console.log('user is empty') :
+                axios.get(`${process.env.NEXT_PUBLIC_URL}/api/notifications/${user.id}`, {
+                    headers: {
+                        Authorization: 'Bearer ' + token,
+                    }
+                }).then(res => {
+                    // console.log(res.data)
+                    setMessage(res.data.message)
+                    setCountMessage(res.data.notifications.length)
+                })
+            )
 
-        var channel = pusher.subscribe('private-notif-user.' + userContext.user.id);
-        channel.bind('notif-user', function (data) {
-            // alert(JSON.stringify(data));
-            setMessage(data.message.message)
-            setCountMessage((countMessage) => countMessage + 1)
-        });
+            var pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+                auth: {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    }
+                },
+                authEndpoint: `${process.env.NEXT_PUBLIC_URL}/api/broadcasting/auth`,
+                cluster: 'ap1',
+                encrypted: true,
+            });
 
-        return () => {
-            channel.unbind('private-notif-user')
-            channel.unsubscribe('notif-user')
+            var channel = pusher.subscribe('private-notif-user.' + user.id);
+            channel.bind('notif-user', function (data) {
+                // alert(JSON.stringify(data));
+                console.log(data)
+                setMessage(data.message.message)
+                setCountMessage((countMessage) => countMessage + 1)
+            });
+
+            return () => {
+                channel.unbind('private-notif-user')
+                channel.unsubscribe('notif-user')
+            }
         }
-    }, [cookies.user_id, countMessage, token, userContext.user.id])
+    }, [token, user, user.id])
+
     return (
         <div className="mb-5">
             <h1 className="mb-5 text-2xl font-extralight">Notifications</h1>
