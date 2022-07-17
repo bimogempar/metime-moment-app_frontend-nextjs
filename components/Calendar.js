@@ -62,7 +62,7 @@ export default function Calendar() {
     return (
         <div className="mb-5">
             <h1 className="mb-5 text-2xl font-extralight">Calendar</h1>
-            <div className="bg-white p-5 rounded-xl">
+            <div className="w-full sm:w-3/4 bg-white p-5 rounded-xl">
                 <FullCalendar
                     plugins={[dayGridPlugin, interactionPlugin]}
                     locale="id"
